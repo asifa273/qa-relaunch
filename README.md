@@ -69,3 +69,15 @@ Run automated tests using Cucumber (Java example):
 
 ```bash
 mvn test -Dcucumber.options="--tags @SmokeTest"
+
+🧑‍💻 Author
+
+Asifa Begum
+QA | UAT Tester | BDD | Gherkin | Jira Xray| SQL | Postman | Selenium|
+
+✅ License
+
+This project is open source and available for educational and demonstration purposes.
+
+
+---
