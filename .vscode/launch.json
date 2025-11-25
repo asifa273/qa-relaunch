@@ -1,0 +1,21 @@
+{
+  // VS Code launch configurations for this workspace
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Run eComm.ShopCart",
+      "request": "launch",
+      "mainClass": "eComm.ShopCart",
+      "projectName": "automationexercise-bdd",
+      "cwd": "${workspaceFolder}/automationexercise-bdd/demo"
+    },
+    {
+      "type": "java",
+      "name": "Debug eComm.ShopCart (attach)",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005
+    }
+  ]
+}
