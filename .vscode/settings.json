@@ -1,0 +1,14 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.project.sourcePaths": [
+        "automationexercise-bdd/src/main/java",
+        "automationexercise-bdd/src/test/java",
+        "automationexercise-bdd/demo/src/main/java",
+        "automationexercise-bdd/demo/src/test/java",
+        "src/test/java"
+    ],
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ]
+}
