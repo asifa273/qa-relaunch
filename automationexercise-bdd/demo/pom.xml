@@ -4,9 +4,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.seleniumhq.selenium</groupId>
-  <artifactId>selenium-java</artifactId>
-  <version>4.37.0</version>
+  <groupId>com.qa.automation</groupId>
+  <artifactId>demo</artifactId>
+  <version>1.0.0</version>
 
   <name>demo</name>
   <!-- FIXME change it to the project's website -->
@@ -24,7 +24,7 @@
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
-      <version>4.38.0</version>
+      <version>4.30.0</version>
     </dependency>
     
     <!-- JUnit for Testing -->
