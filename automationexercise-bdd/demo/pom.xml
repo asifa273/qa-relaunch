@@ -8,6 +8,8 @@
   <artifactId>demo</artifactId>
   <version>1.0.0</version>
 
+  
+
   <name>demo</name>
   <!-- FIXME change it to the project's website -->
   <url>https://rahulshettyacademy.com/seleniumPractise/#/</url>
@@ -24,7 +26,7 @@
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
-      <version>4.30.0</version>
+      <version>4.27.0</version>
     </dependency>
     
     <!-- JUnit for Testing -->
