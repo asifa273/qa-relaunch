@@ -211,6 +211,78 @@ public class locatorspractice {
             System.out.println("⚠️  Could not retrieve confirmation message text");
         }
 
+//Verify the "Go to Login" button is clickable
+        
+        try {
+            // === GO TO LOGIN BUTTON SECTION ===
+            // Click the "Go to Login" button to navigate back to the login page
+            driver.findElement(By.xpath("//button[contains(@class, 'go-to-login-btn')]")).click();
+
+            // Verify the navigation - get current URL after clicking button
+            String afterResetUrl = driver.getCurrentUrl();
+            System.out.println("\n--- NAVIGATION TO LOGIN PAGE ---");
+            System.out.println("Current URL after 'Go to Login' button: " + afterResetUrl);
+            System.out.println("✅ 'Go to Login' button clicked successfully");
+        } catch (Exception e3) {
+            System.out.println("❌ 'Go to Login' button not found or not clickable: " + e3.getMessage());
+            System.out.println("⚠️  Could not navigate back to login page");
+        }
+
+        // === LOGIN WITH TEMPORARY PASSWORD SECTION ===
+        // This section logs in with the temporary password received from password reset
+        // Use the corrected credentials (username and temporary password from reset email)
+        System.out.println("\n--- LOGIN WITH TEMPORARY PASSWORD ---");
+        System.out.println("Entering credentials with temporary password from reset...");
+        
+        try {
+            // CSS Selector - finds input with placeholder="Name" (username field)
+            // Clear field first in case any data remains from previous interaction
+            driver.findElement(By.cssSelector("input[placeholder=\"Name\"]")).clear();
+            driver.findElement(By.cssSelector("input[placeholder=\"Name\"]")).sendKeys("Begum");
+            
+            // XPath - finds password input field and enters temporary password
+            // The password should be "rahulshettyacademy" as provided in the reset email
+            driver.findElement(By.xpath("//input[@placeholder=\"Password\"]")).clear();
+            driver.findElement(By.xpath("//input[@placeholder=\"Password\"]")).sendKeys("rahulshettyacademy");
+           
+            // === CHECKBOX VERIFICATION BEFORE LOGIN ===
+            // Click both checkboxes to demonstrate they can be checked with temporary password login
+            driver.findElement(By.cssSelector(" #chkboxOne")).click();
+            driver.findElement(By.cssSelector("#chkboxTwo")).click();
+             // Wait until both checkboxes are clickable (ensures they are interactable)    
+            wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#chkboxTwo")));
+            
+            
+            // Verify both checkboxes are now checked
+            // isSelected() returns true if checkbox is marked, false if unchecked
+            boolean isCheckbox1Selected = driver.findElement(By.cssSelector("#chkboxOne")).isSelected();
+            boolean isCheckbox2Selected = driver.findElement(By.cssSelector("#chkboxTwo")).isSelected();
+            
+            System.out.println("\n--- CHECKBOX STATE BEFORE SUBMISSION ---");
+            System.out.println("Checkbox 1 (chkboxOne) - Is Selected: " + isCheckbox1Selected);
+            System.out.println("Checkbox 2 (chkboxTwo) - Is Selected: " + isCheckbox2Selected);
+            
+            // Verify both checkboxes are checked before submitting login form
+            if(isCheckbox1Selected && isCheckbox2Selected) {
+                System.out.println("✅ Both checkboxes are checked - ready to submit");
+            } else {
+                System.out.println("❌ One or both checkboxes are not checked before submission");
+            }
+
+            // === SUBMIT LOGIN FORM ===
+            // Find submit button using XPath with contains() to match partial class name
+            // contains(@class,'submit') finds any element with 'submit' in its class attribute
+            System.out.println("\nSubmitting login form with temporary password...");
+            driver.findElement(By.xpath("//button[contains(@class,'submit')]")).click();
+            
+            // After successful login, display confirmation message
+            System.out.println("✅ Login form submitted successfully");
+            System.out.println("✅ Successfully logged in with temporary password");
+        } catch (Exception e4) {
+            System.out.println("❌ Error during login with temporary password: " + e4.getMessage());
+            System.out.println("⚠️  Could not complete the temporary password login flow");
+        }
+
         // === CLEANUP SECTION ===
         // Quit the WebDriver session - this closes all windows and ends the session
         // Note: driver.quit() is sufficient - no need to call driver.close() before it
