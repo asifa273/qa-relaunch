@@ -24,10 +24,10 @@ public class locatorspractice {
         // === LOGIN FORM SECTION ===
         // Use different locator strategies to find and interact with form elements
         // ID locator - finds element with id="inputUsername"
-        driver.findElement(By.id("inputUsername")).sendKeys("dummyUser");
+        driver.findElement(By.cssSelector("#inputUsername")).sendKeys("dummyUser");
         
         // CSS Selector - finds input with placeholder attribute containing 'Password'
-        driver.findElement(By.cssSelector("input[placeholder='Password']")).sendKeys("dummyPass");
+        driver.findElement(By.name("inputPassword")).sendKeys("dummyPass");
         
         // XPath - finds button with type='submit'
         driver.findElement(By.xpath("//button[@type='submit']")).click();
@@ -88,66 +88,134 @@ public class locatorspractice {
         // This section demonstrates link navigation and URL verification
         // LinkText locator finds <a> elements by their visible text
         System.out.println("\n--- FORGOT PASSWORD FLOW ---");
-        System.out.println("Navigating to forgot password page...");
-        driver.findElement(By.linkText("Forgot password?")).click();
-
-        // === URL VERIFICATION SECTION ===
-        // After clicking the link, we verify if the URL changed
-        String beforeUrl = driver.getCurrentUrl();
-        System.out.println("Current URL: " + beforeUrl);
+        System.out.println("Attempting to navigate to forgot password page...");
         
-        if (beforeUrl.contains("resetpassword")) {
-            System.out.println("✅ URL changed to reset password page");
-        } else {
-            System.out.println("✅ URL remained the same (dynamic form load)");
-        }
-
-        // === FORM DISPLAY VERIFICATION SECTION ===
-        // Wait for and verify the "Forgot Password" form appears
-        // Use WebDriverWait with XPath to ensure element is loaded before checking
-        System.out.println("\n--- FORM VERIFICATION ---");
         try {
-            // Wait for the form heading to be visible (30 second timeout)
-            wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//form[@action='#']//h2")));
+            // Try to find and click the forgot password link
+            driver.findElement(By.linkText("Forgot your password?")).click();
+
+            // === URL VERIFICATION SECTION ===
+            // After clicking the link, we verify if the URL changed
+            String beforeUrl = driver.getCurrentUrl();
+            System.out.println("Current URL: " + beforeUrl);
             
-            // Extract and verify the heading text
-            boolean isFormDisplayed = driver.findElement(By.xpath("//form[@action='#']//h2")).isDisplayed();
-            String formHeading = driver.findElement(By.xpath("//form[@action='#']//h2")).getText();
-            
-            System.out.println("Form Heading Found: " + formHeading);
-            System.out.println("Is Form Displayed: " + isFormDisplayed);
-            
-            if (isFormDisplayed) {
-                System.out.println("✅ Forgot password form displayed successfully!");
+            if (beforeUrl.contains("resetpassword")) {
+                System.out.println("✅ URL changed to reset password page");
             } else {
-                System.out.println("❌ Form not displayed (element exists but hidden)");
+                System.out.println("✅ URL remained the same (dynamic form load)");
+            }
+
+            // === FORM DISPLAY VERIFICATION SECTION ===
+            // Wait for and verify the "Forgot Password" form appears
+            // Use WebDriverWait with XPath to ensure element is loaded before checking
+            System.out.println("\n--- FORM VERIFICATION ---");
+            try {
+                // Wait for the form heading to be visible (30 second timeout)
+                wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//form[@action='#']//h2")));
+                
+                // Extract and verify the heading text
+                boolean isFormDisplayed = driver.findElement(By.xpath("//form[@action='#']//h2")).isDisplayed();
+                String formHeading = driver.findElement(By.xpath("//form[@action='#']//h2")).getText();
+                
+                System.out.println("Form Heading Found: " + formHeading);
+                System.out.println("Is Form Displayed: " + isFormDisplayed);
+                
+                if (isFormDisplayed) {
+                    System.out.println("✅ Forgot password form displayed successfully!");
+                } else {
+                    System.out.println("❌ Form not displayed (element exists but hidden)");
+                }
+            } catch (Exception e) {
+                System.out.println("❌ Form heading not found: " + e.getMessage());
+                System.out.println("\nAttempting alternative selectors for debugging...");
+                
+                // Try to find h2 anywhere on page
+                try {
+                    String heading = driver.findElement(By.xpath("//h2")).getText();
+                    System.out.println("DEBUG: Found h2 with text: " + heading);
+                } catch (Exception e2) {
+                    System.out.println("DEBUG: No h2 element found");
+                }
+                
+                // Try to find form element
+                try {
+                    String formText = driver.findElement(By.cssSelector("form")).getText();
+                    System.out.println("DEBUG: Found form element with content length: " + formText.length());
+                } catch (Exception e3) {
+                    System.out.println("DEBUG: No form element found");
+                }
             }
         } catch (Exception e) {
-            System.out.println("❌ Form heading not found: " + e.getMessage());
-            System.out.println("\nAttempting alternative selectors for debugging...");
+            System.out.println("❌ Could not navigate to forgot password page: " + e.getMessage());
+            System.out.println("⚠️  This link may not exist on the current page");
+        }
+
+        // === PASSWORD RESET FORM SECTION ===
+        // This section fills in the password reset form with user information
+        // Using different locator strategies to find form input fields
+        System.out.println("\n--- PASSWORD RESET FORM SUBMISSION ---");
+        
+        // CSS Selector - finds input with placeholder="Name" and enters test data
+        // This locates the name field using its HTML placeholder attribute
+        driver.findElement(By.cssSelector("input[placeholder=\"Name\"]")).sendKeys("Begum");
+        
+        // XPath - finds input with placeholder="Email" and enters test email
+        // XPath uses attribute matching with @ symbol to find elements by attribute values
+        driver.findElement(By.xpath("//input[@placeholder=\"Email\"]")).sendKeys("dummye@gmail.com");
+        
+        // XPath - finds input with placeholder="Phone Number" and enters phone
+        // This demonstrates finding elements nested within the form using attribute predicates
+        driver.findElement(By.xpath("//input[@placeholder=\"Phone Number\"]")).sendKeys("1234567890");
+        
+        // CSS Selector with class - finds button with class="reset-pwd-btn" and clicks it
+        // The dot (.) in CSS selectors represents class selector (.classname)
+        System.out.println("Submitting password reset form...");
+        driver.findElement(By.cssSelector(".reset-pwd-btn")).click();
+
+        // === RESET CONFIRMATION MESSAGE SECTION ===
+        // After form submission, wait for and verify the success message appears
+        System.err.println("\n--- PASSWORD RESET CONFIRMATION ---");
+        
+        // First try-catch block: Check if confirmation message is displayed
+        // This verifies the message element is visible on the page
+        try {
+            // Wait up to 30 seconds for the confirmation message to appear
+            // XPath searches for any <p> element with class="infoMsg"
+            wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//p[@class=\"infoMsg\"]")));
             
-            // Try to find h2 anywhere on page
-            try {
-                String heading = driver.findElement(By.xpath("//h2")).getText();
-                System.out.println("DEBUG: Found h2 with text: " + heading);
-            } catch (Exception e2) {
-                System.out.println("DEBUG: No h2 element found");
-            }
+            // Extract the visibility state (should be true if wait succeeded)
+            boolean isResetMessageDisplayed = driver.findElement(By.xpath("//p[@class=\"infoMsg\"]")).isDisplayed();
             
-            // Try to find form element
-            try {
-                String formText = driver.findElement(By.cssSelector("form")).getText();
-                System.out.println("DEBUG: Found form element with content length: " + formText.length());
-            } catch (Exception e3) {
-                System.out.println("DEBUG: No form element found");
-            }
+            // Print the visibility status
+            System.out.println("Reset Confirmation Message - Is Displayed: " + isResetMessageDisplayed); 
+             
+            System.err.println("✅ Reset form submitted successfully");
+        } catch (Exception e) {
+            // If the message doesn't appear within 30 seconds, catch the exception
+            System.out.println("❌ Reset confirmation message not found: " + e.getMessage());
+            System.out.println("⚠️  The form may not have submitted correctly");
+        }
+
+        // Second try-catch block: Extract the actual text of the confirmation message
+        // This retrieves what the confirmation message actually says
+        try {
+            // Find the confirmation message element and get its text content
+            String resetMessage = driver.findElement(By.xpath("//p[@class=\"infoMsg\"]")).getText();
+            
+            // Display the actual confirmation message text
+            System.out.println("Reset Message Text: " + resetMessage);
+            System.out.println("✅ Password reset message retrieved successfully");
+        } catch (Exception e2) {
+            // If the element doesn't exist or has no text, handle the error
+            System.out.println("❌ Reset message not found: " + e2.getMessage());
+            System.out.println("⚠️  Could not retrieve confirmation message text");
         }
 
         // === CLEANUP SECTION ===
-        // Close the browser window and quit the WebDriver session
+        // Quit the WebDriver session - this closes all windows and ends the session
+        // Note: driver.quit() is sufficient - no need to call driver.close() before it
         System.out.println("\n--- TEST COMPLETE ---");
         System.out.println("Closing browser...");
-        driver.close();
         driver.quit();
         System.out.println("✅ Browser closed successfully");
 
