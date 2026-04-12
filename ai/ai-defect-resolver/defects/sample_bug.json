@@ -1,0 +1,26 @@
+[
+    {
+        "defect_id": "DEF-001",
+        "title": "Checkout total incorrect when percentage discount applied",
+        "description": "When a 10% discount coupon is applied at POS checkout, the total displays the pre-discount amount. Customer is charged full price despite valid coupon scan. Expected: discounted total. Actual: original total displayed.",
+        "severity": "Critical",
+        "module": "checkout_service.py",
+        "code_snippet": "def apply_discount(total, discount): return total - discount"
+    },
+    {
+        "defect_id": "DEF-002",
+        "title": "Self-checkout loyalty points not applied on split payment",
+        "description": "When a customer pays using a split payment method (part cash, part card) at self-checkout, loyalty points are calculated only on the card portion. Points should be calculated on the full transaction total regardless of payment method.",
+        "severity": "High",
+        "module": "loyalty_service.py",
+        "code_snippet": "def calculate_points(card_amount, rate=1): return int(card_amount * rate)"
+    },
+    {
+        "defect_id": "DEF-003",
+        "title": "Refund transaction posts negative tax amount incorrectly",
+        "description": "When a refund is processed at the POS terminal, the tax amount is posted as a negative value twice — once on the refund line and once on the tax summary. This causes the end-of-day tax report to show incorrect totals.",
+        "severity": "High",
+        "module": "refund_processor.py",
+        "code_snippet": "def process_refund(amount, tax): return {'refund': -amount, 'tax': -tax, 'tax_summary': -tax}"
+    }
+]
