@@ -1,4 +1,4 @@
-oginFlowAutomator
+LoginFlowAutomator
 LoginFlowAutomator is a Selenium-based automation project designed to validate the core user journey on the SauceDemo platform. It covers everything from authentication to sorting products and completing a full checkout flow.
 
 🚀 Key Features
