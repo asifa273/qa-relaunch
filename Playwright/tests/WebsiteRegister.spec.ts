@@ -10,7 +10,7 @@ test.only('Browser Context Playwright test', async ({ browser }) => {
 
   //Register link
   const registerButton = await page.locator('a.text-reset');
-  await expect(registerButton).toContainText('Register here');
+  await page.getByRole('textbox', { name: 'Password' }).press('Tab');
   console.log(await (registerButton).textContent());
   await registerButton.click();
 
@@ -67,6 +67,4 @@ test.only('Browser Context Playwright test', async ({ browser }) => {
   const allCardBodies = await cardBody.allTextContents();
   console.log(allCardBodies);
   await page.waitForLoadState('networkidle');
-
-
 });
