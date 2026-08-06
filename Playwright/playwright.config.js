@@ -1,3 +1,4 @@
+// @ts-check
 import { defineConfig, devices } from '@playwright/test';
 
 /**
@@ -9,15 +10,10 @@ import { defineConfig, devices } from '@playwright/test';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
- * See https://playwright.dev/docs/test-configuration.
+ * @see https://playwright.dev/docs/test-configuration
  */
-const config = ({
+export default defineConfig({
   testDir: './tests',
-  timeout: 50 * 1000,
-  expect: {
-    timeout: 10000,
-  },
-
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -32,12 +28,12 @@ const config = ({
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
-    headless: false, //browser wont be invoked if iits true. false -then browser will be invoked
-    browserName: 'firefox',
-    // browserName: 'chromium', //chrome
-    // browserName: 'webkit', //safari
+
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',  // auto-capture screenshot when a test fails
+    video: 'retain-on-failure',     // optional: video of the failure
+
   },
 
   /* Configure projects for major browsers */
@@ -47,15 +43,15 @@ const config = ({
       use: { ...devices['Desktop Chrome'] },
     },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
 
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
 
     /* Test against mobile viewports. */
     // {
@@ -85,4 +81,4 @@ const config = ({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
-module.exports = config
+
