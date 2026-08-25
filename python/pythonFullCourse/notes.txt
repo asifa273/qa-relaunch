@@ -1,0 +1,3 @@
+Learning Python File I/O
+This is line 2 of amend
+This is line 3 of Write information
