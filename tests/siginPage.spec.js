@@ -1,8 +1,8 @@
 const { test, expect } = require('@playwright/test');
 
 
-// TEST 1: login flow → navigates to shop
-test('login succeeds and navigates to shop', async ({ browser }) => {
+// TEST 1: signIn flow → navigates to shop
+test('SignIn succeeds and navigates to shop', async ({ browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto('https://rahulshettyacademy.com/loginpagePractise/');

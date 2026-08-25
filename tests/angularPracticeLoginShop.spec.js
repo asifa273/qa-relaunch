@@ -6,7 +6,7 @@ const { log, assert } = require('node:console');
 //{page} is called fixture
 //By providing {browser} , we prvode explicitly Context and New page , so playwright can act as per provided
 //javascript - asynchronous - execute all steps together, or explicit tell step1 is completed, so give await
-test.only('UI Website test', async ({ browser }) =>
+test.only('login Page Practise', async ({ browser }) =>
 //function() is called anonomous function so write as async()=>
 //({browser}) is called fixture
 {
@@ -54,7 +54,7 @@ test.only('UI Website test', async ({ browser }) =>
 
 
 
-    //Signin Takes to new page - angularpracticeshop
+    //login Page takes to 'angularpracticeshop' for adding items in cart
     await page.goto('https://rahulshettyacademy.com/angularpractice/shop');
     await expect(page.locator('app-navbar')).toBeVisible();
     await expect(page.locator("div.container:visible").filter({ hasText: 'ProtoCommerce Home' }).nth(1)).toBeVisible();
@@ -130,7 +130,6 @@ test.only('UI Website test', async ({ browser }) =>
 }
 );
 
-const { test, expect } = require('@playwright/test');
 
 test('removing one cart item leaves the other three', async ({ page }) => {
     await page.goto('https://rahulshettyacademy.com/angularpractice/shop');
