@@ -1,8 +1,60 @@
+# ---------- OS / editor junk ----------
+.DS_Store
+Thumbs.db
+*.swp
+*~
 
-# Playwright
+# ---------- IDEs ----------
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+.eclipse/
+
+# ---------- Java / Maven ----------
+target/
+*.class
+*.jar
+!**/src/**/*.jar
+dependency-reduced-pom.xml
+
+# ---------- TestNG / Cucumber / test reports ----------
+test-output/
+test-output-*/
+reports/
+!ai/ai-defect-resolver/reports/       # keep sample AI resolution reports
+extent-reports/
+*.log
+
+# ---------- Node / Playwright ----------
 node_modules/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/playwright/.auth/
+playwright-report/
+playwright/.cache/
+test-results/
+blob-report/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+env/
+.coverage
+htmlcov/
+
+# ---------- Secrets / env ----------
+.env
+.env.*
+*.local
+
+# ---------- Bulky learning material (optional) ----------
+# Uncomment to stop tracking the downloaded JS course dump:
+# Javascript/JavaScript_JS/complete-javascript-course-master/
+# Javascript/JavaScript_JS/*.zip
