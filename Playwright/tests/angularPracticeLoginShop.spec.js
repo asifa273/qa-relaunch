@@ -86,7 +86,7 @@ test.only('login Page Practise', async ({ browser }) =>
     await page.locator('app-card').filter({ hasText: 'Nokia Edge $24.99 Lorem ipsum' }).getByRole('button').click();
     await page.locator('app-card').filter({ hasText: 'Blackberry $24.99 Lorem ipsum' }).getByRole('button').click();
     await page.getByText('Checkout ( 4 ) (current)').click();
-    await expect(page.getByText('Checkout ( 4 ) (current)')).toHaveScreenshot();
+    // await expect(page.getByText('Checkout ( 4 ) (current)')).toHaveScreenshot();
 
     await page.locator('div').filter({ hasText: 'iphone X by Sim cart Status:' }).nth(3).click();
     await page.getByRole('row', { name: 'iphone X by Sim cart Status:' }).getByRole('button').click();

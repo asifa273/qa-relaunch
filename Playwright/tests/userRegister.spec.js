@@ -1,7 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe.configure({ mode: 'serial' });
-const registeredEmail = `Testdummy${Date.now()}@ymail.com`;
 const fs = require('fs');
 const path = require('path');
 
@@ -19,13 +18,12 @@ test('User Register Form', async ({ browser }) => {
   console.log('Title:', await page.title());
 
   // -- First & Last Name, Email, Phone --
-  // Unique email each run so re-registration doesn't fail on "already registered".
-  const email = registeredEmail;
-  await page.getByLabel('First Name').fill('Testxfirst');
-  await page.getByLabel('Last Name').fill('Testxlast');
-  await page.getByRole('textbox', { name: 'Email' }).fill(email);
+
+  await page.getByLabel('First Name').fill('Testing');
+  await page.getByLabel('Last Name').fill('Asifa');
+  await page.getByRole('textbox', { name: 'Email' }).fill('asifatesting@gmail.com');
   await page.getByRole('textbox', { name: 'enter your number' }).fill('9876543210');
-  console.log('Registering with:', email);
+  console.log('Registering with:', 'asifatesting@gmail.com');
 
   // -- Occupation -- pick ONE option (cycling every option fires the app's buggy change handler).
   const dropdownOption = page.getByRole('combobox');
@@ -56,14 +54,19 @@ test('User Register Form', async ({ browser }) => {
   await expect(page).toHaveURL(/\/auth\/login/);
   console.log('Navigated to login page:', page.url());
 
+});
 
-
-  // ============================================================================
-  // Test 2 — Login, add every product to the cart, cross-verify the count 3 ways
-  // ============================================================================
+// ============================================================================
+// Test 2 — Login, add every product to the cart, cross-verify the count 3 ways
+// ============================================================================
+test('User Login Page', async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
+  const page = await context.newPage();
+  await page.goto('https://rahulshettyacademy.com/client/#/auth/login');
+  console.log('Title:', await page.title());
 
   // --- Login ---
-  await page.getByRole('textbox', { name: 'Email' }).fill(email);
+  await page.getByRole('textbox', { name: 'Email' }).fill('asifatesting@gmail.com');
   await page.getByRole('textbox', { name: 'enter your passsword' }).fill('PassAug19!');
   await page.getByRole('button', { name: 'Login' }).click();
 
@@ -152,7 +155,7 @@ test('User Register Form', async ({ browser }) => {
 
   // --- Shipping Information + Place Order ---
   await expect(page.getByText('Shipping Information')).toBeVisible();
-  await page.getByRole('textbox').nth(4).fill(email);
+  await page.getByRole('textbox').nth(4).fill('asifatesting@gmail.com');
   const country = page.getByPlaceholder('Select Country');
   await country.click();
   await country.pressSequentially('United', { delay: 100 });
@@ -174,8 +177,8 @@ test('User Register Form', async ({ browser }) => {
 
   // 1. Grab the invoice numbers shown on the CURRENT PAGE
   const pageInvoiceText = await page.locator('.em-spacer-1, td.content-wrap').first().innerText();
-  const invoice = pageText.match(/[0-9a-f]{24}/)[0];   // first 24-char id on the page
-  await expect(text).toContain(invoice);        // the 24-char hex ids
+  const invoice = pageInvoiceText.match(/[0-9a-f]{24}/)[0];   // first 24-char id on the page
+  await expect(pageInvoiceTextpageInvoiceText).toContain(invoice);        // the 24-char hex ids
   console.log('invoice from page:', invoice);
   console.log('is it in the CSV?', text.includes(invoice));
   await expect(text).toContain(invoice);
