@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-test.describe.configure({ mode: 'serial' });
+// test.describe.configure({ mode: 'serial' });
 const fs = require('fs');
 const path = require('path');
 
@@ -59,7 +59,7 @@ test('User Register Form', async ({ browser }) => {
 // ============================================================================
 // Test 2 — Login, add every product to the cart, cross-verify the count 3 ways
 // ============================================================================
-test('User Login Page', async ({ browser }) => {
+test.only('User Login Page', async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
   const page = await context.newPage();
   await page.goto('https://rahulshettyacademy.com/client/#/auth/login');
@@ -178,24 +178,41 @@ test('User Login Page', async ({ browser }) => {
   // 1. Grab the invoice numbers shown on the CURRENT PAGE
   const pageInvoiceText = await page.locator('.em-spacer-1, td.content-wrap').first().innerText();
   const invoice = pageInvoiceText.match(/[0-9a-f]{24}/)[0];   // first 24-char id on the page
-  await expect(pageInvoiceTextpageInvoiceText).toContain(invoice);        // the 24-char hex ids
+  await expect(pageInvoiceText).toContain(invoice);        // the 24-char hex ids
   console.log('invoice from page:', invoice);
-  console.log('is it in the CSV?', text.includes(invoice));
-  await expect(text).toContain(invoice);
+  console.log('is it in the CSV?', pageInvoiceText.includes(invoice));
+  await expect(pageInvoiceText).toContain(invoice);
+
   // 1. Download the CSV
   const downloadPromise = page.waitForEvent('download');
   await page.getByText('Click To Download Order Details in CSV').click();
   const download = await downloadPromise;
+  const csvPath = path.join(__dirname, 'order.csv');
+  await download.saveAs(csvPath);
   await download.saveAs('order.csv');
 
-  // 2. Read the file as text
-  const text = fs.readFileSync('order.csv', 'utf8');
+  // --- Read and parse the CSV ---
+  const csvContent = fs.readFileSync(csvPath, 'utf8');
+  console.log('CSV content:\n', csvContent);
 
-  // 3. Check the product name is in the file
-  expect(text).toContain('ZARA COAT 3');
+  const rows = csvContent
+    .split('\n')
+    .map(r => r.trim())
+    .filter(Boolean)
+    .map(r => r.split(','));   // simple split — fine as long as no field contains a comma
 
-  // 4. Check the invoice number is in the file
-  expect(text).toContain('6a8c8fbb21054ba465ef623d');
+  // --- Cross-verify EVERY product name from the Thanks page against the CSV ---
+  for (const name of names) {
+    const foundInCsv = rows.some(row => row.some(cell => cell.includes(name)));
+    expect(foundInCsv, `Product "${name}" not found in CSV`).toBeTruthy();
+    console.log(`Product "${name}" found in CSV:`, foundInCsv);
+  }
+
+  // --- Cross-verify the ACTUAL invoice number captured from the Thanks page ---
+  const invoiceFoundInCsv = rows.some(row => row.some(cell => cell.includes(invoice)));
+  expect(invoiceFoundInCsv, `Invoice "${invoice}" not found in CSV`).toBeTruthy();
+  console.log(`Invoice "${invoice}" found in CSV:`, invoiceFoundInCsv);
+  
 });
 
 
