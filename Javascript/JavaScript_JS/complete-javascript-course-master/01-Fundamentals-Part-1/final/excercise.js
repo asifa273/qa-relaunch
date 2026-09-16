@@ -12,5 +12,5 @@ console.log(isIsland);
 
 var languageLive = "Spanish";
 console.log(languageLive);
-const languageLive = "Arabic";
-console.log(languageLive);
+const changedlanguageLive = "Arabic";
+console.log(changedlanguageLive);
