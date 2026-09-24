@@ -13,9 +13,13 @@ test.only('login Page Practise', async ({ browser }) =>
     //chrome - plugins/cookies
     const context = await browser.newContext();
     const page = await context.newPage();
+    // page.route('**/*.css', route => route.abort());
+    // page.route('**/*.{jpg,png,ipeg}', route => route.abort());
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
     await expect(page).toHaveTitle("LoginPage Practise | Rahul Shetty Academy");
     console.log(await page.title());
+    page.on('request', request => console.log(request.url()));
+    page.on('response', response=> console.log(response.status()));
     const userName = page.locator('Input#username');
     const signIn = page.locator('#signInBtn');
     const cardTitles = page.locator('.card-body a');

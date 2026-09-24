@@ -4,7 +4,7 @@
 // CommonJS export removed; this file does not require Node's `module` type.
 
 // Define the shape of one item that can be added to the shopping cart.
-interface Item {
+export interface Item {
     // Store the product's display name.
     name: string;
     // Store the product's price as a number.
@@ -12,7 +12,7 @@ interface Item {
 }
 
 // Define the blueprint for a shopping cart.
-class ShoppingCart {
+export class ShoppingCart {
     // Keep cart items private so callers must use the class methods to change them.
     private items: Item[];
 
@@ -71,7 +71,7 @@ console.log("Total Bill: $", userCart.calculateTotal());
 
 //Design Bank Account System shorthand constructors(parameter properties) way
 
-export interface Transaction {
+interface Transaction {
     // Identify whether money was deposited or withdrawn.
     type: 'DEPOSIT' | 'WITHDRAWAL';
     // Store the amount involved in the transaction.

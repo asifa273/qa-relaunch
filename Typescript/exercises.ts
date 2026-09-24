@@ -272,5 +272,5 @@ console.log("total cost of all items", totalCost);
 
 //in Typescript one line method of above
 let prodPrices = [10, 20, 30, 80, 100];
-let ultimateTotal = prodPrices.map(price=>price *0.9).filter(price => price <50).reduce((sum, num)=>sum + num, 0);
+let ultimateTotal = prodPrices.map(price => price * 0.9).filter(price => price < 50).reduce((sum, num) => sum + num, 0);
 console.log("total cost of all items", ultimateTotal);

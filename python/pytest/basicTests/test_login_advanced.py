@@ -21,7 +21,7 @@ def driver():
 def login_credentials():
     """Fixture providing test credentials"""
     return {
-        "username": "asifa273@gmail.com",
+        "username": "pytest273@gmail.com",
         "password": "test12345"
     }
 

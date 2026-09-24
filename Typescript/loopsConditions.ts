@@ -122,10 +122,11 @@ function sumofNegativeNumbers(arr: number[]): number {
     // Using a do-while loop to iterate through the array
     // The do-while loop ensures that the code block is executed at least once, even if the array is empty
     do {
+        const currentNumber = arr[i] ?? 0;
         // Check if the current number is negative
-        if (arr[i] < 0) {
+        if (currentNumber < 0) {
             // If it is negative, add it to the sum
-            sum += arr[i];
+            sum += currentNumber;
         }
         // Increment the index to move to the next element
         i++;
@@ -146,10 +147,11 @@ function sumofNumbersGreaterThanTen(arr: number[]): number {
     // Using a do-while loop to iterate through the array
     // The do-while loop ensures that the code block is executed at least once, even if the array is empty
     do {
+        const currentNumber = arr[i] ?? 0;
         // Check if the current number is greater than 10
-        if (arr[i] > 10) {
+        if (currentNumber > 10) {
             // If it is, add it to the sum
-            sum += arr[i];
+            sum += currentNumber;
         }
         // Increment the index to move to the next element
         i++;
@@ -188,8 +190,9 @@ function sumofEvenNumbersFor(arr: number[]): number {
     let sum = 0;
     // Using a for loop to iterate through the array
     for (let i = 0; i < arr.length; i++) {
-        if (arr[i] % 2 === 0) {
-            sum += arr[i];
+        const currentNumber = arr[i] ?? 0;
+        if (currentNumber % 2 === 0) {
+            sum += currentNumber;
         }
     }
     return sum;
@@ -307,7 +310,7 @@ function sumOfEvenNumbersMultipliedByThree(score: number[]): number {
     let sumval = score.filter(num => num % 2 === 0).map(num => num * 3).reduce((score, num) => score + num, 0);
     return sumval;
 }
-console.log("Sum of even numbers multiplied by three:", sumOfEvenNumbersMultipliedByThree([1001, 2001, 3, 4, 5, 6])); 
+console.log("Sum of even numbers multiplied by three:", sumOfEvenNumbersMultipliedByThree([1001, 2001, 3, 4, 5, 6]));
 
 //Step 1: .filter() (Keep only Even numbers)
 // Input: [1001, 2001, 3, 4, 5, 6]

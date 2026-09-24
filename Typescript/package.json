@@ -1,0 +1,11 @@
+{
+    "name": "./classroomManagementSystem",
+    "version": "1.0.0",
+    "type": "module",
+    "devDependencies": {
+        "@types/node": "^20.17.10",
+        "ts-node": "^10.9.2",
+        "tsx": "^4.23.13",
+        "typescript": "^5.6.3"
+    }
+}

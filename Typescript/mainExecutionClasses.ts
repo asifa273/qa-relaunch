@@ -1,7 +1,5 @@
 // Import the BankAccount class so this file can create a regular bank account.
-import { BankAccount } from './classesoops.js';
-// Import the SavingsAccount subclass so this file can create an interest-bearing account.
-import { SavingsAccount } from './classesoops.js';
+import { BankAccount, SavingsAccount } from './classesoops.js';
 
 
 // Create a bank account with an opening balance of 500.
