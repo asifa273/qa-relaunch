@@ -2,6 +2,7 @@
 //test, browser->through storage has .json, cartorder, orderdeatils, orderhistory
 
 const { test, expect } = require('@playwright/test');
+require('dotenv').config();
 const { title } = require('node:process');
 let webContext;
 test.beforeAll(async ({ browser }) => {
@@ -9,8 +10,8 @@ test.beforeAll(async ({ browser }) => {
     const page = await context.newPage();
 
     await page.goto('https://rahulshettyacademy.com/client/#/auth/login');
-    await page.getByRole('textbox', { name: 'Email' }).fill('REDACTED_EMAIL');
-    await page.getByRole('textbox', { name: 'Passsword' }).fill('REDACTED_PASSWORD');
+    await page.getByRole('textbox', { name: 'Email' }).fill(process.env.SHOP_EMAIL);
+    await page.getByRole('textbox', { name: 'Passsword' }).fill(process.env.SHOP_PASSWORD);
     await page.getByRole('button', { name: 'Login' }).click();
     await page.waitForLoadState('networkidle');
     await context.storageState({ path: 'state.json' });

@@ -1,8 +1,12 @@
 const base = require('@playwright/test');
 const { APIUtils } = require('./APIUtils');
 const { request } = require('@playwright/test')
+require('dotenv').config();
 
-const loginPayLoad = { userEmail: "REDACTED_EMAIL", userPassword: "REDACTED_PASSWORD" };
+const loginPayLoad = {
+    userEmail: process.env.SHOP_EMAIL,
+    userPassword: process.env.SHOP_PASSWORD,
+};
 const orderPayLoad = { orders: [{ country: "United States", productOrderedId: "6960eac0c941646b7a8b3e68" }] };
 
 
@@ -12,8 +16,8 @@ exports.customtest = base.test.extend({
         const context = await browser.newContext();
         const page = await context.newPage();
         await page.goto('https://rahulshettyacademy.com/client/#/auth/login');
-        await page.getByRole('textbox', { name: 'Email' }).fill('REDACTED_EMAIL');
-        await page.getByRole('textbox', { name: 'Passsword' }).fill('REDACTED_PASSWORD');
+        await page.getByRole('textbox', { name: 'Email' }).fill(process.env.SHOP_EMAIL);
+        await page.getByRole('textbox', { name: 'Passsword' }).fill(process.env.SHOP_PASSWORD);
         await page.getByRole('button', { name: 'Login' }).click();
         await page.waitForLoadState('networkidle');
         await use(page);

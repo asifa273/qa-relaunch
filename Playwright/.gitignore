@@ -53,6 +53,7 @@ htmlcov/
 .env
 .env.*
 *.local
+!.env.example
 
 # ---------- Bulky learning material (optional) ----------
 # Uncomment to stop tracking the downloaded JS course dump:

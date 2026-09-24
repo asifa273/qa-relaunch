@@ -1,5 +1,10 @@
 const { test: base, expect, request } = require('@playwright/test');
-const events_user = { email: "REDACTED_EMAIL", password: "REDACTED_PASSWORD" };
+require('dotenv').config();
+
+const events_user = {
+    email: process.env.EVENTS_EMAIL,
+    password: process.env.EVENTS_PASSWORD,
+};
 
 const BASE_URL = 'https://eventhub.rahulshettyacademy.com';
 const API_URL = `${BASE_URL}/api`;

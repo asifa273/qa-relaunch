@@ -1,10 +1,11 @@
 const { test, expect } = require('@playwright/test');
+require('dotenv').config();
 
 test('Security test request intercept', async ({ page }) => {
     //login and reacg to orders page
     await page.goto('https://rahulshettyacademy.com/client/#/auth/login');
-    await page.getByRole('textbox', { name: 'Email' }).fill('REDACTED_EMAIL');
-    await page.getByRole('textbox', { name: 'Passsword' }).fill('REDACTED_PASSWORD');
+    await page.getByRole('textbox', { name: 'Email' }).fill(process.env.SHOP_EMAIL);
+    await page.getByRole('textbox', { name: 'Passsword' }).fill(process.env.SHOP_PASSWORD);
     await page.getByRole('button', { name: 'Login' }).click();
     await page.waitForLoadState('networkidle');
     await page.locator('.card-body b').first().waitFor();

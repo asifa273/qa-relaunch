@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+require('dotenv').config();
 
 // test.describe.configure({ mode: 'serial' });
 const fs = require('fs');
@@ -66,8 +67,8 @@ test.only('User Login Page', async ({ browser }) => {
   console.log('Title:', await page.title());
 
   // --- Login ---
-  await page.getByRole('textbox', { name: 'Email' }).fill('REDACTED_EMAIL');
-  await page.getByRole('textbox', { name: 'enter your passsword' }).fill('REDACTED_PASSWORD');
+  await page.getByRole('textbox', { name: 'Email' }).fill(process.env.SHOP_EMAIL);
+  await page.getByRole('textbox', { name: 'enter your passsword' }).fill(process.env.SHOP_PASSWORD);
   await page.getByRole('button', { name: 'Login' }).click();
 
   // App navigates to the dashboard on successful login (assert instead of a fragile toast).
@@ -155,7 +156,7 @@ test.only('User Login Page', async ({ browser }) => {
 
   // --- Shipping Information + Place Order ---
   await expect(page.getByText('Shipping Information')).toBeVisible();
-  await page.getByRole('textbox').nth(4).fill('REDACTED_EMAIL');
+  await page.getByRole('textbox').nth(4).fill(process.env.SHOP_EMAIL);
   const country = page.getByPlaceholder('Select Country');
   await country.click();
   await country.pressSequentially('United', { delay: 100 });
@@ -212,7 +213,7 @@ test.only('User Login Page', async ({ browser }) => {
   const invoiceFoundInCsv = rows.some(row => row.some(cell => cell.includes(invoice)));
   expect(invoiceFoundInCsv, `Invoice "${invoice}" not found in CSV`).toBeTruthy();
   console.log(`Invoice "${invoice}" found in CSV:`, invoiceFoundInCsv);
-  
+
 });
 
 

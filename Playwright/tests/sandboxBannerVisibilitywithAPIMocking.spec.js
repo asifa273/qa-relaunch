@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test';
+import 'dotenv/config';
 
 const BASE_URL = 'https://eventhub.rahulshettyacademy.com';
 
 // ── Credentials ────────────────────────────────────────────────────────────────
-const USER_EMAIL = 'REDACTED_EMAIL';
-const USER_PASSWORD = 'REDACTED_PASSWORD';
+const USER_EMAIL = process.env.EVENTS_EMAIL;
+const USER_PASSWORD = process.env.EVENTS_PASSWORD;
 
 const SIX_EVENTS_RESPONSE = {
     data: [

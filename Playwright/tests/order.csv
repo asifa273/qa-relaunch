@@ -1,4 +1,4 @@
 ﻿S.No,Invoice Number,Product Name,Product Description,Product Price,Address,Ordered By
-1,6aad78522be7a4bc2b58f5bf,ADIDAS ORIGINAL,Apple phone,11500,United States,REDACTED_EMAIL
-2,6aad78522be7a4bc2b58f5c2,iphone 13 pro,Apple phone,55000,United States,REDACTED_EMAIL
-3,6aad78522be7a4bc2b58f5c6,ZARA COAT 3,Apple phone,11500,United States,REDACTED_EMAIL
+1,6aad78522be7a4bc2b58f5bf,ADIDAS ORIGINAL,Apple phone,11500,United States,test@example.com
+2,6aad78522be7a4bc2b58f5c2,iphone 13 pro,Apple phone,55000,United States,test@example.com
+3,6aad78522be7a4bc2b58f5c6,ZARA COAT 3,Apple phone,11500,United States,test@example.com
