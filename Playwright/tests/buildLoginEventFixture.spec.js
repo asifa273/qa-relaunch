@@ -12,5 +12,5 @@ const newEvent =
         console.log(testDataforOrder.title);
         await authenticatedEventsPage.screenshot({ path: 'screenshot.png' });
         await authenticatedEventsPage.getByText(testDataforOrder.title).screenshot({ path: 'specificelementscreenshot.png' });
-        expect(await authenticatedEventsPage.screenshot()).toMatchSnapshot('visualVerificationofthisTest.png');
+        expect(await authenticatedEventsPage.screenshot()).toMatchSnapshot('land.png');
     })

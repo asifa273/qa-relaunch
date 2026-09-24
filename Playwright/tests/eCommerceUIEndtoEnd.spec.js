@@ -21,9 +21,9 @@ test('User Register Form', async ({ browser }) => {
 
   await page.getByLabel('First Name').fill('Testing');
   await page.getByLabel('Last Name').fill('Asifa');
-  await page.getByRole('textbox', { name: 'Email' }).fill('REDACTED_EMAIL');
+  await page.getByRole('textbox', { name: 'Email' }).fill('asifa*@gmail.com');
   await page.getByRole('textbox', { name: 'enter your number' }).fill('9876543210');
-  console.log('Registering with:', 'REDACTED_EMAIL');
+  console.log('Registering with:', 'asifa*@gmail.com');
 
   // -- Occupation -- pick ONE option (cycling every option fires the app's buggy change handler).
   const dropdownOption = page.getByRole('combobox');
@@ -35,8 +35,8 @@ test('User Register Form', async ({ browser }) => {
   await expect(page.getByRole('radio', { name: 'Female' })).toBeChecked();
 
   // -- Password / Confirm Password --
-  await page.getByRole('textbox', { name: 'Passsword' }).fill('REDACTED_PASSWORD');
-  await page.getByRole('textbox', { name: 'Confirm Password' }).fill('REDACTED_PASSWORD');
+  await page.getByRole('textbox', { name: 'Passsword' }).fill('***');
+  await page.getByRole('textbox', { name: 'Confirm Password' }).fill('***');
 
   // -- Checkbox --
   await page.getByRole('checkbox').check();
