@@ -29,7 +29,10 @@ jobs:
       uses: browser-actions/setup-chrome@latest
 
     - name: Run Selenium Tests
-      run: mvn test -Dbrowser=chrome -Dheadless=true
+      env:
+        GURU99_USER_ID: ${{ secrets.GURU99_USER_ID }}
+        GURU99_PASSWORD: ${{ secrets.GURU99_PASSWORD }}
+      run: mvn -B test -Dbrowser=chrome -Dheadless=true
 
     - name: Upload Test Reports
       uses: actions/upload-artifact@v4

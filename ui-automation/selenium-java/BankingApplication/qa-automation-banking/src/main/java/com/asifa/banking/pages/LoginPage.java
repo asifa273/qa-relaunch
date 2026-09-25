@@ -2,6 +2,8 @@ package com.asifa.banking.pages;
 
 import java.time.Duration;
 
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -25,6 +27,10 @@ public class LoginPage {
 
     private WebDriver driver;
     private WebDriverWait wait;
+
+    // Guru99 reports a failed or empty login with a JavaScript alert, not inline text.
+    // The alert must be accepted or every later WebDriver call throws UnhandledAlertException.
+    private String lastAlertText;
 
 
     // ══════════════════════════════════════════════════════════════════════
@@ -82,7 +88,21 @@ public class LoginPage {
     }
 
     public void clickLoginButton() {
+        lastAlertText = null;
         loginButton.click();
+        acceptAlertIfPresent();
+    }
+
+    /** Accepts the login alert if one appears within 3 seconds and remembers its text. */
+    private void acceptAlertIfPresent() {
+        try {
+            Alert alert = new WebDriverWait(driver, Duration.ofSeconds(3))
+                    .until(ExpectedConditions.alertIsPresent());
+            lastAlertText = alert.getText();
+            alert.accept();
+        } catch (TimeoutException noAlert) {
+            // No alert: the login either succeeded or showed an inline message.
+        }
     }
 
 
@@ -167,6 +187,9 @@ public class LoginPage {
      * Example return value: "User or Password is not valid"
      */
     public String getErrorMessage() {
+        if (lastAlertText != null) {
+            return lastAlertText;
+        }
         wait.until(ExpectedConditions.visibilityOf(errorMessage));
         return errorMessage.getText();
     }
@@ -176,6 +199,9 @@ public class LoginPage {
      * Use when you want a boolean check rather than reading the text.
      */
     public boolean isErrorMessageDisplayed() {
+        if (lastAlertText != null) {
+            return true;
+        }
         try {
             wait.until(ExpectedConditions.visibilityOf(errorMessage));
             return errorMessage.isDisplayed();

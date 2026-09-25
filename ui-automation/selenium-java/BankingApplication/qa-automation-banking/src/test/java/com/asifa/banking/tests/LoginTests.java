@@ -4,6 +4,7 @@ import com.asifa.banking.base.BaseTest;
 import com.asifa.banking.constants.AppConstants;
 import com.asifa.banking.pages.LoginPage;
 import org.testng.Assert;
+import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -40,6 +41,15 @@ public class LoginTests extends BaseTest {
         loginPage = new LoginPage(getDriver());
     }
 
+    /** Skips (never fails) a test that needs real Guru99 credentials when none were supplied. */
+    private void requireCredentials() {
+        if (!AppConstants.hasValidCredentials()) {
+            throw new SkipException(
+                "Set GURU99_USER_ID and GURU99_PASSWORD (or -Dguru99.userId / -Dguru99.password). "
+                + "Guru99 credentials expire after 20 days.");
+        }
+    }
+
 
     // ══════════════════════════════════════════════════════════════════════
     //  HAPPY PATH
@@ -48,6 +58,7 @@ public class LoginTests extends BaseTest {
     @Test(priority = 1,
           description = "Valid credentials should navigate away from login and show welcome message")
     public void testValidLogin() {
+        requireCredentials();
         test = extent.createTest("Valid Login");
 
         // Act
@@ -72,6 +83,7 @@ public class LoginTests extends BaseTest {
     @Test(priority = 2,
           description = "Invalid password should show error message and stay on login page")
     public void testInvalidPassword() {
+        requireCredentials();
         test = extent.createTest("Invalid Password");
 
         // Act
@@ -95,6 +107,7 @@ public class LoginTests extends BaseTest {
     @Test(priority = 3,
           description = "Invalid username should show error message and stay on login page")
     public void testInvalidUsername() {
+        requireCredentials();
         test = extent.createTest("Invalid Username");
 
         loginPage.attemptLoginExpectingFailure(
@@ -149,6 +162,7 @@ public class LoginTests extends BaseTest {
     @Test(priority = 6,
           description = "Valid username with empty password should not proceed to dashboard")
     public void testEmptyPassword() {
+        requireCredentials();
         test = extent.createTest("Empty Password");
 
         loginPage.attemptLoginExpectingFailure(
@@ -165,6 +179,7 @@ public class LoginTests extends BaseTest {
     @Test(priority = 7,
           description = "Empty username with valid password should not proceed to dashboard")
     public void testEmptyUsername() {
+        requireCredentials();
         test = extent.createTest("Empty Username");
 
         loginPage.attemptLoginExpectingFailure(

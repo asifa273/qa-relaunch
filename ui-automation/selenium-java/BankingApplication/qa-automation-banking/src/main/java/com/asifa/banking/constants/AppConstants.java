@@ -12,9 +12,13 @@ public class AppConstants {
     public static final String LOGIN_URL      = BASE_URL;
     public static final String DASHBOARD_URL  = BASE_URL + "index.php";
 
-    // ── Test Credentials (demo site — safe to commit) ─────────────────────
-    public static final String VALID_USERNAME  = "mngr658980";   // replace with your demo site ID
-    public static final String VALID_PASSWORD  = "esUvube"; // replace with your demo site password
+    // ── Test Credentials ──────────────────────────────────────────────────
+    // Guru99 manager credentials expire after 20 days, so they are never
+    // committed. Supply them per run:
+    //   local:  mvn test -Dguru99.userId=mngrXXXX -Dguru99.password=XXXX
+    //   CI:     GitHub secrets GURU99_USER_ID and GURU99_PASSWORD
+    public static final String VALID_USERNAME  = readSetting("guru99.userId", "GURU99_USER_ID");
+    public static final String VALID_PASSWORD  = readSetting("guru99.password", "GURU99_PASSWORD");
     public static final String INVALID_USERNAME = "wronguser";
     public static final String INVALID_PASSWORD = "wrongpass";
 
@@ -52,4 +56,19 @@ public class AppConstants {
 
     // Private constructor — this class should never be instantiated
     private AppConstants() {}
+
+    // ── Helpers ───────────────────────────────────────────────────────────
+    /** True when both Guru99 credentials were supplied for this run. */
+    public static boolean hasValidCredentials() {
+        return !VALID_USERNAME.isEmpty() && !VALID_PASSWORD.isEmpty();
+    }
+
+    /** Reads a -D system property first, then an environment variable. */
+    private static String readSetting(String property, String envVar) {
+        String value = System.getProperty(property);
+        if (value == null || value.isBlank()) {
+            value = System.getenv(envVar);
+        }
+        return value == null ? "" : value.trim();
+    }
 }

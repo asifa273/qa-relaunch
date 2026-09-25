@@ -6,3 +6,8 @@ allure-results/
 target/
 __pycache__/
 .pytest_cache/
+# Test run output (reports, screenshots, TestNG output) is generated, never committed
+reports/
+test-output/
+# ...except the AI Defect Resolver sample reports, which are part of that demo
+!python-automation/ai-defect-resolver/reports/
