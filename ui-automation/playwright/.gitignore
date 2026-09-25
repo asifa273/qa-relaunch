@@ -63,4 +63,5 @@ htmlcov/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-/.auth/
+# Saved login state (storageState) holds live session tokens: never commit
+**/.auth/
