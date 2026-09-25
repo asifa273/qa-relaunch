@@ -3,6 +3,7 @@ package com.qa.framework.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
 
@@ -26,13 +27,16 @@ public class CartPage extends BasePage {
     }
 
     public CartPage removeItem(String productName) {
+        By item = By.xpath("//div[@class='cart_item'][.//div[normalize-space()='" + productName + "']]");
         click(By.xpath("//div[@class='cart_item'][.//div[normalize-space()='"
                 + productName + "']]//button[contains(@id,'remove')]"));
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(item));
         return this;
     }
 
     public CheckoutPage proceedToCheckout() {
         click(CHECKOUT_BTN);
+        wait.until(ExpectedConditions.urlContains("checkout-step-one"));
         return new CheckoutPage(driver);
     }
 

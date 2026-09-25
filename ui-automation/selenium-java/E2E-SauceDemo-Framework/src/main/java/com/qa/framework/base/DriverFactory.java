@@ -10,6 +10,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.time.Duration;
+import java.util.Map;
 
 /**
  * ThreadLocal<WebDriver> is the whole reason this framework can run tests in parallel
@@ -43,7 +44,14 @@ public final class DriverFactory {
                 ChromeOptions options = new ChromeOptions();
                 if (headless) options.addArguments("--headless=new");
                 options.addArguments("--window-size=1920,1080", "--no-sandbox",
-                        "--disable-dev-shm-usage", "--disable-gpu");
+                        "--disable-dev-shm-usage", "--disable-gpu", "--incognito",
+                        "--disable-features=PasswordLeakDetection,PasswordCheck");
+                // Chrome's "Change your password" leak-detection popup appears after logging
+                // in with SauceDemo's public credentials and swallows clicks. Turn it off.
+                options.setExperimentalOption("prefs", Map.of(
+                        "credentials_enable_service", false,
+                        "profile.password_manager_enabled", false,
+                        "profile.password_manager_leak_detection", false));
                 driver = new ChromeDriver(options);
             }
         }

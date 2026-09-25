@@ -3,6 +3,7 @@ package com.qa.framework.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.Comparator;
 import java.util.List;
@@ -36,11 +37,13 @@ public class ProductsPage extends BasePage {
      * Note normalize-space() to survive whitespace changes in the DOM.
      */
     public ProductsPage addToCart(String productName) {
-        By addButton = By.xpath(
-                "//div[@class='inventory_item'][.//div[normalize-space()='" + productName + "']]"
-                        + "//button[contains(@id,'add-to-cart')]");
+        String item = "//div[@class='inventory_item'][.//div[normalize-space()='" + productName + "']]";
+        By addButton = By.xpath(item + "//button[contains(@id,'add-to-cart')]");
+        By removeButton = By.xpath(item + "//button[contains(@id,'remove')]");
         scrollIntoView(addButton);
         click(addButton);
+        // Wait for React to re-render (Add -> Remove) so the cart badge is up to date.
+        visible(removeButton);
         return this;
     }
 
@@ -70,12 +73,15 @@ public class ProductsPage extends BasePage {
 
     public CartPage openCart() {
         click(CART_LINK);
+        wait.until(ExpectedConditions.urlContains("cart.html"));
         return new CartPage(driver);
     }
 
     public LoginPage logout() {
         click(BURGER_MENU);
         click(LOGOUT);
+        // Wait for the navigation to finish before the caller inspects the URL.
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("login-button")));
         return new LoginPage(driver);
     }
 }
