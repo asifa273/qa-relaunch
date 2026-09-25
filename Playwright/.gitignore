@@ -59,3 +59,9 @@ htmlcov/
 # Uncomment to stop tracking the downloaded JS course dump:
 # Javascript/JavaScript_JS/complete-javascript-course-master/
 # Javascript/JavaScript_JS/*.zip
+
+# Playwright
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
