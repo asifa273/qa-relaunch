@@ -34,8 +34,11 @@ exports.customtest = base.extend({
 
         // confirmed response shape: { success, token, user: { id, email } }
         const loginRes = await apiContext.post('api/auth/login', { data: events_user });
+        if (!loginRes.ok()) {
+            throw new Error(`Events login failed with status ${loginRes.status()}: ${await loginRes.text()}`);
+        }
         const loginBody = await loginRes.json();
-        const token = await loginBody.token;
+        const token = loginBody.token;
 
         const posteventsResponse = {
             title: 'Tech Summit 2026',
@@ -43,7 +46,7 @@ exports.customtest = base.extend({
             category: 'Conference',
             city: 'Bangalore',
             venue: 'Bangalore International Centre',
-            eventDate: '2026-06-15T09:00:00.000Z',
+            eventDate: '2027-06-15T09:00:00.000Z',
             price: 1500.00,
             totalSeats: 500,
             imageUrl: 'https://example.com/banner.jpg',
@@ -52,14 +55,14 @@ exports.customtest = base.extend({
             data: posteventsResponse,
             headers: { Authorization: `Bearer ${token}` },
         });
+        if (!createRes.ok()) {
+            throw new Error(`Event creation failed with status ${createRes.status()}: ${await createRes.text()}`);
+        }
         const body = await createRes.json();
         const event = body.data; // event object is nested under "data"
 
         await use(event);
         //teardown
         await apiContext.dispose();
-    },
-    testDataforOrder: {
-        title: 'Tech Summit 2026'
     }
 });

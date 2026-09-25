@@ -22,7 +22,7 @@ exports.customtest = base.test.extend({
         await page.waitForLoadState('networkidle');
         await use(page);
         //teardown
-        await context.close;
+        await context.close();
 
     },
 

@@ -1,12 +1,9 @@
 const { test, expect } = require('@playwright/test');
-const assert = require('node:assert');
-const { log } = require('node:console');
 
 test('Sauce Demo Login Failure', async ({ browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto("https://www.saucedemo.com/");
-    console.log(await page.title());
     const userName = page.locator('[data-test="username"]');
     const password = page.locator('[data-test="password"]');
     await userName.fill("_user");
@@ -21,11 +18,10 @@ test('Sauce Demo Login Failure', async ({ browser }) => {
 
 
 });
-test.only('Sauce Demo Login Pass', async ({ browser }) => {
+test('Sauce Demo Login Pass', async ({ browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto("https://www.saucedemo.com/");
-    console.log(await page.title());
     const userName = page.locator('[data-test="username"]');
     const password = page.locator('[data-test="password"]');
     await userName.fill("standard_user");
@@ -36,7 +32,7 @@ test.only('Sauce Demo Login Pass', async ({ browser }) => {
     await cardTitles.nth(0).textContent();
     await expect(cardTitles.nth(0)).toContainText('Sauce Labs Backpack');
     const allCardTitles = await cardTitles.allTextContents();
-    console.log(allCardTitles);
+    expect(allCardTitles).toContain('Sauce Labs Backpack');
 
 
 });

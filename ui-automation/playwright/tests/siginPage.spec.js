@@ -1,4 +1,8 @@
 const { test, expect } = require('@playwright/test');
+require('dotenv').config();
+
+const practiceUsername = process.env.PRACTICE_USERNAME;
+const practicePassword = process.env.PRACTICE_PASSWORD;
 
 
 // TEST 1: signIn flow → navigates to shop
@@ -7,8 +11,8 @@ test('SignIn succeeds and navigates to shop', async ({ browser }) => {
     const page = await context.newPage();
     await page.goto('https://rahulshettyacademy.com/loginpagePractise/');
 
-    await page.getByRole('textbox', { name: 'Username:' }).fill('rahulshettyacademy');
-    await page.getByRole('textbox', { name: 'Password:' }).fill('Learning@830$3mK2');
+    await page.getByRole('textbox', { name: 'Username:' }).fill(practiceUsername);
+    await page.getByRole('textbox', { name: 'Password:' }).fill(practicePassword);
 
     await expect(page.getByRole('radio', { name: 'Admin' })).toBeChecked();
     await page.getByRole('radio', { name: 'User' }).check();
@@ -25,7 +29,7 @@ test('SignIn succeeds and navigates to shop', async ({ browser }) => {
 
     await expect(page).toHaveURL(/angularpractice\/shop/);
     await expect(page).toHaveTitle('ProtoCommerce');
-    console.log('SignIn navigated to Proto COmmerce URL:', page.url());
+    await context.close();
 });
 
 // TEST 2: child window / new tab handling
@@ -43,8 +47,8 @@ test('Blinking Text opens a new tab', async ({ browser }) => {
 
     await newPage.waitForLoadState();
     await expect(newPage).toHaveURL(/documents-request/);   // assert on the NEW tab
-    console.log('Blinking Text navigated to New tab URL:', newPage.url());
-    // await newPage.close();
+    await newPage.close();
+    await context.close();
 });
 
 
@@ -62,24 +66,20 @@ test('login Pass', async ({ page }) => {
 
     await username.fill('rahulshettyacademy');
     await expect(username).toHaveValue('rahulshettyacademy');
-    console.log('Username entered:', await username.inputValue());
 
-    await password.fill('Learning@830$3mK2');
-    await expect(password).toHaveValue('Learning@830$3mK2');
-    console.log('Password entered:', await password.inputValue());
+    await password.fill(practicePassword);
+    await expect(password).toHaveValue(practicePassword);
 
     // Admin radio is checked by default
     const adminCheckbox = page.getByRole('radio', { name: 'Admin' });
     //page.locator('label').filter({ hasText: 'Admin' });
 
     await expect(adminCheckbox).toBeChecked();
-    console.log('Admin radio button is default checked?', await adminCheckbox.isChecked());
 
     // switch to User radio button to check
     const userRadio = page.getByRole('radio', { name: 'User' });
     await userRadio.check();
     await expect(userRadio).toBeChecked();
-    console.log('User radio checked?', await userRadio.isChecked());
 
     //PopUp Modal opens when checking radio buttons
     await expect(page.getByText('You will be limited to only fewer functionalities of the app. Proceed? Cancel')).toBeVisible();
@@ -97,14 +97,12 @@ test('login Pass', async ({ page }) => {
     await dropdownOptions.click();
     await dropdownOptions.selectOption('consult');
     await dropdownOptions.selectOption('stud');
-    console.log('Selected Dropdown is :', await dropdownOptions.isVisible());
 
     //Terms & conditions Checkbox
     const termsCheckbox = page.getByRole('checkbox', { name: 'I Agree to the terms and' })
     await termsCheckbox.isVisible();
     await termsCheckbox.check();
     await expect(termsCheckbox).toBeChecked();
-    console.log('Is termsCheckbox selected ?', await termsCheckbox.isChecked());
 
     //SignIN Submit
     const signIn = page.getByRole('button', { name: 'Sign In' });
@@ -116,7 +114,6 @@ test('login Pass', async ({ page }) => {
     await page.waitForURL('https://rahulshettyacademy.com/angularpractice/shop');
     await expect(page).toHaveURL('https://rahulshettyacademy.com/angularpractice/shop');
     await expect(page).toHaveTitle('ProtoCommerce');
-    console.log('New Page Title: ', await page.url());
 
     
 

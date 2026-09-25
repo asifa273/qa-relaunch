@@ -1,7 +1,7 @@
-const { test, expect, request } = require('@playwright/test')
+const { expect } = require('@playwright/test');
 const { customtest } = require("./utils/fixtures.js");
 
-customtest('Fixtures Demo', async ({ authenticatedPage, createOrder, testDataforOrder }) => {
+customtest('Fixtures Demo', async ({ authenticatedPage, createOrder }) => {
     await authenticatedPage.goto("https://rahulshettyacademy.com/client");
     //reuse= login, create order, verify order is created from history page
 
@@ -10,6 +10,4 @@ customtest('Fixtures Demo', async ({ authenticatedPage, createOrder, testDatafor
     // await authenticatedPage.locator('.card-body b').first().waitFor();
     await expect(authenticatedPage.getByText(createOrder.orderId)).toBeVisible();
 
-    console.log(testDataforOrder.productName);
-}
-)
+});

@@ -14,7 +14,6 @@
         "e2e/**/*.ts",
         "e2e/**/*.js",
         "tests/**/*.ts",
-        "tests/**/*.js",
-        "playwright.config.ts"
+        "tests/**/*.js"
     ]
 }

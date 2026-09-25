@@ -1,19 +1,19 @@
 // @ts-check
 // @ts-ignore: Playwright is resolved at runtime from the project's dependencies.
-import { defineConfig, devices } from '@playwright/test';
+const { defineConfig, devices } = require('@playwright/test');
+const dotenv = require('dotenv');
+const path = require('node:path');
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
-export default defineConfig({
+module.exports = defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -32,9 +32,9 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 
-    trace: 'on',  // record trace on first retry of a failed test
-    screenshot: 'only-on-failure',  // auto-capture screenshot when a test fails
-    video: 'retain-on-failure',     // optional: video of the failure
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
 
   },
 

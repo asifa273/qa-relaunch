@@ -1,10 +1,11 @@
 # QA Relaunch — SDET / QA Automation Portfolio
 
-> A hands-on portfolio of test automation projects across **UI, API, data, and AI-assisted QA** — built with Selenium, Playwright, Java, Python, and CI/CD pipelines. Each folder is a working practice project targeting real SDET / QA Automation Engineer skills.
+> A hands-on portfolio of test automation projects across **UI, API, data, and AI-assisted QA** — built with Selenium, Playwright, Java, Python, and CI/CD pipelines. Working projects and clearly marked learning tracks target real SDET / QA Automation Engineer skills.
 
 ![Java](https://img.shields.io/badge/Java-21-orange)
 ![Selenium](https://img.shields.io/badge/Selenium-4.x-43B02A?logo=selenium&logoColor=white)
-![Playwright](https://img.shields.io/badge/Playwright-1.62-2EAD33?logo=playwright&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-1.63-2EAD33?logo=playwright&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-7-3178C6?logo=typescript&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)
 ![pytest](https://img.shields.io/badge/pytest-tested-0A9EDC?logo=pytest&logoColor=white)
 ![TestNG](https://img.shields.io/badge/TestNG-7.10-red)
@@ -20,7 +21,7 @@
 | Area | Project | What it demonstrates | Status |
 |---|---|---|---|
 | **Selenium (Java)** | `ui-automation/selenium-java/` | Banking, SauceDemo, and Selenium fundamentals POM frameworks | ✅ Working |
-| **Playwright (JS/TS)** | `ui-automation/playwright/` | Cross-browser E2E tests + GitHub Actions CI | ✅ Working |
+| **Playwright (JS/TS)** | `ui-automation/playwright/` | Browser E2E tests + GitHub Actions CI | ✅ Working |
 | **AI-assisted QA** | `python-automation/ai-defect-resolver/` | Claude API defect analysis → fix → validate → report loop | ✅ Working |
 | **Python** | `python-automation/pytest/` | pytest suites, fixtures, parametrization | ✅ Working |
 | **Python** | `python-automation/` | Flask chatbot and Python learning track | ✅ Working |
@@ -29,7 +30,7 @@
 | **Performance** | `performance/jmeter/` | JMeter test plan + thread group | ✅ Working |
 | **SQL data QA** | `core-skills/sql/` | Data-quality query patterns (nulls, duplicates, reconciliation) | 🚧 Documented, scripts in progress |
 | **API (Postman)** | `api-testing/postman/` | REST collections | 🔜 Planned |
-| **API (REST Assured)** | `api-testing/rest-assured/` | Java API test framework | 🔜 Planned |
+| **API (REST Assured)** | `ui-automation/selenium-java/E2E-Banking-Framework/` | Java API tests with response validation | ✅ Working |
 | **SpecFlow (.NET BDD)** | `bdd-cucumber/specflow/` | C# BDD | 🔜 Planned |
 
 ---
@@ -41,7 +42,7 @@ A structured **Page Object Model** automation framework for a banking web app.
 - **Pages:** Login, Dashboard, Deposit, New Account, Transactions
 - **Tests:** login, account creation, deposits, transactions, and data-validation suites
 - **Framework plumbing:** `DriverFactory`, `ConfigReader`, `WaitHelper`, externalized `config.properties` and `testdata.properties`
-- **CI:** GitHub Actions workflow (`selenium-tests.yml`) runs the suite automatically
+- **CI:** GitHub Actions workflow (`.github/workflows/selenium-banking.yml`) runs the suite automatically
 - **Stack:** Java · Selenium WebDriver · TestNG · Maven
 
 ```bash
@@ -58,12 +59,20 @@ cd ui-automation/selenium-java/LoginFlowAutomator
 mvn test
 ```
 
+### 🧪 E2E Banking Framework — Full-Stack QA
+The strongest Selenium project in this repository combines Page Objects, a `ThreadLocal` driver, Cucumber scenarios, RestAssured API coverage, JDBC validation, and cross-browser CI.
+
+```bash
+cd ui-automation/selenium-java/E2E-Banking-Framework
+mvn test
+```
+
 ### 🎭 Playwright E2E Suite
-Cross-browser end-to-end tests against practice e-commerce and sign-in sites.
-- **Specs:** SauceDemo login (pass/fail), shop flow, sign-in, user registration, Angular practice
-- **Config:** parallel execution, HTML reporter, trace/screenshot/video **on failure**, retries on CI
+Browser end-to-end tests against practice e-commerce and sign-in sites.
+- **Specs:** SauceDemo login (pass/fail), shop flow, sign-in, user registration, Angular practice, API/UI authorization checks
+- **Config:** parallel execution on Chromium, HTML reporter, trace/screenshot/video **on failure**, retries on CI
 - **CI:** GitHub Actions (`playwright.yml`) runs on every push/PR and uploads the HTML report as an artifact
-- **Stack:** JavaScript · @playwright/test 1.62
+- **Stack:** JavaScript + TypeScript · @playwright/test 1.63
 
 ```bash
 cd ui-automation/playwright
@@ -72,6 +81,8 @@ npx playwright install
 npx playwright test          # headless
 npx playwright test --headed # visible browser
 ```
+
+CI expects these GitHub Actions secrets: `SHOP_EMAIL`, `SHOP_PASSWORD`, `SHOP_REGISTRATION_EMAIL`, `SHOP_REGISTRATION_PASSWORD`, `EVENTS_EMAIL`, `EVENTS_PASSWORD`, `GMAIL_EMAIL`, `GMAIL_PASSWORD`, `YAHOO_EMAIL`, `YAHOO_PASSWORD`, `PRACTICE_USERNAME`, `PRACTICE_PASSWORD`, `PRACTICE_FORM_NAME`, `PRACTICE_FORM_EMAIL`, and `PRACTICE_FORM_PASSWORD`.
 
 ### 🤖 AI Defect Resolver — QA meets GenAI
 An AI-driven defect-resolution workflow powered by the **Claude API**:
@@ -116,9 +127,9 @@ A JMeter test plan and thread group for load/performance test practice.
 ## Skills covered
 
 **UI Automation:** Selenium WebDriver, Playwright, Page Object Model
-**API Testing:** REST validation (Postman — in progress)
+**API Testing:** REST validation with RestAssured; Postman collections planned
 **BDD:** Cucumber, Gherkin
-**Languages:** Java 21, Python 3.11, JavaScript
+**Languages:** Java 21, Python 3.11, JavaScript, TypeScript
 **Frameworks/Tools:** TestNG, pytest, Maven, WebDriverManager, Lombok
 **CI/CD:** GitHub Actions
 **Data QA:** SQL data-quality validation
@@ -133,12 +144,12 @@ A JMeter test plan and thread group for load/performance test practice.
 qa-relaunch/
 ├── .github/workflows/          # Playwright, Selenium, and pytest pipelines
 ├── ui-automation/
-│   ├── playwright/             # JS/TS Playwright tests and page objects
+│   ├── playwright/             # JavaScript/TypeScript Playwright tests and fixtures
 │   └── selenium-java/          # Selenium POM frameworks
 ├── bdd-cucumber/               # Cucumber + TestNG frameworks and Gherkin specs
 ├── api-testing/
 │   ├── postman/                # Collections and environments
-│   └── rest-assured/           # Planned Java API tests
+│   └── rest-assured/           # REST Assured learning notes
 ├── python-automation/
 │   ├── pytest/                 # Parametrized tests and fixtures
 │   └── ai-defect-resolver/     # Claude API defect analysis tool
@@ -155,8 +166,6 @@ qa-relaunch/
 
 - [ ] Add Postman REST API collections with example requests and assertions
 - [ ] Commit the SQL data-quality scripts described in `core-skills/sql/README_SQL.md`
-- [ ] Add TypeScript to the Playwright suite
-- [ ] Add RestAssured (Java) API tests alongside the Selenium frameworks
 
 ---
 

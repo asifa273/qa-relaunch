@@ -1,16 +1,12 @@
 
-const { expect } = require('@playwright/test')
+const { expect } = require('@playwright/test');
 const { customtest } = require("./utils/EventsFixture.js");
 
-const BASE_URL = 'https://eventhub.rahulshettyacademy.com';
-const newEvent =
+customtest('newly created event should appear on the events page', async ({ authenticatedEventsPage, createEvent }, testInfo) => {
+    await authenticatedEventsPage.goto('https://eventhub.rahulshettyacademy.com/events');
+    const eventTitle = authenticatedEventsPage.getByText(createEvent.title, { exact: true });
 
-    customtest('newly created event should appear on the events page', async ({ authenticatedEventsPage, testDataforOrder }) => {
-        await authenticatedEventsPage.goto('https://eventhub.rahulshettyacademy.com/events');
-        // await authenticatedEventsPage.goto(`${BASE_URL}/events/`, { waitUntil: 'networkidle' });
-        await expect(authenticatedEventsPage.getByText(testDataforOrder.title)).toBeVisible();
-        console.log(testDataforOrder.title);
-        await authenticatedEventsPage.screenshot({ path: 'screenshot.png' });
-        await authenticatedEventsPage.getByText(testDataforOrder.title).screenshot({ path: 'specificelementscreenshot.png' });
-        expect(await authenticatedEventsPage.screenshot()).toMatchSnapshot('land.png');
-    })
+    await expect(eventTitle).toBeVisible();
+    await authenticatedEventsPage.screenshot({ path: testInfo.outputPath('event-page.png') });
+    await eventTitle.screenshot({ path: testInfo.outputPath('event-title.png') });
+});

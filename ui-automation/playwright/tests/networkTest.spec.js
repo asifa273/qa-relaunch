@@ -40,7 +40,7 @@ test('@API Place the order', async ({ page }) => {
     // await page.pause();
     await page.waitForResponse("https://rahulshettyacademy.com/api/ecom/user/get-cart-count/*");
 
-    console.log(await page.getByText('You have No Orders to show at this time. Please Visit Back Us').textContent());
+    await expect(page.getByText('You have No Orders to show at this time. Please Visit Back Us')).toBeVisible();
 
 
 

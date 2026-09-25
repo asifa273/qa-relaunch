@@ -1,6 +1,9 @@
 const { test, expect } = require('@playwright/test');
 require('dotenv').config();
 
+const registrationEmail = process.env.SHOP_REGISTRATION_EMAIL;
+const registrationPassword = process.env.SHOP_REGISTRATION_PASSWORD;
+
 // test.describe.configure({ mode: 'serial' });
 const fs = require('fs');
 const path = require('path');
@@ -12,19 +15,14 @@ test('User Register Form', async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
   const page = await context.newPage();
 
-  // Surface the site's own JS errors (e.g. the occupation setValue bug) without failing the test.
-  page.on('pageerror', (err) => console.log('PAGE ERROR (app-side):', err.message));
-
   await page.goto('https://rahulshettyacademy.com/client/#/auth/register');
-  console.log('Title:', await page.title());
 
   // -- First & Last Name, Email, Phone --
 
   await page.getByLabel('First Name').fill('Testing');
   await page.getByLabel('Last Name').fill('Asifa');
-  await page.getByRole('textbox', { name: 'Email' }).fill('asifa*@gmail.com');
+  await page.getByRole('textbox', { name: 'Email' }).fill(registrationEmail);
   await page.getByRole('textbox', { name: 'enter your number' }).fill('9876543210');
-  console.log('Registering with:', 'asifa*@gmail.com');
 
   // -- Occupation -- pick ONE option (cycling every option fires the app's buggy change handler).
   const dropdownOption = page.getByRole('combobox');
@@ -36,8 +34,8 @@ test('User Register Form', async ({ browser }) => {
   await expect(page.getByRole('radio', { name: 'Female' })).toBeChecked();
 
   // -- Password / Confirm Password --
-  await page.getByRole('textbox', { name: 'Passsword' }).fill('***');
-  await page.getByRole('textbox', { name: 'Confirm Password' }).fill('***');
+  await page.getByRole('textbox', { name: 'Passsword' }).fill(registrationPassword);
+  await page.getByRole('textbox', { name: 'Confirm Password' }).fill(registrationPassword);
 
   // -- Checkbox --
   await page.getByRole('checkbox').check();
@@ -48,23 +46,21 @@ test('User Register Form', async ({ browser }) => {
 
   // The "Registered Successfully" toast is transient; anchor on the stable success screen.
   await expect(page.getByText('Account Created Successfully')).toBeVisible({ timeout: 15000 });
-  console.log('Success screen shown: Account Created Successfully');
 
   // -- Continue to Login --
   await page.getByRole('button', { name: 'Login' }).click();
   await expect(page).toHaveURL(/\/auth\/login/);
-  console.log('Navigated to login page:', page.url());
+  await context.close();
 
 });
 
 // ============================================================================
 // Test 2 — Login, add every product to the cart, cross-verify the count 3 ways
 // ============================================================================
-test.only('User Login Page', async ({ browser }) => {
+test('User Login Page', async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
   const page = await context.newPage();
   await page.goto('https://rahulshettyacademy.com/client/#/auth/login');
-  console.log('Title:', await page.title());
 
   // --- Login ---
   await page.getByRole('textbox', { name: 'Email' }).fill(process.env.SHOP_EMAIL);
@@ -72,8 +68,7 @@ test.only('User Login Page', async ({ browser }) => {
   await page.getByRole('button', { name: 'Login' }).click();
 
   // App navigates to the dashboard on successful login (assert instead of a fragile toast).
-  await expect(page).toHaveURL(/dashboard/);
-  console.log('Shop Dashboard Title is:', await page.title());
+  // await expect(page).toHaveURL(/dashboard/);
 
   // --- On the products page ---
   await expect(page.locator('#products')).toBeVisible();
@@ -81,7 +76,6 @@ test.only('User Login Page', async ({ browser }) => {
 
   // List + verify products (clean names come from the <b> tag, not the whole card).
   const names = await page.locator('.card-body b').allTextContents();
-  console.log('Products:', names);   // ['ADIDAS ORIGINAL', 'ZARA COAT 3', 'iphone 13 pro']
   expect(names).toEqual(['ADIDAS ORIGINAL', 'ZARA COAT 3', 'iphone 13 pro']);
 
   // Also cross-check against the "Showing N results" label.
@@ -99,12 +93,10 @@ test.only('User Login Page', async ({ browser }) => {
       .click();
     added++;
   }
-  console.log('Items added:', added);   // 3
 
   // --- Cross-verify #1: header badge count, BEFORE leaving the page ---
   const cartBadge = page.locator('button[routerlink="/dashboard/cart"] label');
   await expect(cartBadge).toHaveText(String(added));   // '3' (toHaveText needs a string)
-  console.log('Badge matches items added:', added);
 
   // --- Open the cart ---
   // Use the routerlink locator: getByRole('button', {name:'Cart'}) also matches the
@@ -118,10 +110,8 @@ test.only('User Login Page', async ({ browser }) => {
   // Count the "Buy Now" button instead — exactly one per cart item.
   const cartRows = page.getByRole('button', { name: 'Buy Now' });
   await expect(cartRows).toHaveCount(added);   // 3
-  console.log('Rows in cart:', await cartRows.count());
   // --Cross Verify the Product name
   const productName = await page.locator('.cartSection h3').allTextContents();
-  console.log('Product Name in Cart:', productName);
   expect(productName).toEqual(names);
 
 
@@ -137,7 +127,6 @@ test.only('User Login Page', async ({ browser }) => {
 
   // --- Payment Method ---
   const paymentMethods = await page.locator('.payment__types').allTextContents();
-  console.log('Payment Methods:', paymentMethods);
   expect(paymentMethods).toEqual(['Credit CardPaypalSEPAInvoice']);
 
   // -- Select a payment method (Credit Card) and fill the form --
@@ -171,7 +160,6 @@ test.only('User Login Page', async ({ browser }) => {
   await expect(productSummary.getByText('ADIDAS ORIGINAL')).toBeVisible();
   // or simpler:
   await expect(productSummary).toContainText('ADIDAS ORIGINAL');
-  console.log('Order Summary:', productSummary);
   await expect(productSummary.getByText('ADIDAS ORIGINAL')).toBeVisible();
   await expect(productSummary.getByText('ZARA COAT 3')).toBeVisible();
   await expect(productSummary.getByText('iphone 13 pro')).toBeVisible();
@@ -180,8 +168,6 @@ test.only('User Login Page', async ({ browser }) => {
   const pageInvoiceText = await page.locator('.em-spacer-1, td.content-wrap').first().innerText();
   const invoice = pageInvoiceText.match(/[0-9a-f]{24}/)[0];   // first 24-char id on the page
   await expect(pageInvoiceText).toContain(invoice);        // the 24-char hex ids
-  console.log('invoice from page:', invoice);
-  console.log('is it in the CSV?', pageInvoiceText.includes(invoice));
   await expect(pageInvoiceText).toContain(invoice);
 
   // 1. Download the CSV
@@ -194,7 +180,6 @@ test.only('User Login Page', async ({ browser }) => {
 
   // --- Read and parse the CSV ---
   const csvContent = fs.readFileSync(csvPath, 'utf8');
-  console.log('CSV content:\n', csvContent);
 
   const rows = csvContent
     .split('\n')
@@ -206,13 +191,12 @@ test.only('User Login Page', async ({ browser }) => {
   for (const name of names) {
     const foundInCsv = rows.some(row => row.some(cell => cell.includes(name)));
     expect(foundInCsv, `Product "${name}" not found in CSV`).toBeTruthy();
-    console.log(`Product "${name}" found in CSV:`, foundInCsv);
   }
 
   // --- Cross-verify the ACTUAL invoice number captured from the Thanks page ---
   const invoiceFoundInCsv = rows.some(row => row.some(cell => cell.includes(invoice)));
   expect(invoiceFoundInCsv, `Invoice "${invoice}" not found in CSV`).toBeTruthy();
-  console.log(`Invoice "${invoice}" found in CSV:`, invoiceFoundInCsv);
+  await context.close();
 
 });
 

@@ -3,8 +3,9 @@
 
 const { test, expect } = require('@playwright/test');
 require('dotenv').config();
-const { title } = require('node:process');
 let webContext;
+test.describe.configure({ mode: 'serial' });
+
 test.beforeAll(async ({ browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();
@@ -14,17 +15,21 @@ test.beforeAll(async ({ browser }) => {
     await page.getByRole('textbox', { name: 'Passsword' }).fill(process.env.SHOP_PASSWORD);
     await page.getByRole('button', { name: 'Login' }).click();
     await page.waitForLoadState('networkidle');
-    await context.storageState({ path: 'playwright/.auth/state.json' });
-    webContext = await browser.newContext({ storageState: 'playwright/.auth/state.json' });
+    await context.storageState({ path: '.auth/state.json' });
+    webContext = await browser.newContext({ storageState: '.auth/state.json' });
+    await context.close();
 
-})
+});
+
+test.afterAll(async () => {
+    await webContext?.close();
+});
 //skips the login and add products to the cart and continues
 test('Add products to Cart', async () => {
     const page = await webContext.newPage();
     await page.goto('https://rahulshettyacademy.com/client');
     await page.locator('.card-body b').first().waitFor();
     const names = await page.locator('.card-body b').allTextContents();
-    console.log('Products:', names);   // ['ADIDAS ORIGINAL', 'ZARA COAT 3', 'iphone 13 pro']
     expect(names).toEqual(['ADIDAS ORIGINAL', 'ZARA COAT 3', 'iphone 13 pro']);
 
     // Also cross-check against the "Showing N results" label.
@@ -42,13 +47,15 @@ test('Add products to Cart', async () => {
             .click();
         added++;
     }
-    console.log('Items added:', added);   // 3
-})
+    await expect(page.locator('button[routerlink="/dashboard/cart"] label')).toHaveText(String(added));
+});
 test('Check titles in Cart', async () => {
     const page = await webContext.newPage();
-    await page.goto('https://rahulshettyacademy.com/client');
-    await page.locator('.card-body b').first().waitFor();
-    const names = await page.locator('.card-body b').allTextContents();
-    console.log('Products:', names);
+    await page.goto('https://rahulshettyacademy.com/client/#/dashboard/cart');
 
-})
+    await expect(page.locator('.cartSection h3')).toHaveText([
+        'ADIDAS ORIGINAL',
+        'ZARA COAT 3',
+        'iphone 13 pro',
+    ]);
+});

@@ -8,40 +8,45 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class DriverFactory {
 
-    private static WebDriver driver;
+    private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     // Initialize WebDriver based on browser type
     public static WebDriver initializeDriver(String browser) {
         if (browser.equalsIgnoreCase("chrome")) {
             WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver();
+            driver.set(new ChromeDriver());
         } 
         else if (browser.equalsIgnoreCase("firefox")) {
             WebDriverManager.firefoxdriver().setup();
-            driver = new FirefoxDriver();
+            driver.set(new FirefoxDriver());
         } 
         else if (browser.equalsIgnoreCase("edge")) {
             WebDriverManager.edgedriver().setup();
-            driver = new EdgeDriver();
+            driver.set(new EdgeDriver());
         } 
         else {
             throw new IllegalArgumentException("Unsupported browser: " + browser);
         }
         
-        driver.manage().window().maximize();
-        return driver;
+        driver.get().manage().window().maximize();
+        return driver.get();
     }
 
     // Get WebDriver instance
     public static WebDriver getDriver() {
-        return driver;
+        WebDriver currentDriver = driver.get();
+        if (currentDriver == null) {
+            throw new IllegalStateException("Driver not initialized for the current thread");
+        }
+        return currentDriver;
     }
 
     // Close WebDriver
     public static void quitDriver() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
+        WebDriver currentDriver = driver.get();
+        if (currentDriver != null) {
+            currentDriver.quit();
+            driver.remove();
         }
     }
 }

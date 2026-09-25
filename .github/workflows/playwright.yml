@@ -20,6 +20,40 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: Create test environment
+      env:
+        SHOP_EMAIL: ${{ secrets.SHOP_EMAIL }}
+        SHOP_PASSWORD: ${{ secrets.SHOP_PASSWORD }}
+        SHOP_REGISTRATION_EMAIL: ${{ secrets.SHOP_REGISTRATION_EMAIL }}
+        SHOP_REGISTRATION_PASSWORD: ${{ secrets.SHOP_REGISTRATION_PASSWORD }}
+        EVENTS_EMAIL: ${{ secrets.EVENTS_EMAIL }}
+        EVENTS_PASSWORD: ${{ secrets.EVENTS_PASSWORD }}
+        GMAIL_EMAIL: ${{ secrets.GMAIL_EMAIL }}
+        GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+        YAHOO_EMAIL: ${{ secrets.YAHOO_EMAIL }}
+        YAHOO_PASSWORD: ${{ secrets.YAHOO_PASSWORD }}
+        PRACTICE_USERNAME: ${{ secrets.PRACTICE_USERNAME }}
+        PRACTICE_PASSWORD: ${{ secrets.PRACTICE_PASSWORD }}
+        PRACTICE_FORM_NAME: ${{ secrets.PRACTICE_FORM_NAME }}
+        PRACTICE_FORM_EMAIL: ${{ secrets.PRACTICE_FORM_EMAIL }}
+        PRACTICE_FORM_PASSWORD: ${{ secrets.PRACTICE_FORM_PASSWORD }}
+      run: |
+        printf '%s\n' \
+          "SHOP_EMAIL=$SHOP_EMAIL" \
+          "SHOP_PASSWORD=$SHOP_PASSWORD" \
+          "SHOP_REGISTRATION_EMAIL=$SHOP_REGISTRATION_EMAIL" \
+          "SHOP_REGISTRATION_PASSWORD=$SHOP_REGISTRATION_PASSWORD" \
+          "EVENTS_EMAIL=$EVENTS_EMAIL" \
+          "EVENTS_PASSWORD=$EVENTS_PASSWORD" \
+          "GMAIL_EMAIL=$GMAIL_EMAIL" \
+          "GMAIL_PASSWORD=$GMAIL_PASSWORD" \
+          "YAHOO_EMAIL=$YAHOO_EMAIL" \
+          "YAHOO_PASSWORD=$YAHOO_PASSWORD" \
+          "PRACTICE_USERNAME=$PRACTICE_USERNAME" \
+          "PRACTICE_PASSWORD=$PRACTICE_PASSWORD" \
+          "PRACTICE_FORM_NAME=$PRACTICE_FORM_NAME" \
+          "PRACTICE_FORM_EMAIL=$PRACTICE_FORM_EMAIL" \
+          "PRACTICE_FORM_PASSWORD=$PRACTICE_FORM_PASSWORD" > .env
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4
