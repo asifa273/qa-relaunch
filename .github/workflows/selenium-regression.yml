@@ -40,7 +40,8 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: test-report-${{ matrix.browser }}
+          # upload-artifact ignores defaults.run.working-directory, so paths are repo-relative
           path: |
-            target/extent-report.html
-            target/screenshots/
-            target/surefire-reports/
+            ui-automation/selenium-java/E2E-SauceDemo-Framework/target/extent-report.html
+            ui-automation/selenium-java/E2E-SauceDemo-Framework/target/screenshots/
+            ui-automation/selenium-java/E2E-SauceDemo-Framework/target/surefire-reports/

@@ -39,4 +39,4 @@ jobs:
       if: always()
       with:
         name: extent-reports
-        path: reports/
+        path: ui-automation/selenium-java/BankingApplication/qa-automation-banking/reports/
