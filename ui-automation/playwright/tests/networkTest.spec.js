@@ -1,6 +1,9 @@
 const { test, expect, request } = require('@playwright/test');
 const { APIUtils } = require('./utils/APIUtils');
 require('dotenv').config();
+const { requireEnv } = require('./utils/requireEnv');
+
+requireEnv(test, 'SHOP_EMAIL', 'SHOP_PASSWORD');
 
 const loginPayLoad = {
     userEmail: process.env.SHOP_EMAIL,

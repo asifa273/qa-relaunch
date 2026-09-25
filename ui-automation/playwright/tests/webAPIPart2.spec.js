@@ -3,6 +3,9 @@
 
 const { test, expect } = require('@playwright/test');
 require('dotenv').config();
+const { requireEnv } = require('./utils/requireEnv');
+
+requireEnv(test, 'SHOP_EMAIL', 'SHOP_PASSWORD');
 let webContext;
 test.describe.configure({ mode: 'serial' });
 

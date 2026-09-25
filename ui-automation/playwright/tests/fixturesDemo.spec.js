@@ -1,5 +1,8 @@
 const { expect } = require('@playwright/test');
 const { customtest } = require("./utils/fixtures.js");
+const { requireEnv } = require('./utils/requireEnv');
+
+requireEnv(customtest, 'SHOP_EMAIL', 'SHOP_PASSWORD');
 
 customtest('Fixtures Demo', async ({ authenticatedPage, createOrder }) => {
     await authenticatedPage.goto("https://rahulshettyacademy.com/client");

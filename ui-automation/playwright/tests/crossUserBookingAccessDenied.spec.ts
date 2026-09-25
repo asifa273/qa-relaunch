@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 import 'dotenv/config';
+import { requireEnv } from './utils/requireEnv';
+
+requireEnv(test, 'YAHOO_EMAIL', 'YAHOO_PASSWORD', 'GMAIL_EMAIL', 'GMAIL_PASSWORD');
 
 type User = {
     email: string;

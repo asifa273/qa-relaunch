@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 import 'dotenv/config';
+import { requireEnv } from './utils/requireEnv';
+
+requireEnv(test, 'EVENTS_EMAIL', 'EVENTS_PASSWORD');
 
 const BASE_URL = 'https://eventhub.rahulshettyacademy.com';
 

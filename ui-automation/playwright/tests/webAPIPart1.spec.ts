@@ -1,6 +1,9 @@
 import { expect, request, test, type APIRequestContext } from '@playwright/test';
 import 'dotenv/config';
 import { APIUtils } from './utils/APIUtils';
+import { requireEnv } from './utils/requireEnv';
+
+requireEnv(test, 'SHOP_EMAIL', 'SHOP_PASSWORD');
 
 type OrderResponse = {
     token: string;
