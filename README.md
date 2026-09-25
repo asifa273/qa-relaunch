@@ -11,6 +11,13 @@
 ![TestNG](https://img.shields.io/badge/TestNG-7.10-red)
 ![GitHub Actions](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)
 
+**Live CI status**
+
+[![Playwright Tests](https://github.com/asifa273/qa-relaunch/actions/workflows/playwright.yml/badge.svg)](https://github.com/asifa273/qa-relaunch/actions/workflows/playwright.yml)
+[![Selenium Test Suite](https://github.com/asifa273/qa-relaunch/actions/workflows/selenium-banking.yml/badge.svg)](https://github.com/asifa273/qa-relaunch/actions/workflows/selenium-banking.yml)
+[![QA Regression](https://github.com/asifa273/qa-relaunch/actions/workflows/selenium-regression.yml/badge.svg)](https://github.com/asifa273/qa-relaunch/actions/workflows/selenium-regression.yml)
+[![AI Defect Resolver CI](https://github.com/asifa273/qa-relaunch/actions/workflows/ai-defect-resolver.yml/badge.svg)](https://github.com/asifa273/qa-relaunch/actions/workflows/ai-defect-resolver.yml)
+
 **Author:** Asifa Begum — QA / SDET · Frisco, TX
 🔗 [LinkedIn](https://www.linkedin.com/in/asifa-begum-qa/) · [GitHub](https://github.com/asifa273)
 
@@ -20,14 +27,14 @@
 
 | Area | Project | What it demonstrates | Status |
 |---|---|---|---|
-| **Selenium (Java)** | `ui-automation/selenium-java/` | Banking, SauceDemo, and Selenium fundamentals POM frameworks | ✅ Working |
-| **Playwright (JS/TS)** | `ui-automation/playwright/` | Browser E2E tests + GitHub Actions CI | ✅ Working |
+| **Selenium (Java)** | `ui-automation/selenium-java/` | Banking, SauceDemo, and Selenium fundamentals POM frameworks | ✅ Working (see CI badges) |
+| **Playwright (JS/TS)** | `ui-automation/playwright/` | Browser E2E tests in JS and TypeScript + GitHub Actions CI | ✅ Working (see CI badges) |
 | **AI-assisted QA** | `python-automation/ai-defect-resolver/` | Claude API defect analysis → fix → validate → report loop | ✅ Working |
 | **Python** | `python-automation/pytest/` | pytest suites, fixtures, parametrization | ✅ Working |
 | **Python** | `python-automation/` | Flask chatbot and Python learning track | ✅ Working |
-| **BDD / Cucumber** | `bdd-cucumber/` | Gherkin feature files + Cucumber-Selenium-TestNG framework | ✅ Working |
+| **BDD / Cucumber** | `bdd-cucumber/` | Gherkin feature specs (`*.feature`) + a Cucumber-Selenium-TestNG framework built while following a course | 📝 Specs + course framework |
 | **Java fundamentals** | `core-skills/java-fundamentals/` | Core Java, OOP, arrays, loops, methods | ✅ Working |
-| **Performance** | `performance/jmeter/` | JMeter test plan + thread group | ✅ Working |
+| **Performance** | `performance/jmeter/` | JMeter test plan + thread group | 📝 Test plans |
 | **SQL data QA** | `core-skills/sql/` | Data-quality query patterns (nulls, duplicates, reconciliation) | 🚧 Documented, scripts in progress |
 | **API (Postman)** | `api-testing/postman/` | REST collections | 🔜 Planned |
 | **API (REST Assured)** | `ui-automation/selenium-java/E2E-Banking-Framework/` | Java API tests with response validation | ✅ Working |
@@ -40,14 +47,15 @@
 ### 🏦 Banking Application — Selenium POM Framework
 A structured **Page Object Model** automation framework for a banking web app.
 - **Pages:** Login, Dashboard, Deposit, New Account, Transactions
-- **Tests:** login, account creation, deposits, transactions, and data-validation suites
-- **Framework plumbing:** `DriverFactory`, `ConfigReader`, `WaitHelper`, externalized `config.properties` and `testdata.properties`
+- **Tests:** 7 login scenarios (valid, wrong password/username, empty fields), including Guru99's JavaScript error alert. Account, deposit, transaction and data-validation suites are next.
+- **Framework plumbing:** ThreadLocal driver in `BaseTest`, `ConfigReader`, `WaitHelper`, ExtentReports with a screenshot on failure
+- **Credentials:** Guru99 manager credentials expire after 20 days, so they are read from `GURU99_USER_ID` / `GURU99_PASSWORD` (GitHub secrets in CI) and never committed. Without them, credential-dependent tests are skipped, not failed.
 - **CI:** GitHub Actions workflow (`.github/workflows/selenium-banking.yml`) runs the suite automatically
 - **Stack:** Java · Selenium WebDriver · TestNG · Maven
 
 ```bash
 cd ui-automation/selenium-java/BankingApplication/qa-automation-banking
-mvn test
+mvn test -Dguru99.userId=<your mngr id> -Dguru99.password=<your password>
 ```
 
 ### 🔐 LoginFlowAutomator — End-to-End SauceDemo
