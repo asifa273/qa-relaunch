@@ -37,7 +37,7 @@
 | **Performance** | `performance/jmeter/` | JMeter test plan + thread group | 📝 Test plans |
 | **SQL data QA** | `core-skills/sql/` | Data-quality query patterns (nulls, duplicates, reconciliation) | 🚧 Documented, scripts in progress |
 | **API (Postman)** | `api-testing/postman/` | REST collections | 🔜 Planned |
-| **API (REST Assured)** | `ui-automation/selenium-java/E2E-Banking-Framework/` | Java API tests with response validation | ✅ Working |
+| **API (REST Assured)** | `ui-automation/selenium-java/E2E-SauceDemo-Framework/` | Java API tests with response validation | ✅ Working |
 | **SpecFlow (.NET BDD)** | `bdd-cucumber/specflow/` | C# BDD | 🔜 Planned |
 
 ---
@@ -67,11 +67,11 @@ cd ui-automation/selenium-java/LoginFlowAutomator
 mvn test
 ```
 
-### 🧪 E2E Banking Framework — Full-Stack QA
+### 🧪 E2E SauceDemo Framework — Full-Stack QA
 The strongest Selenium project in this repository combines Page Objects, a `ThreadLocal` driver, Cucumber scenarios, RestAssured API coverage, JDBC validation, and cross-browser CI.
 
 ```bash
-cd ui-automation/selenium-java/E2E-Banking-Framework
+cd ui-automation/selenium-java/E2E-SauceDemo-Framework
 mvn test
 ```
 
