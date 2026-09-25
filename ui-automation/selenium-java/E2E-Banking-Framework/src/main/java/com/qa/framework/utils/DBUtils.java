@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * JDBC helper for database validation - the JD line "Perform database validation by
- * writing and executing SQL queries to ensure data integrity."
+ * JDBC helper for database validation: runs SQL queries and returns rows so tests can
+ * assert on data integrity.
  *
  * try-with-resources closes Connection/Statement/ResultSet automatically. Leaking
- * connections in a long CI run will exhaust the pool; interviewers do ask.
+ * connections in a long CI run will exhaust the pool.
  */
 public final class DBUtils {
 

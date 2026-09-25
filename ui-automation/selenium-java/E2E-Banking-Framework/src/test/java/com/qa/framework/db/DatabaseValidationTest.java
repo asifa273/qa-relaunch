@@ -12,9 +12,8 @@ import java.util.Map;
  * Backend data-integrity checks. Runs against in-memory H2 so it works on any machine;
  * point db.url at MySQL/Postgres and the same SQL runs unchanged.
  *
- * The story to tell in interview: UI says the order was placed, API returned 200 -
- * but did the row actually land in the DB with the right status and amount? That gap
- * is where real defects hide, and it is why the JD asks for SQL.
+ * Why: the UI can say an order was placed and the API can return 200 while the row in
+ * the database has the wrong status or amount. These checks close that gap.
  */
 public class DatabaseValidationTest {
 
@@ -94,7 +93,7 @@ public class DatabaseValidationTest {
         Assert.assertEquals(Integer.parseInt(orphans.toString()), 0, "Found orphaned orders");
     }
 
-    /** Duplicate detection with GROUP BY / HAVING - a guaranteed SQL interview question. */
+    /** Duplicate detection with GROUP BY / HAVING. */
     @Test(groups = "db", description = "DB-04 No duplicate customer emails")
     public void noDuplicateEmails() {
         List<Map<String, Object>> dupes = DBUtils.query("""

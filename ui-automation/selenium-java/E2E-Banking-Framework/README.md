@@ -1,7 +1,7 @@
 # QA Automation Portfolio — Selenium 4 + Java + TestNG + Cucumber + RestAssured + SQL + CI/CD
 
-A single project that demonstrates **every line item** in the QA Automated Tester JD.
-Built to be talked through in an interview, not just run.
+One project covering UI, API, database, BDD and CI/CD test automation end to end,
+against SauceDemo (UI) and Restful-Booker (API).
 
 **Asifa Begum** — ISTQB® Certified | github.com/asifa273/qa-relaunch
 
@@ -9,9 +9,9 @@ Built to be talked through in an interview, not just run.
 
 ## Why this project exists
 
-The JD asks for eight separate capabilities. Most portfolio repos show one. This one
-puts UI, API, database, BDD, and CI/CD in the same codebase so you can answer
-"walk me through your framework" with a single story.
+Most automation suites cover one layer. This one puts UI, API, database, BDD and CI/CD
+in the same codebase, so one change can be traced from the UI through the API to the
+data it writes.
 
 ---
 
@@ -53,9 +53,9 @@ Jenkins and GitHub Actions with Extent reports and auto-screenshots on failure."
 
 ---
 
-## What maps to which JD requirement
+## Coverage map
 
-| JD requirement | Where it lives in this repo |
+| Capability | Where it lives in this repo |
 |---|---|
 | Selenium WebDriver in Java | `pages/`, `base/DriverFactory.java` |
 | Page Object Model | `pages/BasePage.java` + 4 page classes |
@@ -109,7 +109,7 @@ mvn test -Dbase.url=https://staging.myapp.com   # point at another environment
 
 ---
 
-## Deliberate design decisions (interviewers probe these)
+## Deliberate design decisions
 
 1. **`By` constants instead of `@FindBy`/PageFactory.** PageFactory's lazy proxies mask
    `StaleElementReferenceException` and Selenium's own maintainers no longer recommend it.

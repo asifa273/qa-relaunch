@@ -1,9 +1,7 @@
-# 04 — Manual Testing Pack
+# Manual Testing Pack
 
-The JD lists manual test planning, execution, and exploratory testing **twice** — once
-under responsibilities and again under required skills. That is not filler; they want
-someone who can do both. This is the artifact you bring to prove it, and it's the part of
-the JD you're strongest on.
+Manual test planning, execution and exploratory testing for the checkout module, written
+before automation so the automated suites cover what was planned.
 
 ---
 

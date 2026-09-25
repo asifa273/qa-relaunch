@@ -32,7 +32,7 @@ public class ProductsPage extends BasePage {
     }
 
     /**
-     * Dynamic XPath built from data - the pattern interviewers love to ask about.
+     * Dynamic XPath built from data.
      * Note normalize-space() to survive whitespace changes in the DOM.
      */
     public ProductsPage addToCart(String productName) {

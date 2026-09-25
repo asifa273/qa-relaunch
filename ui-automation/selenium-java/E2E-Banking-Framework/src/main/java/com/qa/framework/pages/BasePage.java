@@ -82,8 +82,8 @@ public abstract class BasePage {
 
     /**
      * FluentWait example: poll every 500ms, ignore NoSuchElement, custom message.
-     * Ask an interviewer for the difference between WebDriverWait and FluentWait and
-     * this is the answer - WebDriverWait is a FluentWait subclass with fixed defaults.
+     * WebDriverWait is a FluentWait subclass with fixed defaults; FluentWait exposes
+     * polling interval and ignored exceptions directly.
      */
     protected WebElement fluentlyWaitFor(By locator, int timeoutSeconds) {
         return new FluentWait<>(driver)

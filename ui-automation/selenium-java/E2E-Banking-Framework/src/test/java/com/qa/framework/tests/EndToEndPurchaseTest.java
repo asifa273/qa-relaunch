@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * The flagship end-to-end regression test: login -> browse -> add to cart ->
  * checkout -> validate totals -> confirm order. Fluent page chaining reads like the
- * manual test case it replaces, which is exactly how you should narrate it in an interview.
+ * manual test case it replaces.
  */
 public class EndToEndPurchaseTest extends BaseTest {
 

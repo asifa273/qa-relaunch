@@ -16,9 +16,8 @@ import static org.hamcrest.Matchers.*;
  * API layer against https://restful-booker.herokuapp.com (free public practice API,
  * same CRUD shape as Postman collections you would build at work).
  *
- * Covers the JD line: "Conduct API testing using tools like Postman or Swagger to
- * validate backend services." In interview, say: Postman for exploratory/manual,
- * RestAssured for the automated regression that runs in CI - they are complementary.
+ * Postman is for exploratory and manual API checks; RestAssured covers the automated
+ * regression that runs in CI. They are complementary.
  *
  * dependsOnMethods enforces the CRUD order: create -> read -> update -> delete.
  */

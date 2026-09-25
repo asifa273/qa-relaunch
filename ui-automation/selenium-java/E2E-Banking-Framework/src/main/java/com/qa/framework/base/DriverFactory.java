@@ -16,8 +16,7 @@ import java.time.Duration;
  * without sessions bleeding into each other. Every thread TestNG spawns gets its own
  * driver reference; a plain static WebDriver would be shared and instantly flaky.
  *
- * INTERVIEW: "How do you support parallel execution?" -> this class plus
- * testng.xml parallel="methods" thread-count="3".
+ * Parallel execution: this class plus testng.xml parallel="methods" thread-count="3".
  */
 public final class DriverFactory {
 
@@ -51,7 +50,7 @@ public final class DriverFactory {
 
         // Implicit wait kept LOW and only as a safety net. Real synchronisation is the
         // explicit waits in BasePage. Mixing a high implicit wait with explicit waits
-        // gives unpredictable timeouts - a very common interview follow-up.
+        // gives unpredictable timeouts.
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
 

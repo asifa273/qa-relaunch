@@ -6,9 +6,9 @@ import org.testng.ITestResult;
 /**
  * Re-runs a failed test up to MAX_RETRY times.
  *
- * INTERVIEW WARNING: say out loud that retries are a triage tool, not a fix. You retry
- * to keep the pipeline signal usable while you investigate, and you track which tests
- * retry so genuine flakiness gets fixed rather than hidden.
+ * Retries are a triage tool, not a fix: they keep the pipeline signal usable while a
+ * flaky test is investigated, and retried tests are tracked so genuine flakiness gets
+ * fixed rather than hidden.
  */
 public class RetryAnalyzer implements IRetryAnalyzer {
 
