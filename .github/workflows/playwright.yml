@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: Playwright
+        working-directory: ui-automation/playwright
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -26,5 +26,5 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
-        path: Playwright/playwright-report/
+        path: ui-automation/playwright/playwright-report/
         retention-days: 30

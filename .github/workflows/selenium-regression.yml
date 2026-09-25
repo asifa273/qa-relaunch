@@ -1,0 +1,46 @@
+name: QA Regression
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '0 2 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: 'Suite file'
+        default: 'testng.xml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui-automation/selenium-java/E2E-Banking-Framework
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox]   # cross-browser matrix
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run suite
+        run: mvn -B test -DsuiteXmlFile=${{ github.event.inputs.suite || 'testng.xml' }} -Dbrowser=${{ matrix.browser }} -Dheadless=true
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-${{ matrix.browser }}
+          path: |
+            target/extent-report.html
+            target/screenshots/
+            target/surefire-reports/

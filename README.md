@@ -19,19 +19,18 @@
 
 | Area | Project | What it demonstrates | Status |
 |---|---|---|---|
-| **Selenium (Java)** | `Selenium/BankingApplication` | Page Object Model framework, utilities, data-driven tests, CI | ✅ Working |
-| **Selenium (Java)** | `Selenium/LoginFlowAutomator` | End-to-end login → sort → cart → checkout on SauceDemo | ✅ Working |
-| **Selenium (Java)** | `Selenium/SeleniumBasicsExercise` | POM basics, reusable wait/driver utilities | ✅ Working |
-| **Playwright (JS)** | `Playwright/` | Cross-browser E2E tests + GitHub Actions CI | ✅ Working |
-| **AI-assisted QA** | `ai/ai-defect-resolver` | Claude API defect analysis → fix → validate → report loop | ✅ Working |
-| **Python** | `python/pytest` | pytest suites, fixtures, parametrization | ✅ Working |
-| **Python** | `python/` (Flask chatbot) | Flask + Generative AI web app | ✅ Working |
-| **BDD / Cucumber** | `cypress/` | Gherkin feature files + Cucumber-Selenium-TestNG framework | ✅ Working |
-| **Java fundamentals** | `java/` | Core Java, OOP, arrays, loops, methods | ✅ Working |
-| **Performance** | `JMeter/` | JMeter test plan + thread group | ✅ Working |
-| **SQL data QA** | `sql/` | Data-quality query patterns (nulls, duplicates, reconciliation) | 🚧 Documented, scripts in progress |
-| **API (Postman)** | `postman/` | REST collections | 🔜 Planned |
-| **SpecFlow (.NET BDD)** | `specflow/` | C# BDD | 🔜 Planned |
+| **Selenium (Java)** | `ui-automation/selenium-java/` | Banking, SauceDemo, and Selenium fundamentals POM frameworks | ✅ Working |
+| **Playwright (JS/TS)** | `ui-automation/playwright/` | Cross-browser E2E tests + GitHub Actions CI | ✅ Working |
+| **AI-assisted QA** | `python-automation/ai-defect-resolver/` | Claude API defect analysis → fix → validate → report loop | ✅ Working |
+| **Python** | `python-automation/pytest/` | pytest suites, fixtures, parametrization | ✅ Working |
+| **Python** | `python-automation/` | Flask chatbot and Python learning track | ✅ Working |
+| **BDD / Cucumber** | `bdd-cucumber/` | Gherkin feature files + Cucumber-Selenium-TestNG framework | ✅ Working |
+| **Java fundamentals** | `core-skills/java-fundamentals/` | Core Java, OOP, arrays, loops, methods | ✅ Working |
+| **Performance** | `performance/jmeter/` | JMeter test plan + thread group | ✅ Working |
+| **SQL data QA** | `core-skills/sql/` | Data-quality query patterns (nulls, duplicates, reconciliation) | 🚧 Documented, scripts in progress |
+| **API (Postman)** | `api-testing/postman/` | REST collections | 🔜 Planned |
+| **API (REST Assured)** | `api-testing/rest-assured/` | Java API test framework | 🔜 Planned |
+| **SpecFlow (.NET BDD)** | `bdd-cucumber/specflow/` | C# BDD | 🔜 Planned |
 
 ---
 
@@ -46,7 +45,7 @@ A structured **Page Object Model** automation framework for a banking web app.
 - **Stack:** Java · Selenium WebDriver · TestNG · Maven
 
 ```bash
-cd Selenium/BankingApplication/qa-automation-banking
+cd ui-automation/selenium-java/BankingApplication/qa-automation-banking
 mvn test
 ```
 
@@ -55,7 +54,7 @@ Validates the full user journey: authentication, sorting products (low→high), 
 - **Stack:** Java 21 · Selenium 4.21 · TestNG · WebDriverManager · Lombok · Maven
 
 ```bash
-cd Selenium/LoginFlowAutomator
+cd ui-automation/selenium-java/LoginFlowAutomator
 mvn test
 ```
 
@@ -67,7 +66,7 @@ Cross-browser end-to-end tests against practice e-commerce and sign-in sites.
 - **Stack:** JavaScript · @playwright/test 1.62
 
 ```bash
-cd Playwright
+cd ui-automation/playwright
 npm install
 npx playwright install
 npx playwright test          # headless
@@ -89,7 +88,7 @@ Bug Report → AI Root Cause Analysis → AI-Generated Fix → pytest Validation
 - **Stack:** Python 3.11 · Anthropic Claude API · pytest · GitHub Actions
 
 ```bash
-cd ai/ai-defect-resolver
+cd python-automation/ai-defect-resolver
 pip install -r requirements.txt
 export ANTHROPIC_API_KEY="your_api_key_here"
 pytest tests/ -v
@@ -99,7 +98,7 @@ pytest tests/ -v
 Nine pytest modules covering assertions, fixtures, parametrization, and login/webpage test scenarios, plus a core-Python learning track and a Flask + Generative AI chatbot app.
 
 ```bash
-cd python
+cd python-automation
 pip install -r requirements.txt
 pytest pytest/basicTests/ -v
 ```
@@ -107,7 +106,7 @@ pytest pytest/basicTests/ -v
 ### 🥒 BDD — Cucumber + Selenium
 Gherkin feature files (login, signup, cart, checkout, payment, orders, search, profile, notifications) and a full **Cucumber + Selenium + TestNG** Java framework with page objects, step definitions, runners, and Extent reports.
 
-> Note: this lives under the `cypress/` folder but is implemented in **Cucumber + Selenium (Java)**, not Cypress.
+> Note: this is implemented in **Cucumber + Selenium (Java)**, not Cypress.
 
 ### ⚡ JMeter — Performance Testing
 A JMeter test plan and thread group for load/performance test practice.
@@ -132,19 +131,22 @@ A JMeter test plan and thread group for load/performance test practice.
 
 ```
 qa-relaunch/
-├── Selenium/
-│   ├── BankingApplication/     # POM framework + CI
-│   ├── LoginFlowAutomator/     # E2E SauceDemo
-│   └── SeleniumBasicsExercise/ # POM basics + utils
-├── Playwright/                 # JS E2E suite + GitHub Actions
-├── ai/ai-defect-resolver/      # Claude-API defect workflow + CI
-├── python/                     # pytest suites, core Python, Flask chatbot
-├── cypress/                    # Cucumber BDD + Selenium framework (Gherkin features)
-├── java/                       # Core Java & OOP exercises
-├── JMeter/                     # Performance test plans
-├── sql/                        # SQL data-QA (in progress)
-├── postman/                    # REST collections (planned)
-└── specflow/                   # .NET BDD (planned)
+├── .github/workflows/          # Playwright, Selenium, and pytest pipelines
+├── ui-automation/
+│   ├── playwright/             # JS/TS Playwright tests and page objects
+│   └── selenium-java/          # Selenium POM frameworks
+├── bdd-cucumber/               # Cucumber + TestNG frameworks and Gherkin specs
+├── api-testing/
+│   ├── postman/                # Collections and environments
+│   └── rest-assured/           # Planned Java API tests
+├── python-automation/
+│   ├── pytest/                 # Parametrized tests and fixtures
+│   └── ai-defect-resolver/     # Claude API defect analysis tool
+├── performance/jmeter/         # JMeter test plans
+├── core-skills/
+│   ├── java-fundamentals/      # OOP exercises and algorithms
+│   └── sql/                    # Data validation queries and README
+└── bdd-cucumber/specflow/      # .NET BDD (planned)
 ```
 
 ---
@@ -152,7 +154,7 @@ qa-relaunch/
 ## Roadmap
 
 - [ ] Add Postman REST API collections with example requests and assertions
-- [ ] Commit the SQL data-quality scripts described in `sql/README_SQL.md`
+- [ ] Commit the SQL data-quality scripts described in `core-skills/sql/README_SQL.md`
 - [ ] Add TypeScript to the Playwright suite
 - [ ] Add RestAssured (Java) API tests alongside the Selenium frameworks
 
