@@ -14,8 +14,8 @@ test.beforeAll(async ({ browser }) => {
     await page.getByRole('textbox', { name: 'Passsword' }).fill(process.env.SHOP_PASSWORD);
     await page.getByRole('button', { name: 'Login' }).click();
     await page.waitForLoadState('networkidle');
-    await context.storageState({ path: 'state.json' });
-    webContext = await browser.newContext({ storageState: 'state.json' });
+    await context.storageState({ path: 'playwright/.auth/state.json' });
+    webContext = await browser.newContext({ storageState: 'playwright/.auth/state.json' });
 
 })
 //skips the login and add products to the cart and continues
