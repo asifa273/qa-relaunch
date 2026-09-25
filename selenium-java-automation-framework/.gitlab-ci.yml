@@ -1,0 +1,32 @@
+stages: [build, test]
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  paths: [.m2/repository]
+
+build:
+  stage: build
+  image: maven:3.9-eclipse-temurin-17
+  script: mvn -B clean compile
+
+smoke:
+  stage: test
+  image: markhobson/maven-chrome:jdk-17
+  script: mvn -B test -DsuiteXmlFile=testng-smoke.xml -Dheadless=true
+  artifacts:
+    when: always
+    paths: [target/extent-report.html, target/screenshots/]
+    reports:
+      junit: target/surefire-reports/TEST-*.xml
+
+regression:
+  stage: test
+  image: markhobson/maven-chrome:jdk-17
+  script: mvn -B test -DsuiteXmlFile=testng.xml -Dheadless=true
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  artifacts:
+    when: always
+    paths: [target/]

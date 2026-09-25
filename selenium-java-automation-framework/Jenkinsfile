@@ -1,0 +1,54 @@
+// Declarative pipeline. Talking point: the suite is *gated* - smoke blocks the merge,
+// full regression runs nightly, and reports are archived as build artifacts.
+pipeline {
+    agent any
+
+    tools { maven 'Maven-3.9'; jdk 'JDK-17' }
+
+    parameters {
+        choice(name: 'SUITE',   choices: ['testng-smoke.xml', 'testng.xml'], description: 'Which suite')
+        choice(name: 'BROWSER', choices: ['chrome', 'firefox', 'edge'],      description: 'Browser')
+        string(name: 'BASE_URL', defaultValue: 'https://www.saucedemo.com/',  description: 'Env under test')
+    }
+
+    triggers { cron('H 2 * * 1-5') }   // nightly full regression on weekdays
+
+    options {
+        timeout(time: 45, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '20'))
+    }
+
+    stages {
+        stage('Checkout') {
+            steps { checkout scm }
+        }
+        stage('Build') {
+            steps { sh 'mvn -B clean compile' }
+        }
+        stage('Test') {
+            steps {
+                sh """
+                  mvn -B test \
+                    -DsuiteXmlFile=${params.SUITE} \
+                    -Dbrowser=${params.BROWSER} \
+                    -Dheadless=true \
+                    -Dbase.url=${params.BASE_URL}
+                """
+            }
+        }
+    }
+
+    post {
+        always {
+            junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
+            archiveArtifacts artifacts: 'target/extent-report.html, target/screenshots/*.png, target/cucumber-report.html',
+                             allowEmptyArchive: true
+            publishHTML(target: [reportDir: 'target', reportFiles: 'extent-report.html',
+                                 reportName: 'Extent Report', keepAll: true])
+        }
+        failure {
+            echo 'Regression failed - notifying the team channel.'
+            // slackSend(channel: '#qa-alerts', message: "Build ${env.BUILD_NUMBER} FAILED")
+        }
+    }
+}

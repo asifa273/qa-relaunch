@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!-- Fast gate for every pull request: mvn test -DsuiteXmlFile=testng-smoke.xml -->
+<suite name="Smoke Suite" parallel="methods" thread-count="2">
+    <listeners>
+        <listener class-name="com.qa.framework.listeners.TestListener"/>
+    </listeners>
+    <test name="Smoke">
+        <groups><run><include name="smoke"/></run></groups>
+        <packages>
+            <package name="com.qa.framework.tests"/>
+            <package name="com.qa.framework.api"/>
+        </packages>
+    </test>
+</suite>
