@@ -1,0 +1,5 @@
+1. Login Successful:  Login Successfully 
+ Thankyou for the order. 
+Confirmed in Order: [ 'ADIDAS ORIGINAL', 'ZARA COAT 3', 'iphone 13 pro' ]
+Expected from Catalog: [ 'ADIDAS ORIGINAL', 'ZARA COAT 3', 'iphone 13 pro' ]
+Verification Success: All ordered products match the catalog.

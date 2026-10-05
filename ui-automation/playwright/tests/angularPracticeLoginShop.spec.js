@@ -3,16 +3,17 @@ require('dotenv').config();
 
 const practiceUsername = process.env.PRACTICE_USERNAME;
 const practicePassword = process.env.PRACTICE_PASSWORD;
-const practiceFormName = process.env.PRACTICE_FORM_NAME;
-const practiceFormEmail = process.env.PRACTICE_FORM_EMAIL;
-const practiceFormPassword = process.env.PRACTICE_FORM_PASSWORD;
+const practiceFormName = process.env.PRACTICE_FORM_NAME ?? 'QA Practice User';
+const practiceFormEmail = process.env.PRACTICE_FORM_EMAIL ?? 'qa.practice@example.com';
+const practiceFormPassword = process.env.PRACTICE_FORM_PASSWORD ?? 'PracticePassword123!';
 
 //By providing {page} , we can skipp prvoding Context and New page , so playwright can go to website directly
 //async()=> is called a anonomous function, 
 //{page} is called fixture
 //By providing {browser} , we prvode explicitly Context and New page , so playwright can act as per provided
 //javascript - asynchronous - execute all steps together, or explicit tell step1 is completed, so give await
-test('login Page Practise', async ({ browser }) =>
+test.describe.configure({ mode: 'serial' });
+test('@Web login Page Practise', async ({ browser }) =>
 //function() is called anonomous function so write as async()=>
 //({browser}) is called fixture
 {
@@ -135,7 +136,7 @@ test('login Page Practise', async ({ browser }) =>
 );
 
 
-test('removing one cart item leaves the other three', async ({ page }) => {
+test('@Web removing one cart item leaves the other three', async ({ page }) => {
     await page.goto('https://rahulshettyacademy.com/angularpractice/shop');
 
     const productsToAdd = ['iphone X', 'Samsung Note 8', 'Nokia Edge', 'Blackberry'];

@@ -1,7 +1,7 @@
 const { test, expect, request } = require('@playwright/test');
-const { APIUtils } = require('./utils/APIUtils');
+const { APIUtils } = require('../utils/APIUtils');
 require('dotenv').config();
-const { requireEnv } = require('./utils/requireEnv');
+const { requireEnv } = require('../utils/requireEnv');
 
 requireEnv(test, 'SHOP_EMAIL', 'SHOP_PASSWORD');
 

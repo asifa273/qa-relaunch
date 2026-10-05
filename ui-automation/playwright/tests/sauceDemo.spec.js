@@ -1,6 +1,7 @@
 const { test, expect } = require('@playwright/test');
+// test.describe.configure({ mode: 'parallel' });
 
-test('Sauce Demo Login Failure', async ({ browser }) => {
+test('@Web Sauce Demo Login Failure', async ({ browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto("https://www.saucedemo.com/");
@@ -18,7 +19,7 @@ test('Sauce Demo Login Failure', async ({ browser }) => {
 
 
 });
-test('Sauce Demo Login Pass', async ({ browser }) => {
+test('@Web Sauce Demo Login Pass', async ({ browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto("https://www.saucedemo.com/");

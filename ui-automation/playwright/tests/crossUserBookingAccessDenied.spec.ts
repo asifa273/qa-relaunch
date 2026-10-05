@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import 'dotenv/config';
-import { requireEnv } from './utils/requireEnv';
+import { requireEnv } from '../utils/requireEnv';
 
 requireEnv(test, 'YAHOO_EMAIL', 'YAHOO_PASSWORD', 'GMAIL_EMAIL', 'GMAIL_PASSWORD');
 
@@ -18,7 +18,7 @@ const gmail_user: User = {
     password: process.env.GMAIL_PASSWORD ?? '',
 };
 const BASE_URL = 'https://eventhub.rahulshettyacademy.com';
-const API_URL = `${BASE_URL}/api`;
+const API_URL = 'https://api.eventhub.rahulshettyacademy.com/api';
 
 
 async function loginAs(page: Page, user: User): Promise<void> {
@@ -30,11 +30,13 @@ async function loginAs(page: Page, user: User): Promise<void> {
     await page.goto(`${BASE_URL}/events`);
 }
 //Step 1 — Login as Yahoo user via API  -
-test('gmail user sees Access Denied when viewing yahoo user booking', async ({ page, request }) => {
+test('@Web gmail user sees Access Denied when viewing yahoo user booking', async ({ page, request }) => {
     const loginResponse = await request.post(`${API_URL}/auth/login`, {
         data: { email: Yahoo_user.email, password: Yahoo_user.password },
     });
-    expect(loginResponse.ok()).toBeTruthy();
+    if (!loginResponse.ok()) {
+        throw new Error(`Yahoo API login failed (${loginResponse.status()}): ${await loginResponse.text()}`);
+    }
     const { token } = await loginResponse.json();
 
 

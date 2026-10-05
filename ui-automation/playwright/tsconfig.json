@@ -10,6 +10,9 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true
     },
+    "use": {
+        "headless": true
+    },
     "include": [
         "e2e/**/*.ts",
         "e2e/**/*.js",

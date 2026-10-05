@@ -32,9 +32,15 @@ module.exports = defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 
-    trace: 'on-first-retry',
+    trace: 'on',
     screenshot: 'only-on-failure',
+    // ignoreHTTPSErrors: true,
+    // permissions: ['geolocation'],
     video: 'retain-on-failure',
+    "use": {
+      "headless": false
+    },
+    // viewport: { width: 1280, height: 720 },
 
   },
 
@@ -43,6 +49,8 @@ module.exports = defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      // use: { ...devices['iPhone 12'] },
+
     },
 
     // {

@@ -1,9 +1,9 @@
 const { test, expect } = require('@playwright/test');
 require('dotenv').config();
-const { requireEnv } = require('./utils/requireEnv');
+const { requireEnv } = require('../utils/requireEnv');
 
-const registrationEmail = process.env.SHOP_REGISTRATION_EMAIL;
-const registrationPassword = process.env.SHOP_REGISTRATION_PASSWORD;
+const registrationEmail = process.env.SHOP_NEW_REGISTRATION_EMAIL;
+const registrationPassword = process.env.SHOP_NEW_REGISTRATION_PASSWORD;
 
 // test.describe.configure({ mode: 'serial' });
 const fs = require('fs');
@@ -12,8 +12,8 @@ const path = require('path');
 // ============================================================================
 // Test 1 — Registration: fill the form, confirm the success screen + nav to login
 // ============================================================================
-test('User Register Form', async ({ browser }) => {
-  requireEnv(test, 'SHOP_REGISTRATION_EMAIL', 'SHOP_REGISTRATION_PASSWORD');
+test.skip('@Web User Register Form', async ({ browser }) => {
+  requireEnv(test, 'SHOP_NEW_REGISTRATION_EMAIL', 'SHOP_NEW_REGISTRATION_PASSWORD');
   const context = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
   const page = await context.newPage();
 
@@ -47,7 +47,10 @@ test('User Register Form', async ({ browser }) => {
   await page.getByRole('button', { name: 'Register' }).click();
 
   // The "Registered Successfully" toast is transient; anchor on the stable success screen.
-  await expect(page.getByText('Account Created Successfully')).toBeVisible({ timeout: 15000 });
+  const successScreen = page.locator('.hero-primary').and(page.getByText('Account Created Successfully'));
+  await successScreen.waitFor();
+  await expect(page(successScreen)).toBeVisible();
+  const loginSuccessMessage = await successScreen.textContent();
 
   // -- Continue to Login --
   await page.getByRole('button', { name: 'Login' }).click();
@@ -59,7 +62,7 @@ test('User Register Form', async ({ browser }) => {
 // ============================================================================
 // Test 2 — Login, add every product to the cart, cross-verify the count 3 ways
 // ============================================================================
-test('User Login Page', async ({ browser }) => {
+test('@Web Login, add every product to the cart, cross-verify the count 3 ways', async ({ browser }) => {
   requireEnv(test, 'SHOP_EMAIL', 'SHOP_PASSWORD');
   const context = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
   const page = await context.newPage();

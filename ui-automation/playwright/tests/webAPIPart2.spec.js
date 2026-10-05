@@ -3,7 +3,7 @@
 
 const { test, expect } = require('@playwright/test');
 require('dotenv').config();
-const { requireEnv } = require('./utils/requireEnv');
+const { requireEnv } = require('../utils/requireEnv');
 
 requireEnv(test, 'SHOP_EMAIL', 'SHOP_PASSWORD');
 let webContext;
@@ -52,7 +52,7 @@ test('Add products to Cart', async () => {
     }
     await expect(page.locator('button[routerlink="/dashboard/cart"] label')).toHaveText(String(added));
 });
-test('Check titles in Cart', async () => {
+test('@Web Check titles in Cart', async () => {
     const page = await webContext.newPage();
     await page.goto('https://rahulshettyacademy.com/client/#/dashboard/cart');
 

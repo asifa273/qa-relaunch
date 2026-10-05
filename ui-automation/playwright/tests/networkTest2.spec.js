@@ -1,10 +1,10 @@
 const { test, expect } = require('@playwright/test');
 require('dotenv').config();
-const { requireEnv } = require('./utils/requireEnv');
+const { requireEnv } = require('../utils/requireEnv');
 
 requireEnv(test, 'SHOP_EMAIL', 'SHOP_PASSWORD');
 
-test('Security test request intercept', async ({ page }) => {
+test('@API Security test request intercept', async ({ page }) => {
     //login and reacg to orders page
     await page.goto('https://rahulshettyacademy.com/client/#/auth/login');
     await page.getByRole('textbox', { name: 'Email' }).fill(process.env.SHOP_EMAIL);

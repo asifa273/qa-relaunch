@@ -1,13 +1,13 @@
 const { test, expect } = require('@playwright/test');
 require('dotenv').config();
-const { requireEnv } = require('./utils/requireEnv');
+const { requireEnv } = require('../utils/requireEnv');
 
 const practiceUsername = process.env.PRACTICE_USERNAME;
 const practicePassword = process.env.PRACTICE_PASSWORD;
 
 
 // TEST 1: signIn flow → navigates to shop
-test('SignIn succeeds and navigates to shop', async ({ browser }) => {
+test('@Web SignIn succeeds and navigates to shop', async ({ browser }) => {
     requireEnv(test, 'PRACTICE_USERNAME', 'PRACTICE_PASSWORD');
     const context = await browser.newContext();
     const page = await context.newPage();
@@ -35,7 +35,7 @@ test('SignIn succeeds and navigates to shop', async ({ browser }) => {
 });
 
 // TEST 2: child window / new tab handling
-test('Blinking Text opens a new tab', async ({ browser }) => {
+test('@Web Blinking Text opens a new tab', async ({ browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto('https://rahulshettyacademy.com/loginpagePractise/');
@@ -57,7 +57,7 @@ test('Blinking Text opens a new tab', async ({ browser }) => {
 /*
 const { test, expect } = require('@playwright/test');
 const console = require('node:console');
-test('login Pass', async ({ page }) => {
+test('@Web login Pass', async ({ page }) => {
     await page.goto('https://rahulshettyacademy.com/loginpagePractise/');
 
     // await expect(page.getByText('Username:')).toBeVisible();
