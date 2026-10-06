@@ -3,6 +3,10 @@
         "target": "ESNext",
         "module": "ESNext",
         "moduleResolution": "bundler",
+        "types": [
+            "node",
+            "@playwright/test"
+        ],
         "strict": true,
         "allowJs": true,
         "checkJs": false,

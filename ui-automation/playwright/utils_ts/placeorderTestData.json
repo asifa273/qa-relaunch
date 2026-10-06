@@ -1,0 +1,19 @@
+[
+    {
+        "validUseCase": "E-Commerce Automation Practice of valid information of shopping orders and placement",
+        "testData": {
+            "SHOP_EMAIL": "asifatesting@gmail.com",
+            "SHOP_PASSWORD": "Seppass123*"
+        }
+    },
+    {
+        "invalidUseCase": "E-Commerce Automation Practice of Invalid login of shopping orders and placement",
+        "invalidLogin": {
+            "testData": {
+                "SHOP_INVALIDEMAIL": "invalid@example.com",
+                "SHOP_INVALIDPASSWORD": "invalid123!"
+            }
+        }
+    
+    }
+]
