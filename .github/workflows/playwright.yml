@@ -58,7 +58,6 @@ jobs:
     - name: Run Playwright tests
       run: npx playwright test --config=playwright.service.config.ts --workers=4
 
-
     - uses: actions/upload-artifact@v6
       if: ${{ !cancelled() }}
       with:
@@ -67,8 +66,9 @@ jobs:
         retention-days: 30
 
   azure-playwright:
-  if: >-
-    (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && vars.RUN_AZURE_PLAYWRIGHT == 'true')) && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    if: >-
+      (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && vars.RUN_AZURE_PLAYWRIGHT == 'true')) &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     timeout-minutes: 60
     runs-on: ubuntu-latest
     permissions:
