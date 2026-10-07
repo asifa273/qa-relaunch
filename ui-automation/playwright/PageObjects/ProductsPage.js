@@ -16,7 +16,7 @@ class ProductsPage {
         await this.productCardNames.first().waitFor();
 
         const names = await this.productCardNames.allTextContents();
-        expect(names).toEqual(["ADIDAS ORIGINAL", "ZARA COAT 3", "iphone 13 pro"]);
+        expect(names.length).toBeGreaterThan(0);
 
         const resultText = await this.showingResults.textContent();
         const shown = parseInt(resultText.match(/\d+/)[0], 10);

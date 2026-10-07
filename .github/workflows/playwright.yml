@@ -4,6 +4,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
 jobs:
   test:
     timeout-minutes: 60
@@ -55,10 +56,85 @@ jobs:
           "PRACTICE_FORM_EMAIL=$PRACTICE_FORM_EMAIL" \
           "PRACTICE_FORM_PASSWORD=$PRACTICE_FORM_PASSWORD" > .env
     - name: Run Playwright tests
-      run: npx playwright test
+      run: npx playwright test --config=playwright.service.config.ts --workers=4
+
+
     - uses: actions/upload-artifact@v6
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
+        path: ui-automation/playwright/playwright-report/
+        retention-days: 30
+
+  azure-playwright:
+    if: >-
+      (github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && vars.RUN_AZURE_PLAYWRIGHT == 'true')) &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        working-directory: ui-automation/playwright
+    steps:
+    - uses: actions/checkout@v5
+    - uses: actions/setup-node@v5
+      with:
+        node-version: lts/*
+    - name: Install dependencies
+      run: npm ci
+    - name: Login to Azure with OIDC
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    - name: Create test environment
+      env:
+        SHOP_EMAIL: ${{ secrets.SHOP_EMAIL }}
+        SHOP_PASSWORD: ${{ secrets.SHOP_PASSWORD }}
+        SHOP_REGISTRATION_EMAIL: ${{ secrets.SHOP_REGISTRATION_EMAIL }}
+        SHOP_REGISTRATION_PASSWORD: ${{ secrets.SHOP_REGISTRATION_PASSWORD }}
+        EVENTS_EMAIL: ${{ secrets.EVENTS_EMAIL }}
+        EVENTS_PASSWORD: ${{ secrets.EVENTS_PASSWORD }}
+        GMAIL_EMAIL: ${{ secrets.GMAIL_EMAIL }}
+        GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+        YAHOO_EMAIL: ${{ secrets.YAHOO_EMAIL }}
+        YAHOO_PASSWORD: ${{ secrets.YAHOO_PASSWORD }}
+        PRACTICE_USERNAME: ${{ secrets.PRACTICE_USERNAME }}
+        PRACTICE_PASSWORD: ${{ secrets.PRACTICE_PASSWORD }}
+        PRACTICE_FORM_NAME: ${{ secrets.PRACTICE_FORM_NAME }}
+        PRACTICE_FORM_EMAIL: ${{ secrets.PRACTICE_FORM_EMAIL }}
+        PRACTICE_FORM_PASSWORD: ${{ secrets.PRACTICE_FORM_PASSWORD }}
+      run: |
+        printf '%s\n' \
+          "SHOP_EMAIL=$SHOP_EMAIL" \
+          "SHOP_PASSWORD=$SHOP_PASSWORD" \
+          "SHOP_REGISTRATION_EMAIL=$SHOP_REGISTRATION_EMAIL" \
+          "SHOP_REGISTRATION_PASSWORD=$SHOP_REGISTRATION_PASSWORD" \
+          "EVENTS_EMAIL=$EVENTS_EMAIL" \
+          "EVENTS_PASSWORD=$EVENTS_PASSWORD" \
+          "GMAIL_EMAIL=$GMAIL_EMAIL" \
+          "GMAIL_PASSWORD=$GMAIL_PASSWORD" \
+          "YAHOO_EMAIL=$YAHOO_EMAIL" \
+          "YAHOO_PASSWORD=$YAHOO_PASSWORD" \
+          "PRACTICE_USERNAME=$PRACTICE_USERNAME" \
+          "PRACTICE_PASSWORD=$PRACTICE_PASSWORD" \
+          "PRACTICE_FORM_NAME=$PRACTICE_FORM_NAME" \
+          "PRACTICE_FORM_EMAIL=$PRACTICE_FORM_EMAIL" \
+          "PRACTICE_FORM_PASSWORD=$PRACTICE_FORM_PASSWORD" > .env
+    - name: Run tests on Azure Playwright Workspaces
+      env:
+        PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL }}
+      run: |
+        test -n "$PLAYWRIGHT_SERVICE_URL"
+        npx playwright test --config=playwright.service.config.ts --workers=5
+    - uses: actions/upload-artifact@v6
+      if: ${{ !cancelled() }}
+      with:
+        name: azure-playwright-report
         path: ui-automation/playwright/playwright-report/
         retention-days: 30

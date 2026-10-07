@@ -1,0 +1,46 @@
+pipeline {
+  agent any
+
+  tools {
+    nodejs 'Node 20'
+  }
+
+  stages {
+    stage('Install dependencies') {
+      steps {
+        dir('ui-automation/playwright') {
+          sh 'npm ci'
+        }
+      }
+    }
+
+    stage('Install Playwright browsers') {
+      steps {
+        dir('ui-automation/playwright') {
+          sh 'npx playwright install --with-deps chromium'
+        }
+      }
+    }
+
+    stage('Run Playwright tests on Azure service') {
+      steps {
+        dir('ui-automation/playwright') {
+          withCredentials([
+            string(credentialsId: 'PLAYWRIGHT_SERVICE_URL', variable: 'PLAYWRIGHT_SERVICE_URL'),
+            string(credentialsId: 'PLAYWRIGHT_SERVICE_ACCESS_TOKEN', variable: 'PLAYWRIGHT_SERVICE_ACCESS_TOKEN')
+          ]) {
+            sh 'npx playwright test --config=playwright.service.config.ts --workers=20'
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      dir('ui-automation/playwright') {
+        archiveArtifacts allowEmptyArchive: true, artifacts: 'playwright-report/**, test-results/**, allure-results/**', fingerprint: true
+      }
+    }
+  }
+}

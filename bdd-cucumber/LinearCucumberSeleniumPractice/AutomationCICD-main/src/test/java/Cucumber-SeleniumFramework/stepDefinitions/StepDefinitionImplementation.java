@@ -1,4 +1,4 @@
-package rahulshettyacademy.stepDefinitions;
+package cucumber.seleniumframework.stepdefinitions;
 
 import java.io.IOException;
 import java.util.List;

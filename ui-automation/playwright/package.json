@@ -11,13 +11,16 @@
     "test:report": "allure generate allure-results --clean -o allure-report && allure open allure-report",
     "test:report:open": "allure open allure-report",
     "webTest": "npx playwright test --grep @Web",
-    "APITest": "npx playwright test --grep @API"
+    "APITest": "npx playwright test --grep @API",
+    "cucumberregression": "npx cucumber-js --tags '@Regression' --retry 1 --exit"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@azure/identity": "^4.13.3",
+    "@azure/playwright": "^1.1.6",
     "@playwright/test": "^1.63.0",
     "@types/node": "^25.9.9",
     "allure-playwright": "^3.13.0",
@@ -25,6 +28,7 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
+    "@cucumber/cucumber": "^13.3.0",
     "exceljs": "^4.4.0"
   },
   "overrides": {

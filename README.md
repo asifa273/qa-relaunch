@@ -92,6 +92,14 @@ npx playwright test --headed # visible browser
 
 CI expects these GitHub Actions secrets: `SHOP_EMAIL`, `SHOP_PASSWORD`, `SHOP_REGISTRATION_EMAIL`, `SHOP_REGISTRATION_PASSWORD`, `EVENTS_EMAIL`, `EVENTS_PASSWORD`, `GMAIL_EMAIL`, `GMAIL_PASSWORD`, `YAHOO_EMAIL`, `YAHOO_PASSWORD`, `PRACTICE_USERNAME`, `PRACTICE_PASSWORD`, `PRACTICE_FORM_NAME`, `PRACTICE_FORM_EMAIL`, and `PRACTICE_FORM_PASSWORD`.
 
+The workflow can also run this suite on Azure Playwright Workspaces. Create an Entra app registration with a GitHub federated credential for `repo:asifa273/qa-relaunch:ref:refs/heads/main` (and `master` if used), then grant its service principal the **Playwright Workspace Contributor** role on the workspace. Add `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`, and `PLAYWRIGHT_SERVICE_URL` as repository secrets. Add this repository variable to run Azure tests automatically on pushes:
+
+| Variable | Value |
+|---|---|
+| `RUN_AZURE_PLAYWRIGHT` | `true` to run on pushes |
+
+The Azure job can also be started manually from the Actions tab on `main` or `master`. It uses Entra ID via OIDC and does not need a Playwright access-token secret.
+
 ### 🤖 AI Defect Resolver — QA meets GenAI
 An AI-driven defect-resolution workflow powered by the **Claude API**:
 

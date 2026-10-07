@@ -15,6 +15,7 @@ for (const data of dataSet) {
             const poManager = new POManager(page);
 
             // 1. Login via Page Object
+
             const loginPage = poManager.getLoginPage();
             await loginPage.goTo();
             await loginPage.validLogin(data.testData.SHOP_EMAIL, data.testData.SHOP_PASSWORD);
@@ -23,6 +24,7 @@ for (const data of dataSet) {
             // 2. Add to cart & Navigate to Cart via Page Object
             const productsPage = poManager.getProductsPage();
             const catalogProducts = await productsPage.addAllProductsToCart();
+            console.log(`2.Entered into Products Page ${catalogProducts}`);
 
             // 3. Checkout
             const cartPage = poManager.getCartPage();
@@ -67,7 +69,7 @@ for (const data of dataSet) {
             const loginPage = poManager.getLoginPage();
             await loginPage.goTo();
             await loginPage.validLogin(testDataForOrder.differentEmail, testDataForOrder.differentPassword);
-            console.log(`1. Login Successful: ${await loginPage.getLoginSuccessMessage()}`);
+            console.log(`1a. Login Successful: ${await loginPage.getLoginSuccessMessage()}`);
             expect(await loginPage.getLoginSuccessMessage()).toContain('Login Successfully');
         });
     }
@@ -83,7 +85,7 @@ for (const data of dataSet) {
             const loginPage = poManager.getLoginPage();
             await loginPage.goTo();
             await loginPage.invalidLogin(data.invalidLogin.testData.SHOP_INVALIDEMAIL, data.invalidLogin.testData.SHOP_INVALIDPASSWORD);
-            console.log(`2..Login Failure: ${await loginPage.getInvalidLoginMessage()}`);
+            console.log(`1b..Login Failure: ${await loginPage.getInvalidLoginMessage()}`);
         });
     }
 }

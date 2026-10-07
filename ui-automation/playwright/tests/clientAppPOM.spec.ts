@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 import { test, expect } from '@playwright/test';
-import { POManager } from '../PageObjects_ts/POManager';
+import { POManager } from '../PageObjects_ts/1-5.POManager';
 const dataSet = JSON.parse(JSON.stringify(require('../utils/placeorderTestData.json')));
 import { customtest } from '../utils/test-base';
 
@@ -24,7 +24,7 @@ for (const data of dataSet) {
             const productsPage = poManager.getProductsPage();
             const catalogProducts = await productsPage.addAllProductsToCart();
 
-            // 3. Checkout
+            // 3. Checkout/Cart Page
             const cartPage = poManager.getCartPage();
             await cartPage.navigateToCart();
             await cartPage.fromcheckOuttoPayment();
@@ -46,8 +46,10 @@ for (const data of dataSet) {
             const sortedConfirmed = [...confirmedProductNames].sort();
             const sortedCatalog = [...catalogProducts].sort();
 
-            console.log('Confirmed in Order:', sortedConfirmed);
-            console.log('Expected from Catalog:', sortedCatalog);
+            console.log('Confirmed in Order:', sortedConfirmed); // Log the confirmed product names from the order summary/thank-you page
+            console.log('Expected from Catalog:', sortedCatalog); // Log the expected product names from the catalog/products page
+
+            // Assert that the confirmed product names match the expected catalog product names
 
             await expect(sortedConfirmed).toEqual(sortedCatalog);
 
