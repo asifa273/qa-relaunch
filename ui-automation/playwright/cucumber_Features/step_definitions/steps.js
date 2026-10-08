@@ -38,13 +38,18 @@ When('I log in with valid credentials', async function () {
     const successMessage = await this.loginPage.getLoginSuccessMessage()
     console.log(`[Login Page] Login response: ${successMessage}`);
 });
-When('I log in with this credentials {string} and {string}', async function (username, password) {
+When('I log in with the credentials from env {string} and {string}', async function (emailVar, passwordVar) {
+    const username = process.env[emailVar];
+    const password = process.env[passwordVar];
+    if (!username || !password) {
+        console.log(`[Login Page] Skipping: set ${emailVar} and ${passwordVar} (.env or GitHub secrets)`);
+        return 'skipped';
+    }
     await this.loginPage.validLogin(username, password);
     const loginMessage = await this.loginPage.getLoginSuccessMessage();
     expect(loginMessage).toContain('Login Successfully');
     console.log(`[Login Page] Login message: ${loginMessage}`);
-    console.log(`[Login Page] username is: ${username}`);
-    console.log(`[Login Page] password is: ${password}`);
+    console.log(`[Login Page] Logged in using ${emailVar}`);
 });
 
 Then('I should see a {string} message for either successful login or invalid login', async function (toastAlert) {
