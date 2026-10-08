@@ -12,13 +12,14 @@ export const customtest = baseTest.extend<{
     };
 }>({
     testDataForOrder: async ({ }, use) => {
+        // Values come from .env / GitHub secrets; empty strings let specs skip when unset.
         await use({
-            differentEmail: 'anshika@gmail.com',
-            differentPassword: 'Iamking@000',
-            EVENTS_EMAIL: 'student@example.com',
-            EVENTS_PASSWORD: 'secret123',
-            GMAIL_EMAIL: 'student786@gmail.com',
-            GMAIL_PASSWORD: 'secret123*',
+            differentEmail: process.env.SHOP_ALT_EMAIL ?? '',
+            differentPassword: process.env.SHOP_ALT_PASSWORD ?? '',
+            EVENTS_EMAIL: process.env.EVENTS_EMAIL ?? '',
+            EVENTS_PASSWORD: process.env.EVENTS_PASSWORD ?? '',
+            GMAIL_EMAIL: process.env.GMAIL_EMAIL ?? '',
+            GMAIL_PASSWORD: process.env.GMAIL_PASSWORD ?? '',
         });
     },
 });
