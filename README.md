@@ -78,9 +78,10 @@ mvn test
 ### 🎭 Playwright E2E Suite
 Browser end-to-end tests against practice e-commerce and sign-in sites.
 - **Specs:** SauceDemo login (pass/fail), shop flow, sign-in, user registration, Angular practice, API/UI authorization checks
-- **Config:** parallel execution on Chromium, HTML reporter, trace/screenshot/video **on failure**, retries on CI
+- **Config:** parallel execution on Chromium, HTML reporter, trace on every run, screenshot/video on failure, retries on CI
 - **CI:** GitHub Actions (`playwright.yml`) runs on every push/PR and uploads the HTML report as an artifact
 - **Stack:** JavaScript + TypeScript · @playwright/test 1.63
+- **How the code is split:** Playwright Test specs (`tests/`) are being moved to TypeScript and use `PageObjects_ts/` and `utils_ts/`. The Cucumber BDD run (`cucumber_Features/`, `.cucumber.js`) uses the JavaScript `PageObjects/` and `utils/`, so those folders stay as JS on purpose.
 
 ```bash
 cd ui-automation/playwright

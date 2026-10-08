@@ -1,23 +1,42 @@
-require('dotenv').config();
+try {
+    require('dotenv').config();
+} catch {
+    // Load .env without requiring dotenv to be installed.
+    const fs = require('node:fs');
+    const envFile = `${process.cwd()}/.env`;
+    if (fs.existsSync(envFile)) {
+        for (const line of fs.readFileSync(envFile, 'utf8').split(/\r?\n/)) {
+            const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)\s*$/);
+            if (match && process.env[match[1]] === undefined) {
+                process.env[match[1]] = match[2].replace(/^(['"])(.*)\1$/, '$2').replace(/\s+#.*$/, '');
+            }
+        }
+    }
+}
 
 import { test, expect } from '@playwright/test';
 import { POManager } from '../PageObjects_ts/1-5.POManager';
-const dataSet = JSON.parse(JSON.stringify(require('../utils/placeorderTestData.json')));
+// Scenario names and fake invalid-login values live in the JSON; real credentials come from .env / GitHub secrets.
+interface Scenario {
+    validUseCase?: string;
+    testData?: Record<string, string>;
+    invalidUseCase?: string;
+    invalidLogin?: { testData: { SHOP_INVALIDEMAIL: string; SHOP_INVALIDPASSWORD: string } };
+}
+const dataSet: Scenario[] = require('../utils/placeorderTestData.json');
 import { customtest } from '../utils/test-base';
 
 for (const data of dataSet) {
 
     if (data.testData) {
-        test(`@Web POM client App for ${data.validUseCase}`, async ({ page }: any) => {
-            const productName = 'ZARA COAT 3';
-            const allProductNames = ["ADIDAS ORIGINAL", "ZARA COAT 3", "iphone 13 pro"];
-            const paymentCredittypes = ['Credit CardPaypalSEPAInvoice'];
+        test(`@Web POM client App for ${data.validUseCase}`, async ({ page }) => {
+            test.skip(!process.env.SHOP_EMAIL || !process.env.SHOP_PASSWORD, 'Set SHOP_EMAIL and SHOP_PASSWORD (.env or GitHub secrets)');
             const poManager = new POManager(page);
 
             // 1. Login via Page Object
             const loginPage = poManager.getLoginPage();
             await loginPage.goTo();
-            await loginPage.validLogin(data.testData.SHOP_EMAIL, data.testData.SHOP_PASSWORD);
+            await loginPage.validLogin(process.env.SHOP_EMAIL ?? '', process.env.SHOP_PASSWORD ?? '');
             console.log(`1. Login Successful: ${await loginPage.getLoginSuccessMessage()}`);
 
             // 2. Add to cart & Navigate to Cart via Page Object
@@ -63,6 +82,7 @@ for (const data of dataSet) {
             const productName = 'ZARA COAT 3';
             const allProductNames = ["ADIDAS ORIGINAL", "ZARA COAT 3", "iphone 13 pro"];
             const paymentCredittypes = ['Credit CardPaypalSEPAInvoice'];
+            customtest.skip(!testDataForOrder.differentEmail || !testDataForOrder.differentPassword, 'Set SHOP_ALT_EMAIL and SHOP_ALT_PASSWORD');
             const poManager = new POManager(page);
 
             // 1. Login via Page Object
@@ -74,7 +94,8 @@ for (const data of dataSet) {
         });
     }
 
-    if (data.invalidLogin) {
+    const invalid = data.invalidLogin;
+    if (invalid) {
         test(`@Web Invalid ${data.invalidUseCase}`, async ({ page }: { page: import('@playwright/test').Page }) => {
             const productName = 'ZARA COAT 3';
             const allProductNames = ["ADIDAS ORIGINAL", "ZARA COAT 3", "iphone 13 pro"];
@@ -84,7 +105,7 @@ for (const data of dataSet) {
             // 1. Login via Page Object
             const loginPage = poManager.getLoginPage();
             await loginPage.goTo();
-            await loginPage.invalidLogin(data.invalidLogin.testData.SHOP_INVALIDEMAIL, data.invalidLogin.testData.SHOP_INVALIDPASSWORD);
+            await loginPage.invalidLogin(invalid.testData.SHOP_INVALIDEMAIL, invalid.testData.SHOP_INVALIDPASSWORD);
             console.log(`2..Login Failure: ${await loginPage.getInvalidLoginMessage()}`);
         });
     }
