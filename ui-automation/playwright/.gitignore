@@ -65,3 +65,6 @@ htmlcov/
 /playwright/.cache/
 # Saved login state (storageState) holds live session tokens: never commit
 **/.auth/
+
+# Cucumber HTML report (regenerated on every run)
+cucumber-report.html
