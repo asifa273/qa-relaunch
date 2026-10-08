@@ -25,6 +25,8 @@ jobs:
       env:
         SHOP_EMAIL: ${{ secrets.SHOP_EMAIL }}
         SHOP_PASSWORD: ${{ secrets.SHOP_PASSWORD }}
+        SHOP_ALT_EMAIL: ${{ secrets.SHOP_ALT_EMAIL }}
+        SHOP_ALT_PASSWORD: ${{ secrets.SHOP_ALT_PASSWORD }}
         SHOP_REGISTRATION_EMAIL: ${{ secrets.SHOP_REGISTRATION_EMAIL }}
         SHOP_REGISTRATION_PASSWORD: ${{ secrets.SHOP_REGISTRATION_PASSWORD }}
         EVENTS_EMAIL: ${{ secrets.EVENTS_EMAIL }}
@@ -42,6 +44,8 @@ jobs:
         printf '%s\n' \
           "SHOP_EMAIL=$SHOP_EMAIL" \
           "SHOP_PASSWORD=$SHOP_PASSWORD" \
+          "SHOP_ALT_EMAIL=$SHOP_ALT_EMAIL" \
+          "SHOP_ALT_PASSWORD=$SHOP_ALT_PASSWORD" \
           "SHOP_REGISTRATION_EMAIL=$SHOP_REGISTRATION_EMAIL" \
           "SHOP_REGISTRATION_PASSWORD=$SHOP_REGISTRATION_PASSWORD" \
           "EVENTS_EMAIL=$EVENTS_EMAIL" \
@@ -94,6 +98,8 @@ jobs:
       env:
         SHOP_EMAIL: ${{ secrets.SHOP_EMAIL }}
         SHOP_PASSWORD: ${{ secrets.SHOP_PASSWORD }}
+        SHOP_ALT_EMAIL: ${{ secrets.SHOP_ALT_EMAIL }}
+        SHOP_ALT_PASSWORD: ${{ secrets.SHOP_ALT_PASSWORD }}
         SHOP_REGISTRATION_EMAIL: ${{ secrets.SHOP_REGISTRATION_EMAIL }}
         SHOP_REGISTRATION_PASSWORD: ${{ secrets.SHOP_REGISTRATION_PASSWORD }}
         EVENTS_EMAIL: ${{ secrets.EVENTS_EMAIL }}
@@ -111,6 +117,8 @@ jobs:
         printf '%s\n' \
           "SHOP_EMAIL=$SHOP_EMAIL" \
           "SHOP_PASSWORD=$SHOP_PASSWORD" \
+          "SHOP_ALT_EMAIL=$SHOP_ALT_EMAIL" \
+          "SHOP_ALT_PASSWORD=$SHOP_ALT_PASSWORD" \
           "SHOP_REGISTRATION_EMAIL=$SHOP_REGISTRATION_EMAIL" \
           "SHOP_REGISTRATION_PASSWORD=$SHOP_REGISTRATION_PASSWORD" \
           "EVENTS_EMAIL=$EVENTS_EMAIL" \
