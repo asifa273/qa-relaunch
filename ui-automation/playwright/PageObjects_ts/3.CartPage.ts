@@ -20,6 +20,7 @@ export class CartPage {
     }
     async fromcheckOuttoPayment() {
         await this.checkoutButton.click();
+        await this.page.waitForLoadState('networkidle');
 
     }
 }
