@@ -86,7 +86,10 @@ export class PaymentOrdersPage {
         await this.typeCountryNameDropDown.waitFor();
         await this.typeCountryNameDropDown.click();
 
-        await this.placeOrderButton.click();
+        await Promise.all([
+            this.page.waitForURL(/\/dashboard\/thanks/, { timeout: 20000 }),
+            this.placeOrderButton.click(),
+        ]);
 
     }
 }

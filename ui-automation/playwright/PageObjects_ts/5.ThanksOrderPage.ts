@@ -16,10 +16,8 @@ export class ThanksOrderPage {
     }
 
     async verifyThankYouSection() {
-        // Allow for hash-routing or order confirmation URL
-        await expect(this.page).toHaveURL(/.*dashboard\/(thanks|order)/, { timeout: 10000 });
-        // Or verify the primary header directly:
-        await expect(this.page.locator('.hero-primary')).toHaveText(' Thankyou for the order. ');
+        await expect(this.page).toHaveURL(/\/dashboard\/thanks/);
+        await expect(this.thankyouTitle).toBeVisible();
         const orderMessage = await this.orderTextMessage.textContent();
         console.log(orderMessage);
     }
