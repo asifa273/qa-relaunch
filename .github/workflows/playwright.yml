@@ -61,7 +61,7 @@ jobs:
             "PRACTICE_FORM_EMAIL=$PRACTICE_FORM_EMAIL" \
             "PRACTICE_FORM_PASSWORD=$PRACTICE_FORM_PASSWORD" > .env
       - name: Run Playwright tests
-        run: npx playwright test --config=playwright.service.config.ts --workers=4
+        run: npx playwright test --config=playwright.service.config.ts
       - uses: actions/upload-artifact@v6
         if: ${{ !cancelled() }}
         with:
@@ -137,7 +137,7 @@ jobs:
           PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL }}
         run: |
           test -n "$PLAYWRIGHT_SERVICE_URL"
-          npx playwright test --config=playwright.service.config.ts --workers=5
+          npx playwright test --config=playwright.service.config.ts
       - uses: actions/upload-artifact@v6
         if: ${{ !cancelled() }}
         with:

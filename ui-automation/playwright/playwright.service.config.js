@@ -1,7 +1,7 @@
 const { defineConfig } = require('@playwright/test');
 const baseConfig = require('./playwright.config');
 
-const serviceEnabled = !!process.env.PLAYWRIGHT_SERVICE_URL && !!process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN;
+const serviceEnabled = !!process.env.PLAYWRIGHT_SERVICE_URL;
 
 let azureConfig = {};
 let reporter = [['html', { open: 'never' }]];
