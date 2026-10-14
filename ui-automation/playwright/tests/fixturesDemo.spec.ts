@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import { customtest } from '../utils_ts/fixtures';
 import { requireEnv } from '../utils/requireEnv.js';
 
-requireEnv(customtest, 'userEmail', 'userPassword');
+requireEnv(customtest, 'SHOP_EMAIL', 'SHOP_PASSWORD');
 
 customtest('@Web Fixtures Demo', async ({ authenticatedPage, createOrder }) => {
     await authenticatedPage.goto("https://rahulshettyacademy.com/client");

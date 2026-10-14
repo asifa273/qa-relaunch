@@ -51,6 +51,7 @@ export class ProductsPage {
      * Adds all visible products sequentially, safely handling UI toast overlays.
      */
     async addAllProductsToCart(): Promise<string[]> {
+        await expect(this.productCards.first()).toBeVisible();
         const count = await this.productCards.count();
         const names: string[] = [];
 

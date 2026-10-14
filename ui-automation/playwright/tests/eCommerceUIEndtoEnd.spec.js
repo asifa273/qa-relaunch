@@ -49,8 +49,7 @@ test.skip('@Web User Register Form', async ({ browser }) => {
   // The "Registered Successfully" toast is transient; anchor on the stable success screen.
   const successScreen = page.locator('.hero-primary').and(page.getByText('Account Created Successfully'));
   await successScreen.waitFor();
-  await expect(page(successScreen)).toBeVisible();
-  const loginSuccessMessage = await successScreen.textContent();
+  await expect(successScreen).toBeVisible();
 
   // -- Continue to Login --
   await page.getByRole('button', { name: 'Login' }).click();
@@ -138,7 +137,7 @@ test('@Web Login, add every product to the cart, cross-verify the count 3 ways',
   // -- Select a payment method (Credit Card) and fill the form --
   await expect(page.getByText('Credit Card Number')).toBeVisible();
   await page.getByRole('textbox').first().fill('4111 1111 1111 1111');
-  await page.getByText('Expiry Date').isVisible();
+  await expect(page.getByText('Expiry Date')).toBeVisible();
   await page.getByRole('combobox').first().selectOption('12');
   await page.locator('select.ddl').last().selectOption('31');
   await expect(page.getByText('CVV Code ?')).toBeVisible();
@@ -164,17 +163,14 @@ test('@Web Login, add every product to the cart, cross-verify the count 3 ways',
   await expect(page.locator('h1.hero-primary').and(page.getByText('Thankyou for the order.'))).toBeVisible();
   const productSummary = page.locator('.order-summary');   // ✅ this is a LOCATOR (no await)
   await expect(productSummary.getByText('ADIDAS ORIGINAL')).toBeVisible();
-  // or simpler:
-  await expect(productSummary).toContainText('ADIDAS ORIGINAL');
-  await expect(productSummary.getByText('ADIDAS ORIGINAL')).toBeVisible();
   await expect(productSummary.getByText('ZARA COAT 3')).toBeVisible();
   await expect(productSummary.getByText('iphone 13 pro')).toBeVisible();
 
   // 1. Grab the invoice numbers shown on the CURRENT PAGE
   const pageInvoiceText = await page.locator('.em-spacer-1, td.content-wrap').first().innerText();
-  const invoice = pageInvoiceText.match(/[0-9a-f]{24}/)[0];   // first 24-char id on the page
-  await expect(pageInvoiceText).toContain(invoice);        // the 24-char hex ids
-  await expect(pageInvoiceText).toContain(invoice);
+  const invoiceMatch = pageInvoiceText.match(/[0-9a-f]{24}/);   // first 24-char id on the page
+  expect(invoiceMatch, 'Expected a 24-character invoice id on the order page').not.toBeNull();
+  const invoice = invoiceMatch[0];
 
   // 1. Download the CSV
   const downloadPromise = page.waitForEvent('download');
@@ -182,7 +178,6 @@ test('@Web Login, add every product to the cart, cross-verify the count 3 ways',
   const download = await downloadPromise;
   const csvPath = path.join(__dirname, 'order.csv');
   await download.saveAs(csvPath);
-  await download.saveAs('order.csv');
 
   // --- Read and parse the CSV ---
   const csvContent = fs.readFileSync(csvPath, 'utf8');

@@ -3,8 +3,8 @@ import type { APIRequestContext, APIResponse } from '@playwright/test';
 
 
 interface LoginPayload {
-    email: string;
-    password: string;
+    userEmail: string;
+    userPassword: string;
 }
 
 interface OrderPayload {

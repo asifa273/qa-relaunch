@@ -8,8 +8,8 @@ import { } from './EventsFixture';
 require('dotenv').config();
 
 const loginPayLoad = {
-    email: process.env.SHOP_EMAIL,
-    password: process.env.SHOP_PASSWORD,
+    userEmail: process.env.SHOP_EMAIL,
+    userPassword: process.env.SHOP_PASSWORD,
 };
 const orderPayLoad = { orders: [{ country: "United States", productOrderedId: "6960eac0c941646b7a8b3e68" }] };
 

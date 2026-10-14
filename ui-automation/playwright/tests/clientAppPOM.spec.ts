@@ -78,17 +78,19 @@ for (const data of dataSet) {
     }
 
     if (data.testData) {
-        customtest(`@Web Valid Login with different email for ${data.validUseCase}`, async ({ page, testDataForOrder }: any) => {
+        customtest(`@Web Valid Login with configured shop credentials for ${data.validUseCase}`, async ({ page, testDataForOrder }: any) => {
             const productName = 'ZARA COAT 3';
             const allProductNames = ["ADIDAS ORIGINAL", "ZARA COAT 3", "iphone 13 pro"];
             const paymentCredittypes = ['Credit CardPaypalSEPAInvoice'];
-            customtest.skip(!testDataForOrder.differentEmail || !testDataForOrder.differentPassword, 'Set SHOP_ALT_EMAIL and SHOP_ALT_PASSWORD');
+            const email = testDataForOrder.differentEmail || process.env.SHOP_EMAIL || '';
+            const password = testDataForOrder.differentPassword || process.env.SHOP_PASSWORD || '';
+            customtest.skip(!email || !password, 'Set SHOP_EMAIL and SHOP_PASSWORD');
             const poManager = new POManager(page);
 
             // 1. Login via Page Object
             const loginPage = poManager.getLoginPage();
             await loginPage.goTo();
-            await loginPage.validLogin(testDataForOrder.differentEmail, testDataForOrder.differentPassword);
+            await loginPage.validLogin(email, password);
             console.log(`1. Login Successful: ${await loginPage.getLoginSuccessMessage()}`);
             expect(await loginPage.getLoginSuccessMessage()).toContain('Login Successfully');
         });
