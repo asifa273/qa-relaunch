@@ -35,7 +35,7 @@ async function readExcel(worksheet, searchText) {
 test('@Web upload download excel file', async ({ page }) => {
     const textSearch = 'Mango';
     const updatedValue = '350';
-    const filePath = '/Users/asifabegum/downloads/download.xlsx';
+    const filePath = testInfo.outputPath('download.xlsx');
 
     // const filePath = path.join(__dirname, 'download.xlsx');
     await page.goto("https://rahulshettyacademy.com/upload-download-test/index.html");
