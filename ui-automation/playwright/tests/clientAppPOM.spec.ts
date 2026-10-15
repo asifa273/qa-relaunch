@@ -14,6 +14,8 @@ try {
     }
 }
 
+
+
 import { test, expect } from '@playwright/test';
 import { POManager } from '../PageObjects_ts/1-5.POManager';
 // Scenario names and fake invalid-login values live in the JSON; real credentials come from .env / GitHub secrets.
@@ -25,18 +27,20 @@ interface Scenario {
 }
 const dataSet: Scenario[] = require('../utils/placeorderTestData.json');
 import { customtest } from '../utils/test-base';
+const shopEmail = process.env.SHOP_EMAIL;
+const shopPassword = process.env.SHOP_PASSWORD;
 
 for (const data of dataSet) {
 
     if (data.testData) {
         test(`@Web POM client App for ${data.validUseCase}`, async ({ page }) => {
-            test.skip(!process.env.SHOP_EMAIL || !process.env.SHOP_PASSWORD, 'Set SHOP_EMAIL and SHOP_PASSWORD (.env or GitHub secrets)');
+            // test('Set SHOP_EMAIL and SHOP_PASSWORD (.env or GitHub secrets)', async ({ browser }) => {
             const poManager = new POManager(page);
 
             // 1. Login via Page Object
             const loginPage = poManager.getLoginPage();
             await loginPage.goTo();
-            await loginPage.validLogin(process.env.SHOP_EMAIL ?? '', process.env.SHOP_PASSWORD ?? '');
+            await loginPage.validLogin(shopEmail ?? '', shopPassword ?? '');
             console.log(`1. Login Successful: ${await loginPage.getLoginSuccessMessage()}`);
 
             // 2. Add to cart & Navigate to Cart via Page Object
@@ -73,7 +77,6 @@ for (const data of dataSet) {
             await expect(sortedConfirmed).toEqual(sortedCatalog);
 
             console.log('Verification Success: All ordered products match the catalog.');
-
         });
     }
 

@@ -32,7 +32,7 @@ async function readExcel(worksheet, searchText) {
     return output;
 }
 
-test('@Web upload download excel file', async ({ page }) => {
+test('@Web upload download excel file', async ({ page }, testInfo) => {
     const textSearch = 'Mango';
     const updatedValue = '350';
     const filePath = testInfo.outputPath('download.xlsx');

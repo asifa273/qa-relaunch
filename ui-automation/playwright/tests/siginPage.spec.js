@@ -9,8 +9,8 @@ test('@Web SignIn succeeds and navigates to shop', async ({ browser }) => {
 
     const credentialHint = await page.locator('p').filter({ hasText: /username is/i }).innerText();
     const [, hintedUsername, hintedPassword] = credentialHint.match(/username is\s+(.+?)\s+and password is\s+(.+?)\s*\)?$/i) ?? [];
-    const practiceUsername = process.env.PRACTICE_USERNAME || hintedUsername;
-    const practicePassword = process.env.PRACTICE_PASSWORD || hintedPassword;
+    const practiceUsername = process.env.LOGIN_PRACTICE_USERNAME || hintedUsername;
+    const practicePassword = process.env.LOGIN_PRACTICE_PASSWORD || hintedPassword;
     if (!practiceUsername || !practicePassword) {
         throw new Error('Practice login credentials were not configured or displayed on the page.');
     }
@@ -56,73 +56,3 @@ test('@Web Blinking Text opens a new tab', async ({ browser }) => {
 });
 
 
-/*
-const { test, expect } = require('@playwright/test');
-const console = require('node:console');
-test('@Web login Pass', async ({ page }) => {
-    await page.goto('https://rahulshettyacademy.com/loginpagePractise/');
-
-    // await expect(page.getByText('Username:')).toBeVisible();
-    await expect(page.getByLabel('Username:')).toBeVisible();
-
-    const username = page.getByRole('textbox', { name: 'Username:' });
-    const password = page.getByRole('textbox', { name: 'Password:' });
-
-    await username.fill(process.env.PRACTICE_USERNAME);
-    await expect(username).toHaveValue(process.env.PRACTICE_USERNAME);
-
-    await password.fill(practicePassword);
-    await expect(password).toHaveValue(practicePassword);
-
-    // Admin radio is checked by default
-    const adminCheckbox = page.getByRole('radio', { name: 'Admin' });
-    //page.locator('label').filter({ hasText: 'Admin' });
-
-    await expect(adminCheckbox).toBeChecked();
-
-    // switch to User radio button to check
-    const userRadio = page.getByRole('radio', { name: 'User' });
-    await userRadio.check();
-    await expect(userRadio).toBeChecked();
-
-    //PopUp Modal opens when checking radio buttons
-    await expect(page.getByText('You will be limited to only fewer functionalities of the app. Proceed? Cancel')).toBeVisible();
-    await page.getByRole('button', { name: 'Cancel' }).click();
-    await userRadio.check();
-    await expect(page.getByText('You will be limited to only fewer functionalities of the app. Proceed? Cancel')).toBeVisible();
-    await page.getByRole('button', { name: 'Okay' }).click();
-
-
-    //Dropdown select Options
-    const dropdownOptions = page.getByRole('combobox');
-    await expect(dropdownOptions).toBeVisible();
-    // const dropdownOptions = ['Student', 'Teacher', 'Consultant']
-    await dropdownOptions.selectOption('teach');
-    await dropdownOptions.click();
-    await dropdownOptions.selectOption('consult');
-    await dropdownOptions.selectOption('stud');
-
-    //Terms & conditions Checkbox
-    const termsCheckbox = page.getByRole('checkbox', { name: 'I Agree to the terms and' })
-    await termsCheckbox.isVisible();
-    await termsCheckbox.check();
-    await expect(termsCheckbox).toBeChecked();
-
-    //SignIN Submit
-    const signIn = page.getByRole('button', { name: 'Sign In' });
-    await signIn.click();
-    // await Promise.all([
-    //     page.waitForURL('https://rahulshettyacademy.com/angularpractice/shop'),
-    //     page.getByRole('button', { name: 'Sign In' }).click(),
-    // ]);
-    await page.waitForURL('https://rahulshettyacademy.com/angularpractice/shop');
-    await expect(page).toHaveURL('https://rahulshettyacademy.com/angularpractice/shop');
-    await expect(page).toHaveTitle('ProtoCommerce');
-
-    
-
-
-
-});
-
-*/

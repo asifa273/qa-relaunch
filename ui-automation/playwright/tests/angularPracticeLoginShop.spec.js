@@ -1,8 +1,11 @@
 const { test, expect } = require('@playwright/test');
 require('dotenv').config();
 
-const practiceUsername = process.env.PRACTICE_USERNAME;
-const practicePassword = process.env.PRACTICE_PASSWORD;
+const practiceUsername = process.env.LOGIN_PRACTICE_USERNAME;
+const practicePassword = process.env.LOGIN_PRACTICE_PASSWORD;
+if (!practiceUsername || !practicePassword) {
+    throw new Error('Set LOGIN_PRACTICE_USERNAME and LOGIN_PRACTICE_PASSWORD in .env');
+}
 const practiceFormName = process.env.PRACTICE_FORM_NAME ?? 'QA Practice User';
 const practiceFormEmail = process.env.PRACTICE_FORM_EMAIL ?? 'qa.practice@example.com';
 const practiceFormPassword = process.env.PRACTICE_FORM_PASSWORD ?? 'PracticePassword123!';
@@ -24,13 +27,13 @@ test('@Web login Page Practise', async ({ browser }) =>
     // page.route('**/*.{jpg,png,ipeg}', route => route.abort());
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
     await expect(page).toHaveTitle("LoginPage Practise | Rahul Shetty Academy");
-    const userName = page.locator('Input#username');
+    const userName = page.getByRole('textbox', { name: 'Username:' });
     const signIn = page.locator('#signInBtn');
     const cardTitles = page.locator('.card-body a');
     const checkboxAgree = page.locator('#terms');
 
     //playwright support css selector heavily than xpath
-    // await page.getByRole('textbox', { name: 'Password:' }).click();
+    await page.getByRole('textbox', { name: 'Password:' }).click();
     await userName.fill(practiceUsername);
     await page.locator("[type='password']").fill(practicePassword);
     //await page.pause();
