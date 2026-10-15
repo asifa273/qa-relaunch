@@ -3,9 +3,6 @@ require('dotenv').config();
 
 const practiceUsername = process.env.LOGIN_PRACTICE_USERNAME;
 const practicePassword = process.env.LOGIN_PRACTICE_PASSWORD;
-if (!practiceUsername || !practicePassword) {
-    throw new Error('Set LOGIN_PRACTICE_USERNAME and LOGIN_PRACTICE_PASSWORD in .env');
-}
 const practiceFormName = process.env.PRACTICE_FORM_NAME ?? 'QA Practice User';
 const practiceFormEmail = process.env.PRACTICE_FORM_EMAIL ?? 'qa.practice@example.com';
 const practiceFormPassword = process.env.PRACTICE_FORM_PASSWORD ?? 'PracticePassword123!';
