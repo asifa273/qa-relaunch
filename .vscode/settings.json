@@ -9,6 +9,7 @@
         "/^node -e \"const fs=require\\('node:fs'\\);const path=require\\('node:path'\\);const dotenv=require\\('dotenv'\\);const secrets=\\['\\.env','\\.env\\.local'\\]\\.flatMap\\(file=>fs\\.existsSync\\(file\\)\\?Object\\.entries\\(dotenv\\.parse\\(fs\\.readFileSync\\(file\\)\\)\\)\\.filter\\(\\(\\[key,value\\]\\)=>/\\(EMAIL\\|PASSWORD\\)/i\\.test\\(key\\)&&value\\)\\.map\\(\\(\\[,value\\]\\)=>Buffer\\.from\\(value\\)\\):\\[\\]\\);let hits=0;function walk\\(dir\\)\\{for\\(const item of fs\\.readdirSync\\(dir,\\{withFileTypes:true\\}\\)\\)\\{if\\(item\\.isDirectory\\(\\)&&\\['\\.git','node_modules'\\]\\.includes\\(item\\.name\\)\\)continue;const file=path\\.join\\(dir,item\\.name\\);if\\(item\\.isDirectory\\(\\)\\)\\{walk\\(file\\);continue;\\}if\\(\\['\\.env','\\.env\\.local'\\]\\.includes\\(file\\)\\)continue;let data;try\\{data=fs\\.readFileSync\\(file\\);\\}catch\\{continue;\\}const count=secrets\\.reduce\\(\\(sum,secret\\)=>sum\\+\\(data\\.indexOf\\(secret\\)>=0\\?1:0\\),0\\);if\\(count\\)\\{hits\\+\\+;console\\.log\\(file\\+': '\\+count\\+' credential value\\(s\\) found'\\);\\}\\}\\}walk\\('\\.'\\);console\\.log\\('Files with credential matches: '\\+hits\\);\"$/": {
             "approve": true,
             "matchCommandLine": true
-        }
+        },
+        "./node_modules/.bin/tsc": true
     }
 }
