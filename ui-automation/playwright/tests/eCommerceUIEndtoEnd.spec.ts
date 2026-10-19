@@ -1,16 +1,16 @@
-const { test, expect } = require('@playwright/test');
-require('dotenv').config();
-const { requireEnv } = require('../utils/requireEnv');
+import { test, expect } from '@playwright/test';
+import 'dotenv/config';
+import fs from 'fs';
+import path from 'path';
+import { requireEnv } from '../utils/requireEnv';
 
-const registrationEmail = process.env.SHOP_NEW_REGISTRATION_EMAIL;
-const registrationPassword = process.env.SHOP_NEW_REGISTRATION_PASSWORD;
-
-// test.describe.configure({ mode: 'serial' });
-const fs = require('fs');
-const path = require('path');
+const registrationEmail: string = process.env.SHOP_NEW_REGISTRATION_EMAIL ?? '';
+const registrationPassword: string = process.env.SHOP_NEW_REGISTRATION_PASSWORD ?? '';
+const shopEmail: string = process.env.SHOP_EMAIL ?? '';
+const shopPassword: string = process.env.SHOP_PASSWORD ?? '';
 
 // ============================================================================
-// Test 1 — Registration: fill the form, confirm the success screen + nav to login
+// Test 1 — Registration: fill the form, confirm success + navigate to login
 // ============================================================================
 test.skip('@Web User Register Form', async ({ browser }) => {
   requireEnv(test, 'SHOP_NEW_REGISTRATION_EMAIL', 'SHOP_NEW_REGISTRATION_PASSWORD');
@@ -19,47 +19,37 @@ test.skip('@Web User Register Form', async ({ browser }) => {
 
   await page.goto('https://rahulshettyacademy.com/client/#/auth/register');
 
-  // -- First & Last Name, Email, Phone --
-
   await page.getByLabel('First Name').fill('Testing');
   await page.getByLabel('Last Name').fill('Asifa');
   await page.getByRole('textbox', { name: 'Email' }).fill(registrationEmail);
   await page.getByRole('textbox', { name: 'enter your number' }).fill('9876543210');
 
-  // -- Occupation -- pick ONE option (cycling every option fires the app's buggy change handler).
   const dropdownOption = page.getByRole('combobox');
   await dropdownOption.selectOption('Scientist');
   await expect(dropdownOption).toHaveValue('4: Scientist');
 
-  // -- Gender --
   await page.getByRole('radio', { name: 'Female' }).click();
   await expect(page.getByRole('radio', { name: 'Female' })).toBeChecked();
 
-  // -- Password / Confirm Password --
   await page.getByRole('textbox', { name: 'Passsword' }).fill(registrationPassword);
   await page.getByRole('textbox', { name: 'Confirm Password' }).fill(registrationPassword);
 
-  // -- Checkbox --
   await page.getByRole('checkbox').check();
   await expect(page.getByRole('checkbox')).toBeChecked();
 
-  // -- Register --
   await page.getByRole('button', { name: 'Register' }).click();
 
-  // The "Registered Successfully" toast is transient; anchor on the stable success screen.
   const successScreen = page.locator('.hero-primary').and(page.getByText('Account Created Successfully'));
   await successScreen.waitFor();
   await expect(successScreen).toBeVisible();
 
-  // -- Continue to Login --
   await page.getByRole('button', { name: 'Login' }).click();
   await expect(page).toHaveURL(/\/auth\/login/);
   await context.close();
-
 });
 
 // ============================================================================
-// Test 2 — Login, add every product to the cart, cross-verify the count 3 ways
+// Test 2 — Login, add products to cart, checkout, and verify CSV invoice
 // ============================================================================
 test('@Web Login, add every product to the cart, cross-verify the count 3 ways', async ({ browser }) => {
   requireEnv(test, 'SHOP_EMAIL', 'SHOP_PASSWORD');
@@ -68,29 +58,26 @@ test('@Web Login, add every product to the cart, cross-verify the count 3 ways',
   await page.goto('https://rahulshettyacademy.com/client/#/auth/login');
 
   // --- Login ---
-  await page.getByRole('textbox', { name: 'Email' }).fill(process.env.SHOP_EMAIL);
-  await page.getByRole('textbox', { name: 'enter your passsword' }).fill(process.env.SHOP_PASSWORD);
+  await page.getByRole('textbox', { name: 'Email' }).fill(shopEmail);
+  await page.getByRole('textbox', { name: 'enter your passsword' }).fill(shopPassword);
   await page.getByRole('button', { name: 'Login' }).click();
 
-  // App navigates to the dashboard on successful login (assert instead of a fragile toast).
-  // await expect(page).toHaveURL(/dashboard/);
-
-  // --- On the products page ---
+  // --- Dashboard & Product Verification ---
   await expect(page.locator('#products')).toBeVisible();
   await page.locator('.card-body b').first().waitFor();
 
-  // List + verify products (clean names come from the <b> tag, not the whole card).
-  const names = await page.locator('.card-body b').allTextContents();
+  const names: string[] = await page.locator('.card-body b').allTextContents();
   expect(names).toEqual(['ADIDAS ORIGINAL', 'ZARA COAT 3', 'iphone 13 pro']);
 
-  // Also cross-check against the "Showing N results" label.
-  const resultText = await page.locator('#res').textContent();
-  const shown = parseInt(resultText.match(/\d+/)[0], 10);
+  // Match and parse showing results count safely
+  const resultText: string | null = await page.locator('#res').textContent();
+  const digitMatch: RegExpMatchArray | null = resultText ? resultText.match(/\d+/) : null;
+  expect(digitMatch).not.toBeNull();
+  const shown: number = parseInt(digitMatch![0], 10);
   expect(shown).toBe(names.length);
 
-  // --- ONE add loop = single source of truth for `added` ---
-  // Filter on .card-body (holds the buttons), NOT .card-body b (just the name text).
-  let added = 0;
+  // --- Add Products to Cart ---
+  let added: number = 0;
   for (const name of names) {
     await page.locator('.card-body')
       .filter({ hasText: name })
@@ -99,42 +86,29 @@ test('@Web Login, add every product to the cart, cross-verify the count 3 ways',
     added++;
   }
 
-  // --- Cross-verify #1: header badge count, BEFORE leaving the page ---
+  // --- Cross-verify #1: Badge count ---
   const cartBadge = page.locator('button[routerlink="/dashboard/cart"] label');
-  await expect(cartBadge).toHaveText(String(added));   // '3' (toHaveText needs a string)
+  await expect(cartBadge).toHaveText(String(added));
 
-  // --- Open the cart ---
-  // Use the routerlink locator: getByRole('button', {name:'Cart'}) also matches the
-  // three "Add To Cart" buttons (substring match) and throws a strict-mode error.
+  // --- Open Cart ---
   await page.locator('button[routerlink="/dashboard/cart"]').click();
   await expect(page).toHaveURL(/cart/);
   await expect(page.getByText('My Cart')).toBeVisible();
 
-  // --- Cross-verify #2: one row per cart item ---
-  // NOTE: .cartSection resolves to 9 (3 sub-blocks per item), so it's NOT the row.
-  // Count the "Buy Now" button instead — exactly one per cart item.
+  // --- Cross-verify #2: Item count & names ---
   const cartRows = page.getByRole('button', { name: 'Buy Now' });
-  await expect(cartRows).toHaveCount(added);   // 3
-  // --Cross Verify the Product name
-  const productName = await page.locator('.cartSection h3').allTextContents();
+  await expect(cartRows).toHaveCount(added);
+  const productName: string[] = await page.locator('.cartSection h3').allTextContents();
   expect(productName).toEqual(names);
 
-
-
-  // ============================================================================
-  // Test 3 — Checkout, add every product to the cart, cross-verify the count 3 ways
-  // ============================================================================
-
-  // --- Checkout ---
+  // --- Checkout & Payment Details ---
   await page.getByRole('button', { name: 'Checkout' }).click();
   await expect(page).toHaveURL(/order/);
   await expect(page.locator('.payment')).toBeVisible();
 
-  // --- Payment Method ---
-  const paymentMethods = await page.locator('.payment__types').allTextContents();
+  const paymentMethods: string[] = await page.locator('.payment__types').allTextContents();
   expect(paymentMethods).toEqual(['Credit CardPaypalSEPAInvoice']);
 
-  // -- Select a payment method (Credit Card) and fill the form --
   await expect(page.getByText('Credit Card Number')).toBeVisible();
   await page.getByRole('textbox').first().fill('4111 1111 1111 1111');
   await expect(page.getByText('Expiry Date')).toBeVisible();
@@ -146,11 +120,10 @@ test('@Web Login, add every product to the cart, cross-verify the count 3 ways',
   await page.getByRole('textbox').nth(2).fill('Testxfirst Testxlast');
   await expect(page.getByText('Apply Coupon').first()).toBeVisible();
   await page.locator('input[name="coupon"]').fill('2026');
-  // await page.getByRole('button', { name: 'Apply Coupon' }).click();
 
-  // --- Shipping Information + Place Order ---
+  // --- Shipping & Submit ---
   await expect(page.getByText('Shipping Information')).toBeVisible();
-  await page.getByRole('textbox').nth(4).fill(process.env.SHOP_EMAIL);
+  await page.getByRole('textbox').nth(4).fill(shopEmail);
   const country = page.getByPlaceholder('Select Country');
   await country.click();
   await country.pressSequentially('United', { delay: 100 });
@@ -158,49 +131,43 @@ test('@Web Login, add every product to the cart, cross-verify the count 3 ways',
   await page.getByText('United States', { exact: true }).click();
   await page.locator('a.action__submit').filter({ hasText: 'Place Order' }).click();
 
-  // --- Cross-verify #3: order summary + thank-you message ---
+  // --- Confirmation & Invoice Capture ---
   await expect(page).toHaveURL(/thanks/);
   await expect(page.locator('h1.hero-primary').and(page.getByText('Thankyou for the order.'))).toBeVisible();
-  const productSummary = page.locator('.order-summary');   // ✅ this is a LOCATOR (no await)
+  
+  const productSummary = page.locator('.order-summary');
   await expect(productSummary.getByText('ADIDAS ORIGINAL')).toBeVisible();
   await expect(productSummary.getByText('ZARA COAT 3')).toBeVisible();
   await expect(productSummary.getByText('iphone 13 pro')).toBeVisible();
 
-  // 1. Grab the invoice numbers shown on the CURRENT PAGE
-  const pageInvoiceText = await page.locator('.em-spacer-1, td.content-wrap').first().innerText();
-  const invoiceMatch = pageInvoiceText.match(/[0-9a-f]{24}/);   // first 24-char id on the page
+  const pageInvoiceText: string = await page.locator('.em-spacer-1, td.content-wrap').first().innerText();
+  const invoiceMatch: RegExpMatchArray | null = pageInvoiceText.match(/[0-9a-f]{24}/);
   expect(invoiceMatch, 'Expected a 24-character invoice id on the order page').not.toBeNull();
-  const invoice = invoiceMatch[0];
+  
+  const invoice: string = invoiceMatch![0];
 
-  // 1. Download the CSV
+  // --- CSV Download & File System Operations ---
   const downloadPromise = page.waitForEvent('download');
   await page.getByText('Click To Download Order Details in CSV').click();
   const download = await downloadPromise;
-  const csvPath = path.join(__dirname, 'order.csv');
+  const csvPath: string = path.join(__dirname, 'order.csv');
   await download.saveAs(csvPath);
 
-  // --- Read and parse the CSV ---
-  const csvContent = fs.readFileSync(csvPath, 'utf8');
-
-  const rows = csvContent
+  const csvContent: string = fs.readFileSync(csvPath, 'utf8');
+  const rows: string[][] = csvContent
     .split('\n')
     .map(r => r.trim())
     .filter(Boolean)
-    .map(r => r.split(','));   // simple split — fine as long as no field contains a comma
+    .map(r => r.split(','));
 
-  // --- Cross-verify EVERY product name from the Thanks page against the CSV ---
+  // --- CSV Verification ---
   for (const name of names) {
-    const foundInCsv = rows.some(row => row.some(cell => cell.includes(name)));
+    const foundInCsv: boolean = rows.some((row: string[]) => row.some((cell: string) => cell.includes(name)));
     expect(foundInCsv, `Product "${name}" not found in CSV`).toBeTruthy();
   }
 
-  // --- Cross-verify the ACTUAL invoice number captured from the Thanks page ---
-  const invoiceFoundInCsv = rows.some(row => row.some(cell => cell.includes(invoice)));
+  const invoiceFoundInCsv: boolean = rows.some((row: string[]) => row.some((cell: string) => cell.includes(invoice)));
   expect(invoiceFoundInCsv, `Invoice "${invoice}" not found in CSV`).toBeTruthy();
+
   await context.close();
-
 });
-
-
-
-

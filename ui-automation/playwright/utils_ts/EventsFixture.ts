@@ -2,7 +2,7 @@ import { test as baseTest, Page } from '@playwright/test';
 import 'dotenv/config';
 declare const process: any;
 
-interface EventData {
+export interface EventData {
     id?: string;
     title: string;
     description: string;
@@ -15,7 +15,10 @@ interface EventData {
     imageUrl: string;
     [key: string]: unknown;
 }
-
+export interface EventsFixtures {
+    authenticatedEventsPage: Page;
+    createEvent: EventData;
+}
 const BASE_URL = 'https://eventhub.rahulshettyacademy.com';
 const API_BASE_URL = 'https://api.eventhub.rahulshettyacademy.com';
 

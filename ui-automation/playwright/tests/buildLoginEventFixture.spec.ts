@@ -1,10 +1,10 @@
 
-const { expect } = require('@playwright/test');
-
-const { customtest } = require('../utils/EventsFixture');
-const { requireEnv } = require('../utils/requireEnv.js');
+import { expect } from '@playwright/test';
+import { customtest } from '../utils_ts/EventsFixture';
+import { requireEnv } from '../utils_ts/requireEnv';
 
 requireEnv(customtest, 'EVENTS_EMAIL', 'EVENTS_PASSWORD');
+
 
 customtest('@Web newly created event should appear on the events page', async ({ authenticatedEventsPage, createEvent }, testInfo) => {
     await authenticatedEventsPage.goto('https://eventhub.rahulshettyacademy.com/events');

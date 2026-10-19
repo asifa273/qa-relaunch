@@ -1,33 +1,39 @@
-const { test, expect } = require('@playwright/test');
-require('dotenv').config();
+import { test, expect } from '@playwright/test';
+import 'dotenv/config';
 
-const practiceUsername = process.env.LOGIN_PRACTICE_USERNAME;
-const practicePassword = process.env.LOGIN_PRACTICE_PASSWORD;
-const practiceFormName = process.env.PRACTICE_FORM_NAME ?? 'QA Practice User';
-const practiceFormEmail = process.env.PRACTICE_FORM_EMAIL ?? 'qa.practice@example.com';
-const practiceFormPassword = process.env.PRACTICE_FORM_PASSWORD ?? 'PracticePassword123!';
+const practiceUsername: string = process.env.LOGIN_PRACTICE_USERNAME ?? '';
+const practicePassword: string = process.env.LOGIN_PRACTICE_PASSWORD ?? '';
+const practiceFormName: string = process.env.PRACTICE_FORM_NAME ?? 'QA Practice User';
+const practiceFormEmail: string = process.env.PRACTICE_FORM_EMAIL ?? 'qa.practice@example.com';
+const practiceFormPassword: string = process.env.PRACTICE_FORM_PASSWORD ?? 'PracticePassword123!';
 
 //By providing {page} , we can skipp prvoding Context and New page , so playwright can go to website directly
 //async()=> is called a anonomous function, 
 //{page} is called fixture
 //By providing {browser} , we prvode explicitly Context and New page , so playwright can act as per provided
 //javascript - asynchronous - execute all steps together, or explicit tell step1 is completed, so give await
+interface AngularPracticeUser{
+    practiceUsername: string;
+    practicePassword: string;
+    practiceFormName: string;
+    practiceFormEmail: string;
+    practiceFormPassword: string;
+}
+
 test.describe.configure({ mode: 'serial' });
-test('@Web login Page Practise', async ({ browser }) =>
+test('@Web login Page Practise', async ({ page }) =>
 //function() is called anonomous function so write as async()=>
 //({browser}) is called fixture
 {
     //chrome - plugins/cookies
-    const context = await browser.newContext();
-    const page = await context.newPage();
     // page.route('**/*.css', route => route.abort());
     // page.route('**/*.{jpg,png,ipeg}', route => route.abort());
-    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    await page.goto('https://rahulshettyacademy.com/loginpagePractise/');
     await expect(page).toHaveTitle("LoginPage Practise | Rahul Shetty Academy");
+
     const userName = page.getByRole('textbox', { name: 'Username:' });
-    const signIn = page.locator('#signInBtn');
-    const cardTitles = page.locator('.card-body a');
-    const checkboxAgree = page.locator('#terms');
+    const signIn = page.getByRole('button', { name: 'Sign In' });
+    
 
     //playwright support css selector heavily than xpath
     await page.getByRole('textbox', { name: 'Password:' }).click();
@@ -55,7 +61,7 @@ test('@Web login Page Practise', async ({ browser }) =>
     await page.getByRole('checkbox', { name: 'I Agree to the terms and' }).uncheck();
     await page.getByRole('link', { name: 'terms and conditions' }).click();
     await page.getByRole('checkbox', { name: 'I Agree to the terms and' }).check();
-    await page.getByRole('button', { name: 'Sign In' }).click();
+    await signIn.click();
 
 
 
@@ -139,7 +145,7 @@ test('@Web login Page Practise', async ({ browser }) =>
 test('@Web removing one cart item leaves the other three', async ({ page }) => {
     await page.goto('https://rahulshettyacademy.com/angularpractice/shop');
 
-    const productsToAdd = ['iphone X', 'Samsung Note 8', 'Nokia Edge', 'Blackberry'];
+    const productsToAdd: string[] = ['iphone X', 'Samsung Note 8', 'Nokia Edge', 'Blackberry'];
     for (const name of productsToAdd) {
         await test.step(`Add ${name} to cart`, async () => {
             await page.locator('.card', { hasText: name }).getByRole('button', { name: 'Add' }).click();
@@ -148,7 +154,7 @@ test('@Web removing one cart item leaves the other three', async ({ page }) => {
 
     await page.locator('a.nav-link.btn.btn-primary').click();
 
-    const rowFor = (name) => page.getByRole('row', { name: new RegExp(name) });
+    const rowFor = (name: string) => page.getByRole('row', { name: new RegExp(name) });
 
     // all 4 present
     for (const name of productsToAdd) {
