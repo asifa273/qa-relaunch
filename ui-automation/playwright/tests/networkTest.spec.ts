@@ -7,8 +7,8 @@ import { requireEnv } from '../utils_ts/requireEnv';
 requireEnv(test, 'SHOP_EMAIL', 'SHOP_PASSWORD');
 
 const loginPayLoad = {
-    shopEmail: process.env.SHOP_EMAIL ?? '',
-    shopPassword: process.env.SHOP_PASSWORD ?? '',
+    userEmail: process.env.SHOP_EMAIL ?? '',
+    userPassword: process.env.SHOP_PASSWORD ?? '',
 };
 
 const orderPayLoad = {
