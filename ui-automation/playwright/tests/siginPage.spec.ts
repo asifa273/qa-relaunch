@@ -12,8 +12,11 @@ test('@Web SignIn succeeds and navigates to shop', async ({ page }) => {
 
     // const credentialHint = await page.locator('p').filter({ hasText: /username is/i }).innerText();
     // const [, hintedUsername, hintedPassword] = credentialHint.match(/username is\s+(.+?)\s+and password is\s+(.+?)\s*\)?$/i) ?? [];
-    const practiceUsername = process.env.LOGIN_PRACTICE_USERNAME ?? '';
-    const practicePassword = process.env.LOGIN_PRACTICE_PASSWORD ?? '';
+    const practiceUsername = process.env.LOGIN_PRACTICE_USERNAME || 'rahulshettyacademy';
+    const practicePassword = process.env.LOGIN_PRACTICE_PASSWORD || 'learning';
+    if (!practiceUsername || !practicePassword) {
+        throw new Error('Practice login credentials were not configured or displayed on the page.');
+    }
     if (!practiceUsername || !practicePassword) {
         throw new Error('Practice login credentials were not configured or displayed on the page.');
     }

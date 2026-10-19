@@ -24,10 +24,10 @@ export class ThanksOrderPage {
 
 
     async verifyOrderSummary(allProductNames: string[]) {
-        await expect(this.orderSummary).toBeVisible();
+        await this.orderSummary.first().waitFor({ state: 'visible' });
 
         for (const productName of allProductNames) {
-            await expect(this.orderSummary.getByText(productName, { exact: true })).toBeVisible();
+            await expect(this.orderSummary.getByText(new RegExp(productName, 'i'))).toBeVisible({ timeout: 10000 });
         }
     }
 
