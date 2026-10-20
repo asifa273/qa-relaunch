@@ -12,8 +12,8 @@ test('@Web SignIn succeeds and navigates to shop', async ({ page }) => {
 
     // const credentialHint = await page.locator('p').filter({ hasText: /username is/i }).innerText();
     // const [, hintedUsername, hintedPassword] = credentialHint.match(/username is\s+(.+?)\s+and password is\s+(.+?)\s*\)?$/i) ?? [];
-    const practiceUsername = process.env.LOGIN_PRACTICE_USERNAME || 'rahulshettyacademy';
-    const practicePassword = process.env.LOGIN_PRACTICE_PASSWORD || 'learning';
+    const practiceUsername = process.env.LOGIN_PRACTICE_USERNAME ?? '';
+    const practicePassword = process.env.LOGIN_PRACTICE_PASSWORD ?? '';
     if (!practiceUsername || !practicePassword) {
         throw new Error('Practice login credentials were not configured or displayed on the page.');
     }
@@ -35,15 +35,18 @@ test('@Web SignIn succeeds and navigates to shop', async ({ page }) => {
     await page.getByRole('combobox').selectOption('consult');
     await page.getByRole('checkbox', { name: 'I Agree to the terms and' }).check();
 
-    page.locator('#signInBtn').click();
+    await page.locator('#signInBtn').click();
     await page.waitForLoadState('load');
-    
-    // 2. Validate URL and Title
-    // await expect(page).toHaveURL(/angularpractice\/shop/);
-    await expect(page).toHaveTitle('ProtoCommerce');
 
-    // Wait for the shop items to load
-    await expect(page.locator('app-card-list app-card').first()).toBeVisible();
+    // 2. Validate URL and Title
+    // Wait for the route transition first
+    await expect(page).toHaveURL(/.*angularpractice\/shop/, { timeout: 15000 });
+
+    // Assert title with extended CI headroom
+    await expect(page).toHaveTitle('ProtoCommerce', { timeout: 15000 });
+
+    // Wait for products to mount
+    await expect(page.locator('app-card-list app-card').first()).toBeVisible({ timeout: 15000 });
 
     const protoCommerceTitle = await page.title();
     console.log(protoCommerceTitle);
