@@ -98,6 +98,8 @@ jobs:
           allow-no-subscriptions: true
       - name: Create test environment
         env:
+          LOGIN_PRACTICE_USERNAME: ${{ secrets.LOGIN_PRACTICE_USERNAME }}
+          LOGIN_PRACTICE_PASSWORD: ${{ secrets.LOGIN_PRACTICE_PASSWORD }}
           SHOP_EMAIL: ${{ secrets.SHOP_EMAIL }}
           SHOP_PASSWORD: ${{ secrets.SHOP_PASSWORD }}
           SHOP_ALT_EMAIL: ${{ secrets.SHOP_ALT_EMAIL }}
@@ -136,9 +138,12 @@ jobs:
             "PRACTICE_FORM_PASSWORD=$PRACTICE_FORM_PASSWORD" > .env
       - name: Run tests on Azure Playwright Workspaces
         env:
+          LOGIN_PRACTICE_USERNAME: ${{ secrets.LOGIN_PRACTICE_USERNAME }}
+          LOGIN_PRACTICE_PASSWORD: ${{ secrets.LOGIN_PRACTICE_PASSWORD }}
           PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL }}
         run: |
           test -n "$PLAYWRIGHT_SERVICE_URL"
+          test -n "$LOGIN_PRACTICE_PASSWORD" || (echo "LOGIN_PRACTICE_PASSWORD is empty!" && exit 1)
           npx playwright test --config=playwright.service.config.ts
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
