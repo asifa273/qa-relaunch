@@ -2,9 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import path from 'path';
 import dotenv from 'dotenv';
 
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
-// Or try resolving from process.cwd() fallback:
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 type User = {
     practiceUsername: string;
@@ -15,18 +13,13 @@ type User = {
 test('@Web SignIn succeeds and navigates to shop', async ({ page }) => {
     await page.goto('https://rahulshettyacademy.com/loginpagePractise/');
 
-    // const credentialHint = await page.locator('p').filter({ hasText: /username is/i }).innerText();
-    // const [, hintedUsername, hintedPassword] = credentialHint.match(/username is\s+(.+?)\s+and password is\s+(.+?)\s*\)?$/i) ?? [];
-    const practiceUsername = process.env.LOGIN_PRACTICE_USERNAME ?? '';
-    const practicePassword = process.env.LOGIN_PRACTICE_PASSWORD ?? '';
-    if (!practiceUsername || !practicePassword) {
-        throw new Error('Practice login credentials were not configured or displayed on the page.');
-    }
+    const practiceUsername = process.env.LOGIN_PRACTICE_USERNAME || 'rahulshettyacademy';
+    const practicePassword = process.env.LOGIN_PRACTICE_PASSWORD || 'learning';
+
     if (!practiceUsername || !practicePassword) {
         throw new Error('Practice login credentials were not configured or displayed on the page.');
     }
 
-    
     await page.getByRole('textbox', { name: 'Username:' }).fill(practiceUsername);
     await page.getByRole('textbox', { name: 'Password:' }).fill(practicePassword);
 
@@ -45,10 +38,7 @@ test('@Web SignIn succeeds and navigates to shop', async ({ page }) => {
     await page.waitForLoadState('load');
 
     // 2. Validate URL and Title
-    // Wait for the route transition first
     await expect(page).toHaveURL(/.*angularpractice\/shop/, { timeout: 15000 });
-
-    // Assert title with extended CI headroom
     await expect(page).toHaveTitle('ProtoCommerce', { timeout: 15000 });
 
     // Wait for products to mount
@@ -57,23 +47,19 @@ test('@Web SignIn succeeds and navigates to shop', async ({ page }) => {
     const protoCommerceTitle = await page.title();
     console.log(protoCommerceTitle);
 
-
-
     await page.screenshot({
         path: 'screenshots/SignInsucceedsandnavigatesto-shopProtoCommerce-message.png',
         fullPage: true
     });
 });
 
-
 // TEST 2: child window / new tab handling
 test('@Web Blinking Text opens a new tab', async ({ page, context }) => {
-
     await page.goto('https://rahulshettyacademy.com/loginpagePractise/');
 
     const documentLink = page.locator("[href*='documents-request']");
 
-    const [newPage] = await Promise.all([   // ← destructure!
+    const [newPage] = await Promise.all([
         context.waitForEvent('page'),
         documentLink.click(),
     ]);
@@ -91,7 +77,4 @@ test('@Web Blinking Text opens a new tab', async ({ page, context }) => {
         fullPage: true
     });
     await newPage.close();
-
 });
-
-
