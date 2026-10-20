@@ -1,5 +1,10 @@
 import { expect, test, type Page } from '@playwright/test';
-import 'dotenv/config';
+import path from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+// Or try resolving from process.cwd() fallback:
+dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 type User = {
     practiceUsername: string;
@@ -21,6 +26,7 @@ test('@Web SignIn succeeds and navigates to shop', async ({ page }) => {
         throw new Error('Practice login credentials were not configured or displayed on the page.');
     }
 
+    
     await page.getByRole('textbox', { name: 'Username:' }).fill(practiceUsername);
     await page.getByRole('textbox', { name: 'Password:' }).fill(practicePassword);
 
