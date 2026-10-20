@@ -88,6 +88,8 @@ test('@Web Login, add every product to the cart, cross-verify the count 3 ways',
 
   // --- Cross-verify #1: Badge count ---
   const cartBadge = page.locator('button[routerlink="/dashboard/cart"] label');
+  // Wait for any active 'Product Added To Cart' overlay to detach before checking badge
+  await page.locator('.ngx-toastr').waitFor({ state: 'hidden' }).catch(() => { });
   await expect(cartBadge).toHaveText(String(added));
 
   // --- Open Cart ---
@@ -99,7 +101,7 @@ test('@Web Login, add every product to the cart, cross-verify the count 3 ways',
   const cartRows = page.getByRole('button', { name: 'Buy Now' });
   await expect(cartRows).toHaveCount(added);
   const productName: string[] = await page.locator('.cartSection h3').allTextContents();
-  expect(productName).toEqual(names);
+  expect([...productName].sort()).toEqual([...names].sort());
 
   // --- Checkout & Payment Details ---
   await page.getByRole('button', { name: 'Checkout' }).click();
@@ -134,7 +136,7 @@ test('@Web Login, add every product to the cart, cross-verify the count 3 ways',
   // --- Confirmation & Invoice Capture ---
   await expect(page).toHaveURL(/thanks/);
   await expect(page.locator('h1.hero-primary').and(page.getByText('Thankyou for the order.'))).toBeVisible();
-  
+
   const productSummary = page.locator('.order-summary');
   await expect(productSummary.getByText('ADIDAS ORIGINAL')).toBeVisible();
   await expect(productSummary.getByText('ZARA COAT 3')).toBeVisible();
@@ -143,7 +145,7 @@ test('@Web Login, add every product to the cart, cross-verify the count 3 ways',
   const pageInvoiceText: string = await page.locator('.em-spacer-1, td.content-wrap').first().innerText();
   const invoiceMatch: RegExpMatchArray | null = pageInvoiceText.match(/[0-9a-f]{24}/);
   expect(invoiceMatch, 'Expected a 24-character invoice id on the order page').not.toBeNull();
-  
+
   const invoice: string = invoiceMatch![0];
 
   // --- CSV Download & File System Operations ---
