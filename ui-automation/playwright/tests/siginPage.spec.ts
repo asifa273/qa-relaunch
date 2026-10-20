@@ -35,12 +35,9 @@ test('@Web SignIn succeeds and navigates to shop', async ({ page }) => {
     await page.getByRole('combobox').selectOption('consult');
     await page.getByRole('checkbox', { name: 'I Agree to the terms and' }).check();
 
-
-    await Promise.all([
-        page.waitForURL(/angularpractice\/shop/),
-        page.locator('#signInBtn').click(),
-    ]);
-
+    page.locator('#signInBtn').click();
+    await page.waitForLoadState('load');
+    
     // 2. Validate URL and Title
     await expect(page).toHaveURL(/angularpractice\/shop/);
     await expect(page).toHaveTitle('ProtoCommerce');
