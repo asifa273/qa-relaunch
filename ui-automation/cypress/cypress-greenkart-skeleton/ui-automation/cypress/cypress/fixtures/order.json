@@ -1,0 +1,6 @@
+{
+  "searchTerm": "ca",
+  "products": ["Cauliflower", "Carrot"],
+  "country": "India",
+  "invalidPromo": "WRONGCODE"
+}
