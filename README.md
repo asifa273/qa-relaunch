@@ -14,6 +14,7 @@
 **Live CI status**
 
 [![Playwright Tests](https://github.com/asifa273/qa-relaunch/actions/workflows/playwright.yml/badge.svg)](https://github.com/asifa273/qa-relaunch/actions/workflows/playwright.yml)
+[![Cypress Tests](https://github.com/asifa273/qa-relaunch/actions/workflows/cypress.yml/badge.svg)](https://github.com/asifa273/qa-relaunch/actions/workflows/cypress.yml)
 [![Selenium Test Suite](https://github.com/asifa273/qa-relaunch/actions/workflows/selenium-banking.yml/badge.svg)](https://github.com/asifa273/qa-relaunch/actions/workflows/selenium-banking.yml)
 [![QA Regression](https://github.com/asifa273/qa-relaunch/actions/workflows/selenium-regression.yml/badge.svg)](https://github.com/asifa273/qa-relaunch/actions/workflows/selenium-regression.yml)
 [![AI Defect Resolver CI](https://github.com/asifa273/qa-relaunch/actions/workflows/ai-defect-resolver.yml/badge.svg)](https://github.com/asifa273/qa-relaunch/actions/workflows/ai-defect-resolver.yml)
@@ -28,7 +29,10 @@
 | Area | Project | What it demonstrates | Status |
 |---|---|---|---|
 | **Selenium (Java)** | `ui-automation/selenium-java/` | Banking, SauceDemo, and Selenium fundamentals POM frameworks | ✅ Working (see CI badges) |
-| **Playwright (JS/TS)** | `ui-automation/playwright/` | Browser E2E tests in JS and TypeScript + GitHub Actions CI | ✅ Working (see CI badges) |
+| **Playwright (TypeScript)** | `tests/` | Root-level GreenKart storefront suite, driven by `playwright.config.ts` | ✅ Working |
+| **Playwright (JS/TS)** | `ui-automation/playwright/` | Independent browser E2E and Cucumber suites + GitHub Actions CI | ✅ Working (see CI badges) |
+| **Cypress** | `ui-automation/cypress/greenkart/` | GreenKart UI, network-mock, checkout, and API specs | ✅ Working (see CI badge) |
+| **Cypress examples** | `ui-automation/cypress/e2e/` | Cypress starter examples and a search spec | 📝 Practice examples |
 | **AI-assisted QA** | `python-automation/ai-defect-resolver/` | Claude API defect analysis → fix → validate → report loop | ✅ Working |
 | **Python** | `python-automation/pytest/` | pytest suites, fixtures, parametrization | ✅ Working |
 | **Python** | `python-automation/` | Flask chatbot and Python learning track | ✅ Working |
@@ -91,6 +95,12 @@ npx playwright test          # headless
 npx playwright test --headed # visible browser
 ```
 
+The root-level GreenKart Playwright suite is separate from this portfolio project. Its config is `playwright.config.ts`, its specs are under `tests/`, and its scenarios are tracked in `test-plans/greenkart-storefront-test-plan.md`.
+
+```bash
+npx playwright test
+```
+
 CI expects these GitHub Actions secrets: `SHOP_EMAIL`, `SHOP_PASSWORD`, `SHOP_REGISTRATION_EMAIL`, `SHOP_REGISTRATION_PASSWORD`, `EVENTS_EMAIL`, `EVENTS_PASSWORD`, `GMAIL_EMAIL`, `GMAIL_PASSWORD`, `YAHOO_EMAIL`, `YAHOO_PASSWORD`, `PRACTICE_USERNAME`, `PRACTICE_PASSWORD`, `PRACTICE_FORM_NAME`, `PRACTICE_FORM_EMAIL`, and `PRACTICE_FORM_PASSWORD`.
 
 The workflow can also run this suite on Azure Playwright Workspaces. Create an Entra app registration with a GitHub federated credential for `repo:asifa273/qa-relaunch:ref:refs/heads/main` (and `master` if used), then grant its service principal the **Playwright Workspace Contributor** role on the workspace. Add `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`, and `PLAYWRIGHT_SERVICE_URL` as repository secrets. Add this repository variable to run Azure tests automatically on pushes:
@@ -139,6 +149,16 @@ Gherkin feature files (login, signup, cart, checkout, payment, orders, search, p
 ### ⚡ JMeter — Performance Testing
 A JMeter test plan and thread group for load/performance test practice.
 
+### 🌲 Cypress — GreenKart
+The GreenKart Cypress project is an independent npm package with its own lockfile, config, support code, fixtures, and CI workflow.
+
+```bash
+cd ui-automation/cypress/greenkart
+npm ci
+npm run typecheck
+npm test
+```
+
 ---
 
 ## Skills covered
@@ -160,8 +180,13 @@ A JMeter test plan and thread group for load/performance test practice.
 ```
 qa-relaunch/
 ├── .github/workflows/          # Playwright, Selenium, and pytest pipelines
+├── tests/                      # Root Playwright GreenKart suite
+├── test-plans/                 # Test plans for root-level suites
 ├── ui-automation/
-│   ├── playwright/             # JavaScript/TypeScript Playwright tests and fixtures
+│   ├── cypress/
+│   │   ├── e2e/                 # Cypress starter examples
+│   │   └── greenkart/           # Standalone GreenKart Cypress package
+│   ├── playwright/             # Independent JS/TS Playwright and Cucumber project
 │   └── selenium-java/          # Selenium POM frameworks
 ├── bdd-cucumber/               # Cucumber + TestNG frameworks and Gherkin specs
 ├── api-testing/
@@ -171,10 +196,11 @@ qa-relaunch/
 │   ├── pytest/                 # Parametrized tests and fixtures
 │   └── ai-defect-resolver/     # Claude API defect analysis tool
 ├── performance/jmeter/         # JMeter test plans
+├── specs/                      # Shared specifications
 ├── core-skills/
 │   ├── java-fundamentals/      # OOP exercises and algorithms
 │   └── sql/                    # Data validation queries and README
-└── bdd-cucumber/specflow/      # .NET BDD (planned)
+└── bdd-cucumber/               # Shared Gherkin features and Java/.NET BDD projects
 ```
 
 ---

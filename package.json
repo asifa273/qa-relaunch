@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "> A hands-on portfolio of test automation projects across **UI, API, data, and AI-assisted QA** — built with Selenium, Playwright, Java, Python, and CI/CD pipelines. Working projects and clearly marked learning tracks target real SDET / QA Automation Engineer skills.",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test:playwright": "playwright test",
+    "test:cypress:examples": "cypress run",
+    "test:cypress:greenkart": "npm --prefix ui-automation/cypress/greenkart test"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/asifa273/qa-relaunch.git"
@@ -16,6 +20,10 @@
   "homepage": "https://github.com/asifa273/qa-relaunch#readme",
   "devDependencies": {
     "@playwright/test": "^1.64.0",
-    "@types/node": "^26.6.4"
+    "@types/node": "^26.6.4",
+    "cypress": "^16.2.0"
+  },
+  "allowScripts": {
+    "cypress@16.2.0": true
   }
 }

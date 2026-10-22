@@ -1,0 +1,40 @@
+name: Cypress Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: # Allows manual trigger from the GitHub UI
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: 'npm' # or 'yarn' / 'pnpm'
+          cache-dependency-path: ui-automation/cypress/greenkart/package-lock.json
+
+      # Option A: If your tests run against an external/live URL (e.g. GreenKart)
+      - name: Run Cypress Tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: ui-automation/cypress/greenkart
+          browser: chrome
+
+      # Upload screenshots/videos if tests fail
+      - name: Upload Test Artifacts
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: cypress-artifacts
+          path: |
+            ui-automation/cypress/greenkart/cypress/screenshots
+            ui-automation/cypress/greenkart/cypress/videos
