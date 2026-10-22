@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test:playwright": "playwright test",
+    "test:playwright:greenkart": "npm --prefix ui-automation/playwright/typescript/greenKart test",
     "test:cypress:examples": "cypress run",
     "test:cypress:greenkart": "npm --prefix ui-automation/cypress/greenkart test"
   },

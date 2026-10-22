@@ -71,6 +71,34 @@ jobs:
           path: ui-automation/playwright/playwright-report/
           retention-days: 30
 
+  greenkart:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui-automation/playwright/typescript/greenKart
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: ui-automation/playwright/typescript/greenKart/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Run GreenKart tests
+        run: npm test
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: greenkart-playwright-report
+          path: ui-automation/playwright/typescript/greenKart/playwright-report/
+          retention-days: 30
+
   azure-playwright:
     if: >-
       (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && vars.RUN_AZURE_PLAYWRIGHT == 'true')) &&

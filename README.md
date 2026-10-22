@@ -29,7 +29,7 @@
 | Area | Project | What it demonstrates | Status |
 |---|---|---|---|
 | **Selenium (Java)** | `ui-automation/selenium-java/` | Banking, SauceDemo, and Selenium fundamentals POM frameworks | ✅ Working (see CI badges) |
-| **Playwright (TypeScript)** | `tests/` | Root-level GreenKart storefront suite, driven by `playwright.config.ts` | ✅ Working |
+| **Playwright (TypeScript)** | `ui-automation/playwright/typescript/greenKart/` | Independent GreenKart storefront suite, plan, and specs | ✅ Working |
 | **Playwright (JS/TS)** | `ui-automation/playwright/` | Independent browser E2E and Cucumber suites + GitHub Actions CI | ✅ Working (see CI badges) |
 | **Cypress** | `ui-automation/cypress/greenkart/` | GreenKart UI, network-mock, checkout, and API specs | ✅ Working (see CI badge) |
 | **Cypress examples** | `ui-automation/cypress/e2e/` | Cypress starter examples and a search spec | 📝 Practice examples |
@@ -95,10 +95,15 @@ npx playwright test          # headless
 npx playwright test --headed # visible browser
 ```
 
-The root-level GreenKart Playwright suite is separate from this portfolio project. Its config is `playwright.config.ts`, its specs are under `tests/`, and its scenarios are tracked in `test-plans/greenkart-storefront-test-plan.md`.
+### 🥬 GreenKart — Playwright TypeScript
+An independent project with its own Playwright config, dependencies, test specs, specification notes, and storefront test plan.
 
 ```bash
-npx playwright test
+cd ui-automation/playwright/typescript/greenKart
+npm ci
+npx playwright install chromium
+npm run typecheck
+npm test
 ```
 
 CI expects these GitHub Actions secrets: `SHOP_EMAIL`, `SHOP_PASSWORD`, `SHOP_REGISTRATION_EMAIL`, `SHOP_REGISTRATION_PASSWORD`, `EVENTS_EMAIL`, `EVENTS_PASSWORD`, `GMAIL_EMAIL`, `GMAIL_PASSWORD`, `YAHOO_EMAIL`, `YAHOO_PASSWORD`, `PRACTICE_USERNAME`, `PRACTICE_PASSWORD`, `PRACTICE_FORM_NAME`, `PRACTICE_FORM_EMAIL`, and `PRACTICE_FORM_PASSWORD`.
@@ -180,13 +185,15 @@ npm test
 ```
 qa-relaunch/
 ├── .github/workflows/          # Playwright, Selenium, and pytest pipelines
-├── tests/                      # Root Playwright GreenKart suite
-├── test-plans/                 # Test plans for root-level suites
+├── tests/                      # Root Playwright example
 ├── ui-automation/
 │   ├── cypress/
 │   │   ├── e2e/                 # Cypress starter examples
 │   │   └── greenkart/           # Standalone GreenKart Cypress package
-│   ├── playwright/             # Independent JS/TS Playwright and Cucumber project
+│   ├── playwright/
+│   │   ├── typescript/
+│   │   │   └── greenKart/      # Standalone TypeScript GreenKart project
+│   │   └── ...                 # Existing JavaScript/TypeScript Playwright project
 │   └── selenium-java/          # Selenium POM frameworks
 ├── bdd-cucumber/               # Cucumber + TestNG frameworks and Gherkin specs
 ├── api-testing/
@@ -196,7 +203,6 @@ qa-relaunch/
 │   ├── pytest/                 # Parametrized tests and fixtures
 │   └── ai-defect-resolver/     # Claude API defect analysis tool
 ├── performance/jmeter/         # JMeter test plans
-├── specs/                      # Shared specifications
 ├── core-skills/
 │   ├── java-fundamentals/      # OOP exercises and algorithms
 │   └── sql/                    # Data validation queries and README

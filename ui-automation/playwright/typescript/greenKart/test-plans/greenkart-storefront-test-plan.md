@@ -12,7 +12,7 @@ Functional test plan for https://rahulshettyacademy.com/seleniumPractise/, a Gre
 
 #### 1.1. Catalog loads with product cards and an empty cart
 
-**File:** `tests/green-kart/catalog-load.spec.ts`
+**File:** `tests/catalog-load.spec.ts`
 
 **Steps:**
   1. Open https://rahulshettyacademy.com/seleniumPractise/ in a fresh browser context.
@@ -22,7 +22,7 @@ Functional test plan for https://rahulshettyacademy.com/seleniumPractise/, a Gre
 
 #### 1.2. Catalog search filters matching and non-matching products
 
-**File:** `tests/green-kart/catalog-search.spec.ts`
+**File:** `tests/catalog-search.spec.ts`
 
 **Steps:**
   1. Open the catalog in a fresh browser context and enter “Apple” in the product search field.
@@ -34,7 +34,7 @@ Functional test plan for https://rahulshettyacademy.com/seleniumPractise/, a Gre
 
 #### 1.3. Quantity controls enforce the lower bound
 
-**File:** `tests/green-kart/quantity-controls.spec.ts`
+**File:** `tests/quantity-controls.spec.ts`
 
 **Steps:**
   1. Open the catalog and search for Apple so only its product card is shown.
@@ -52,7 +52,7 @@ Functional test plan for https://rahulshettyacademy.com/seleniumPractise/, a Gre
 
 #### 2.1. Add multiple product quantities and verify cart arithmetic
 
-**File:** `tests/green-kart/cart-totals.spec.ts`
+**File:** `tests/cart-totals.spec.ts`
 
 **Steps:**
   1. Open the catalog in a fresh browser context, search for Apple, set its quantity to 2, and click ADD TO CART.
@@ -64,7 +64,7 @@ Functional test plan for https://rahulshettyacademy.com/seleniumPractise/, a Gre
 
 #### 2.2. Invalid promo code does not alter cart totals
 
-**File:** `tests/green-kart/promo-code.spec.ts`
+**File:** `tests/promo-code.spec.ts`
 
 **Steps:**
   1. Create a fresh cart with two Apples and navigate to checkout; verify the total is ₹144.
@@ -75,7 +75,7 @@ Functional test plan for https://rahulshettyacademy.com/seleniumPractise/, a Gre
 
 #### 2.3. Empty cart cannot continue to order confirmation
 
-**File:** `tests/green-kart/empty-cart-checkout.spec.ts`
+**File:** `tests/empty-cart-checkout.spec.ts`
 
 **Steps:**
   1. Open the fresh catalog, open Cart without adding products, and select PROCEED TO CHECKOUT.
@@ -85,7 +85,7 @@ Functional test plan for https://rahulshettyacademy.com/seleniumPractise/, a Gre
 
 #### 2.4. Terms are required before checkout can proceed
 
-**File:** `tests/green-kart/checkout-terms.spec.ts`
+**File:** `tests/checkout-terms.spec.ts`
 
 **Steps:**
   1. Add one product, open checkout, click Place Order, and leave the Terms & Conditions checkbox unchecked.
@@ -95,7 +95,7 @@ Functional test plan for https://rahulshettyacademy.com/seleniumPractise/, a Gre
 
 #### 2.5. Country selection is required before checkout can proceed
 
-**File:** `tests/green-kart/checkout-country.spec.ts`
+**File:** `tests/checkout-country.spec.ts`
 
 **Steps:**
   1. Add one product, proceed to the country confirmation page, select the Terms & Conditions checkbox, and leave the country set to Select.
@@ -105,7 +105,7 @@ Functional test plan for https://rahulshettyacademy.com/seleniumPractise/, a Gre
 
 #### 2.6. Successful checkout clears the completed cart
 
-**File:** `tests/green-kart/checkout-complete.spec.ts`
+**File:** `tests/checkout-complete.spec.ts`
 
 **Steps:**
   1. Add two Apples, proceed through checkout, select India, accept Terms & Conditions, and click Proceed.
@@ -119,7 +119,7 @@ Functional test plan for https://rahulshettyacademy.com/seleniumPractise/, a Gre
 
 #### 3.1. Search Top Deals table by product name
 
-**File:** `tests/green-kart/offers-search.spec.ts`
+**File:** `tests/offers-search.spec.ts`
 
 **Steps:**
   1. Open the catalog and click Top Deals.
@@ -131,7 +131,7 @@ Functional test plan for https://rahulshettyacademy.com/seleniumPractise/, a Gre
 
 #### 3.2. Sort, paginate, and change Top Deals page size
 
-**File:** `tests/green-kart/offers-table-controls.spec.ts`
+**File:** `tests/offers-table-controls.spec.ts`
 
 **Steps:**
   1. Open Top Deals in a fresh browser context and note the initial page size and active sort state.
@@ -145,7 +145,7 @@ Functional test plan for https://rahulshettyacademy.com/seleniumPractise/, a Gre
 
 #### 3.3. Delivery date controls accept valid input and clear
 
-**File:** `tests/green-kart/offers-delivery-date.spec.ts`
+**File:** `tests/offers-delivery-date.spec.ts`
 
 **Steps:**
   1. Open Top Deals and inspect the Delivery Date controls.

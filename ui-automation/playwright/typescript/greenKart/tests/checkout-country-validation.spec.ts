@@ -1,5 +1,5 @@
-// spec: test-plans/greenkart-storefront-test-plan.md
-// seed: tests/seed.spec.ts
+// spec: ../test-plans/greenkart-storefront-test-plan.md
+// seed: ./seed.spec.ts
 
 import { test, expect, type Page } from '@playwright/test';
 
