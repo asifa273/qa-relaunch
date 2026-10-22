@@ -5,27 +5,26 @@ describe('GreenKart search', () => {
 
   beforeEach(() => home.visit());
 
+  // The list filters on every keystroke, so partial terms briefly show extra
+  // products. Checking all names inside one should() makes Cypress re-query
+  // and retry until the list matches the full term.
+  const expectAllNamesToInclude = (term: string) => {
+    home.productNames().should(($names) => {
+      expect($names.length, 'matching products').to.be.greaterThan(0);
+      [...$names].forEach((el) => {
+        expect(el.innerText.toLowerCase()).to.include(term);
+      });
+    });
+  };
+
   it('shows only products that match the search term', () => {
     cy.searchProduct('ca');
-
-    // Wait for the total unfiltered list of 30 to shrink
-    home.productNames().should('have.length.lt', 30);
-
-    home.productNames().each(($name) => {
-      expect($name.text().toLowerCase()).to.include('ca');
-    });
+    expectAllNamesToInclude('ca');
   });
 
   it('should show all prducts that match this letter in them', () => {
     cy.searchProduct('li');
-
-    // Waits until the visible list has shrunk from the initial 30 items
-    home.productNames().should('have.length.lt', 30);
-
-    home.productNames().each(($name) => {
-      expect($name.text().toLowerCase()).to.include('li');
-    });
-
+    expectAllNamesToInclude('li');
   });
 
   it('shows no products for a term that matches nothing', () => {
