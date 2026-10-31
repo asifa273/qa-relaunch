@@ -1,0 +1,33 @@
+{
+    "product": "ZARA COAT 3",
+    "country": "India",
+    "validCoupon": "rahulshettyacademy",
+    "validCards": [
+        {
+            "label": "Visa",
+            "number": "4111 1111 1111 1111",
+            "expiryMonth": "12",
+            "expiryYear": "31",
+            "cvv": "123",
+            "nameOnCard": "Test User"
+        },
+        {
+            "label": "Mastercard",
+            "number": "5555 5555 5555 4444",
+            "expiryMonth": "06",
+            "expiryYear": "30",
+            "cvv": "456",
+            "nameOnCard": "Test User"
+        }
+    ],
+    "invalidCoupons": [
+        { "label": "unknown code", "code": "NOT-A-REAL-COUPON", "expectedMessage": "Invalid Coupon" },
+        { "label": "wrong case", "code": "RAHULSHETTYACADEMY", "expectedMessage": "Invalid Coupon" }
+    ],
+    "invalidShipping": [
+        {
+            "label": "no country selected",
+            "expectedToast": "Please Enter Full Shipping Information"
+        }
+    ]
+}
