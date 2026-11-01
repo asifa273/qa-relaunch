@@ -124,7 +124,13 @@ jobs:
         env:
           EMAIL: ${{ secrets.PAYMENT_EMAIL }}
           PASSWORD: ${{ secrets.PAYMENT_PASSWORD }}
-        run: npm test
+        run: |
+          if [ -z "$EMAIL" ] || [ -z "$PASSWORD" ]; then
+            echo "::warning::Payment automation test skipped; configure PAYMENT_EMAIL and PAYMENT_PASSWORD repository secrets to enable it."
+            echo "Payment automation test skipped because PAYMENT_EMAIL and/or PAYMENT_PASSWORD is not configured." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          npm test
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:

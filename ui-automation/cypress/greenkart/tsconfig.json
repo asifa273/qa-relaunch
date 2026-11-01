@@ -8,5 +8,5 @@
     "skipLibCheck": true,
     "types": ["cypress", "node"]
   },
-  "include": ["cypress/**/*.ts", "cypress.config.ts"]
+  "include": ["greenkartE2E/**/*.ts", "cypress.config.ts"]
 }
