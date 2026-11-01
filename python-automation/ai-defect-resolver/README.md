@@ -106,7 +106,7 @@ A structured markdown report is auto-generated and saved to `/reports/`:
 ```bash
 # Clone the repository
 git clone https://github.com/asifa273/qa-relaunch.git
-cd qa-relaunch/ai
+cd qa-relaunch/python-automation/ai-defect-resolver
 
 # Install dependencies
 pip install -r requirements.txt
@@ -141,7 +141,7 @@ This project includes a **GitHub Actions** workflow that automatically runs on e
 - ✅ Runs the full pytest test suite
 - ✅ Reports pass/fail status on every commit
 
-See `.github/workflows/ci.yml` for the full configuration.
+See the repository workflow at `.github/workflows/ai-defect-resolver.yml` for the full configuration.
 
 ---
 

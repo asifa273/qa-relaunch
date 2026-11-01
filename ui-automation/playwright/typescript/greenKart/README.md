@@ -13,6 +13,8 @@ npm test
 
 ## Layout
 
+- `src/pages/`: catalog, cart, and country page objects plus their manager
+- `src/fixtures/`: shared Playwright test fixture that provides the page-object manager
 - `tests/`: executable Playwright specs and seed
 - `specs/`: specification notes
 - `test-plans/`: planned storefront scenarios

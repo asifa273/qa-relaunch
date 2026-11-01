@@ -42,6 +42,7 @@
 | **SQL data QA** | `core-skills/sql/` | Data-quality query patterns (nulls, duplicates, reconciliation) | 🚧 Documented, scripts in progress |
 | **API (Postman)** | `api-testing/postman/` | REST collections | 🔜 Planned |
 | **API (REST Assured)** | `ui-automation/selenium-java/E2E-SauceDemo-Framework/` | Java API tests with response validation | ✅ Working |
+| **API (REST Assured notes)** | `api-testing/rest-assured/` | Planned standalone API test project | 🔜 Planned |
 | **SpecFlow (.NET BDD)** | `bdd-cucumber/specflow/` | C# BDD | 🔜 Planned |
 
 ---
@@ -85,7 +86,7 @@ Browser end-to-end tests against practice e-commerce and sign-in sites.
 - **Config:** parallel execution on Chromium, HTML reporter, trace on every run, screenshot/video on failure, retries on CI
 - **CI:** GitHub Actions (`playwright.yml`) runs on every push/PR and uploads the HTML report as an artifact
 - **Stack:** JavaScript + TypeScript · @playwright/test 1.63
-- **How the code is split:** Playwright Test specs (`tests/`) are being moved to TypeScript and use `PageObjects_ts/` and `utils_ts/`. The Cucumber BDD run (`cucumber_Features/`, `.cucumber.js`) uses the JavaScript `PageObjects/` and `utils/`, so those folders stay as JS on purpose.
+- **How the code is split:** Playwright Test specs live in `tests/` and use the shared `src/pages/`, `src/fixtures/`, `src/utils/`, and `src/data/` layers. The Cucumber BDD run (`cucumber_Features/`, `.cucumber.js`) remains a separate JavaScript flow using `PageObjects/` and `utils/`.
 
 ```bash
 cd ui-automation/playwright
@@ -184,29 +185,36 @@ npm test
 
 ```
 qa-relaunch/
-├── .github/workflows/          # Playwright, Selenium, and pytest pipelines
-├── tests/                      # Root Playwright example
-├── ui-automation/
-│   ├── cypress/
-│   │   ├── e2e/                 # Cypress starter examples
-│   │   └── greenkart/           # Standalone GreenKart Cypress package
-│   ├── playwright/
-│   │   ├── typescript/
-│   │   │   └── greenKart/      # Standalone TypeScript GreenKart project
-│   │   └── ...                 # Existing JavaScript/TypeScript Playwright project
-│   └── selenium-java/          # Selenium POM frameworks
-├── bdd-cucumber/               # Cucumber + TestNG frameworks and Gherkin specs
+├── .github/workflows/          # CI workflows for active projects
+├── tests/                      # Root Playwright example project
 ├── api-testing/
-│   ├── postman/                # Collections and environments
-│   └── rest-assured/           # REST Assured learning notes
-├── python-automation/
-│   ├── pytest/                 # Parametrized tests and fixtures
-│   └── ai-defect-resolver/     # Claude API defect analysis tool
-├── performance/jmeter/         # JMeter test plans
+│   ├── postman/                # Planned collections and environments
+│   └── rest-assured/           # Standalone project notes
+├── bdd-cucumber/
+│   ├── *.feature               # Shared Gherkin examples
+│   ├── LinearCucumberSeleniumPractice/AutomationCICD-main/  # Maven course project
+│   └── specflow/               # Planned .NET BDD project
 ├── core-skills/
-│   ├── java-fundamentals/      # OOP exercises and algorithms
-│   └── sql/                    # Data validation queries and README
-└── bdd-cucumber/               # Shared Gherkin features and Java/.NET BDD projects
+│   ├── java-fundamentals/      # src/ solutions and exercises/
+│   └── sql/                    # Data-quality notes and query placeholders
+├── performance/jmeter/        # JMeter test plans
+├── python-automation/
+│   ├── app.py, chatbot_app.py  # Python and Flask examples
+│   ├── ai-defect-resolver/     # src/, tests/, defects/, reports/
+│   ├── pytest/                 # conftest.py, pytest.ini, basicTests/
+│   ├── pythonFullCourse/       # Python learning exercises
+│   ├── source/                 # Shared Python learning modules
+│   └── templates/              # Flask chatbot templates
+└── ui-automation/
+	├── cypress/
+	│   ├── e2e/                # Cypress starter examples
+	│   └── greenkart/           # Standalone Cypress package: cypress/, config, support
+	├── playwright/
+	│   ├── src/{data,fixtures,pages,utils}/  # Root Playwright framework support
+	│   ├── tests/              # Root Playwright specs and fixtures
+	│   ├── payment-automation/ # Standalone framework project: src/, tests/
+	│   └── typescript/greenKart/ # Standalone project: src/, tests/, specs/, test-plans/
+	└── selenium-java/          # Independent Maven Selenium projects
 ```
 
 ---

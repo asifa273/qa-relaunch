@@ -6,7 +6,7 @@ End-to-end and API tests for the [GreenKart practice app](https://rahulshettyaca
 
 | Spec | What it tests | Cypress features |
 |---|---|---|
-| `search.cy.ts` | Search filters products; no-match case | custom command, page object |
+| `searchProduct.cy.ts` | Search filters products; no-match case | custom command, page object |
 | `checkout.cy.ts` | Two-item order, invalid promo, terms not accepted | fixtures, page objects, `this` aliases |
 | `network-mock.cy.ts` | Empty product list, server error | `cy.intercept`, `cy.wait('@alias')` |
 | `products-api.cy.ts` | Status code, shape of every product | `cy.request` |

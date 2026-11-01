@@ -17,7 +17,7 @@ A modern, interactive chatbot web application built with Flask and the Google Ge
 ### 1. Install Dependencies
 
 ```bash
-cd /Users/asifabegum/asifa273/qa-relaunch/python
+cd qa-relaunch/python-automation
 pip install -r requirements.txt
 ```
 
@@ -41,7 +41,7 @@ Visit: **http://localhost:5000**
 
 ### File Structure
 ```
-python/
+python-automation/
 ├── chatbot_app.py          # Flask application (backend)
 ├── requirements.txt        # Python dependencies
 ├── templates/
