@@ -12,7 +12,7 @@
     "test:report:open": "allure open allure-report",
     "webTest": "npx playwright test --grep @Web",
     "APITest": "npx playwright test --grep @API",
-    "cucumberregression": "npx cucumber-js --tags '@Regression' --retry 1 --exit"
+    "cucumberregression": "npx cucumber-js --config .cucumber.js --tags '@Regression' --retry 1 --exit"
   },
   "keywords": [],
   "author": "",

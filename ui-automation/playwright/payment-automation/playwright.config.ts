@@ -16,7 +16,7 @@ export default defineConfig({
     reporter: [['list'], ['html', { open: 'never' }]],
     use: {
         baseURL: 'https://automationexercise.com/',
-        headless: false,
+        headless: !!process.env.CI,
         trace: 'retain-on-failure',
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
