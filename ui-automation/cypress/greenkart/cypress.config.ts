@@ -1,10 +1,11 @@
 import { defineConfig } from 'cypress';
 
 export default defineConfig({
+  fixturesFolder: 'greenkartE2E/fixtures',
   e2e: {
     baseUrl: 'https://rahulshettyacademy.com/seleniumPractise',
-    specPattern: 'cypress/e2e/**/*.cy.ts',
-    supportFile: 'cypress/support/e2e.ts',
+    specPattern: 'greenkartE2E/e2e/green-kart/**/*.cy.ts',
+    supportFile: 'greenkartE2E/e2e/green-kart/cypress/support/e2e.js',
     viewportWidth: 1366,
     viewportHeight: 768,
     defaultCommandTimeout: 8000,
