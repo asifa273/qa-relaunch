@@ -1,0 +1,8 @@
+{
+    "validUseCase": "E-Commerce Automation Practice of valid information of shopping orders and placement",
+    "invalidUseCase": "E-Commerce Automation Practice of Invalid login of shopping orders and placement",
+    "invalidLogin": {
+        "email": "invalid@example.com",
+        "password": "invalid123!"
+    }
+}

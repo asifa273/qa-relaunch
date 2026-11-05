@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-26.04
     defaults:
       run:
-        working-directory: python-automation/ai-defect-resolver
+        working-directory: ui-automation/python/ai-defect-resolver
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python

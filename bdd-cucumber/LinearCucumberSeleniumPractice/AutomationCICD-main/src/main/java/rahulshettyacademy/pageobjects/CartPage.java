@@ -2,6 +2,7 @@ package rahulshettyacademy.pageobjects;
 
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -25,6 +26,8 @@ public class CartPage extends AbstractComponent {
 	}
 
 	public Boolean verifyProductDisplay(String productName) {
+		// The cart renders after navigation; wait for it before reading titles.
+		waitForElementToAppear(By.cssSelector(".cartSection h3"));
 		Boolean match = productTitles.stream()
 				.anyMatch(cartProduct -> cartProduct.getText().equalsIgnoreCase(productName));
 		return match;

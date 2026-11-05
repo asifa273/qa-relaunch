@@ -1,0 +1,46 @@
+pipeline {
+  agent any
+
+  tools {
+    nodejs 'Node 20'
+  }
+
+  environment {
+    CI = 'true'
+    PROJECT_DIR = 'UI-Automation/playwright/Javascript Projects/clientShopping'
+  }
+
+  stages {
+    stage('Install dependencies') {
+      steps {
+        dir("${PROJECT_DIR}") {
+          sh 'npm ci'
+          sh 'npx playwright install --with-deps chromium'
+        }
+      }
+    }
+
+    stage('Run Playwright tests') {
+      steps {
+        dir("${PROJECT_DIR}") {
+          withCredentials([
+            string(credentialsId: 'SHOP_EMAIL', variable: 'SHOP_EMAIL'),
+            string(credentialsId: 'SHOP_PASSWORD', variable: 'SHOP_PASSWORD'),
+            string(credentialsId: 'PLAYWRIGHT_SERVICE_URL', variable: 'PLAYWRIGHT_SERVICE_URL')
+          ]) {
+            // Workers stay at 1 (set in playwright.config.js): tests share one shop account.
+            sh 'npx playwright test --config=playwright.service.config.js'
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      dir("${PROJECT_DIR}") {
+        archiveArtifacts allowEmptyArchive: true, artifacts: 'playwright-report/**, test-results/**, allure-results/**', fingerprint: true
+      }
+    }
+  }
+}

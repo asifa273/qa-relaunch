@@ -7,70 +7,73 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    timeout-minutes: 60
+  client-shopping-js:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ui-automation/playwright
+        working-directory: ui-automation/playwright/Javascript Projects/clientShopping
+    env:
+      SHOP_EMAIL: ${{ secrets.SHOP_EMAIL }}
+      SHOP_PASSWORD: ${{ secrets.SHOP_PASSWORD }}
+      SHOP_ALT_EMAIL: ${{ secrets.SHOP_ALT_EMAIL }}
+      SHOP_ALT_PASSWORD: ${{ secrets.SHOP_ALT_PASSWORD }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Create test environment
-        env:
-          SHOP_EMAIL: ${{ secrets.SHOP_EMAIL }}
-          SHOP_PASSWORD: ${{ secrets.SHOP_PASSWORD }}
-          SHOP_ALT_EMAIL: ${{ secrets.SHOP_ALT_EMAIL }}
-          SHOP_ALT_PASSWORD: ${{ secrets.SHOP_ALT_PASSWORD }}
-          SHOP_REGISTRATION_EMAIL: ${{ secrets.SHOP_REGISTRATION_EMAIL }}
-          SHOP_REGISTRATION_PASSWORD: ${{ secrets.SHOP_REGISTRATION_PASSWORD }}
-          EVENTS_EMAIL: ${{ secrets.EVENTS_EMAIL }}
-          EVENTS_PASSWORD: ${{ secrets.EVENTS_PASSWORD }}
-          GMAIL_EMAIL: ${{ secrets.GMAIL_EMAIL }}
-          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
-          YAHOO_EMAIL: ${{ secrets.YAHOO_EMAIL }}
-          YAHOO_PASSWORD: ${{ secrets.YAHOO_PASSWORD }}
-          PRACTICE_USERNAME: ${{ secrets.PRACTICE_USERNAME }}
-          PRACTICE_PASSWORD: ${{ secrets.PRACTICE_PASSWORD }}
-          LOGIN_PRACTICE_USERNAME: ${{ secrets.LOGIN_PRACTICE_USERNAME }}
-          LOGIN_PRACTICE_PASSWORD: ${{ secrets.LOGIN_PRACTICE_PASSWORD }}
-          PRACTICE_FORM_NAME: ${{ secrets.PRACTICE_FORM_NAME }}
-          PRACTICE_FORM_EMAIL: ${{ secrets.PRACTICE_FORM_EMAIL }}
-          PRACTICE_FORM_PASSWORD: ${{ secrets.PRACTICE_FORM_PASSWORD }}
-        run: |
-          printf '%s\n' \
-            "SHOP_EMAIL=$SHOP_EMAIL" \
-            "SHOP_PASSWORD=$SHOP_PASSWORD" \
-            "SHOP_ALT_EMAIL=$SHOP_ALT_EMAIL" \
-            "SHOP_ALT_PASSWORD=$SHOP_ALT_PASSWORD" \
-            "SHOP_REGISTRATION_EMAIL=$SHOP_REGISTRATION_EMAIL" \
-            "SHOP_REGISTRATION_PASSWORD=$SHOP_REGISTRATION_PASSWORD" \
-            "EVENTS_EMAIL=$EVENTS_EMAIL" \
-            "EVENTS_PASSWORD=$EVENTS_PASSWORD" \
-            "GMAIL_EMAIL=$GMAIL_EMAIL" \
-            "GMAIL_PASSWORD=$GMAIL_PASSWORD" \
-            "YAHOO_EMAIL=$YAHOO_EMAIL" \
-            "YAHOO_PASSWORD=$YAHOO_PASSWORD" \
-            "LOGIN_PRACTICE_USERNAME=$LOGIN_PRACTICE_USERNAME" \
-            "LOGIN_PRACTICE_PASSWORD=$LOGIN_PRACTICE_PASSWORD" \
-            "PRACTICE_FORM_NAME=$PRACTICE_FORM_NAME" \
-            "PRACTICE_FORM_EMAIL=$PRACTICE_FORM_EMAIL" \
-            "PRACTICE_FORM_PASSWORD=$PRACTICE_FORM_PASSWORD" > .env
-      - name: Run Playwright tests
-        run: npx playwright test --config=playwright.service.config.ts
-      - name: Run Cucumber regression tests
-        run: npm run cucumberregression
+          cache: npm
+          cache-dependency-path: ui-automation/playwright/Javascript Projects/clientShopping/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report
-          path: ui-automation/playwright/playwright-report/
+          name: client-shopping-js-report
+          path: ui-automation/playwright/Javascript Projects/clientShopping/playwright-report/
+          retention-days: 30
+
+  client-shopping-ts:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui-automation/playwright/Typescript Projects/client-Shopping
+    env:
+      SHOP_EMAIL: ${{ secrets.SHOP_EMAIL }}
+      SHOP_PASSWORD: ${{ secrets.SHOP_PASSWORD }}
+      SHOP_ALT_EMAIL: ${{ secrets.SHOP_ALT_EMAIL }}
+      SHOP_ALT_PASSWORD: ${{ secrets.SHOP_ALT_PASSWORD }}
+      SHOP_REGISTRATION_EMAIL: ${{ secrets.SHOP_REGISTRATION_EMAIL }}
+      SHOP_REGISTRATION_PASSWORD: ${{ secrets.SHOP_REGISTRATION_PASSWORD }}
+      EVENTS_EMAIL: ${{ secrets.EVENTS_EMAIL }}
+      EVENTS_PASSWORD: ${{ secrets.EVENTS_PASSWORD }}
+      GMAIL_EMAIL: ${{ secrets.GMAIL_EMAIL }}
+      GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+      YAHOO_EMAIL: ${{ secrets.YAHOO_EMAIL }}
+      YAHOO_PASSWORD: ${{ secrets.YAHOO_PASSWORD }}
+      LOGIN_PRACTICE_USERNAME: ${{ secrets.LOGIN_PRACTICE_USERNAME }}
+      LOGIN_PRACTICE_PASSWORD: ${{ secrets.LOGIN_PRACTICE_PASSWORD }}
+      PRACTICE_FORM_NAME: ${{ secrets.PRACTICE_FORM_NAME }}
+      PRACTICE_FORM_EMAIL: ${{ secrets.PRACTICE_FORM_EMAIL }}
+      PRACTICE_FORM_PASSWORD: ${{ secrets.PRACTICE_FORM_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: ui-automation/playwright/Typescript Projects/client-Shopping/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npm test
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: client-shopping-ts-report
+          path: ui-automation/playwright/Typescript Projects/client-Shopping/playwright-report/
           retention-days: 30
 
   greenkart:
@@ -78,64 +81,56 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ui-automation/playwright/typescript/greenKart
+        working-directory: ui-automation/playwright/Typescript Projects/greenKart-shopping
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
           cache: npm
-          cache-dependency-path: ui-automation/playwright/typescript/greenKart/package-lock.json
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
-      - name: Typecheck
-        run: npm run typecheck
-      - name: Run GreenKart tests
-        run: npm test
+          cache-dependency-path: ui-automation/playwright/Typescript Projects/greenKart-shopping/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run typecheck
+      - run: npm test
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
-          name: greenkart-playwright-report
-          path: ui-automation/playwright/typescript/greenKart/playwright-report/
+          name: greenkart-report
+          path: ui-automation/playwright/Typescript Projects/greenKart-shopping/playwright-report/
           retention-days: 30
 
-  payment-automation:
+  automation-exercise:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ui-automation/playwright/payment-automation
+        working-directory: ui-automation/playwright/Typescript Projects/automationExercice
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
           cache: npm
-          cache-dependency-path: ui-automation/playwright/payment-automation/package-lock.json
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
-      - name: Typecheck
-        run: npm run typecheck
-      - name: Run payment automation tests
+          cache-dependency-path: ui-automation/playwright/Typescript Projects/automationExercice/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run typecheck
+      - name: Run tests
         env:
           EMAIL: ${{ secrets.PAYMENT_EMAIL }}
           PASSWORD: ${{ secrets.PAYMENT_PASSWORD }}
         run: |
           if [ -z "$EMAIL" ] || [ -z "$PASSWORD" ]; then
-            echo "::warning::Payment automation test skipped; configure PAYMENT_EMAIL and PAYMENT_PASSWORD repository secrets to enable it."
-            echo "Payment automation test skipped because PAYMENT_EMAIL and/or PAYMENT_PASSWORD is not configured." >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning::automationExercice tests skipped; set PAYMENT_EMAIL and PAYMENT_PASSWORD repository secrets to enable them."
             exit 0
           fi
           npm test
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
-          name: payment-automation-playwright-report
-          path: ui-automation/playwright/payment-automation/playwright-report/
+          name: automation-exercise-report
+          path: ui-automation/playwright/Typescript Projects/automationExercice/playwright-report/
           retention-days: 30
 
   azure-playwright:
@@ -149,72 +144,34 @@ jobs:
       id-token: write
     defaults:
       run:
-        working-directory: ui-automation/playwright
+        working-directory: ui-automation/playwright/Javascript Projects/clientShopping
+    env:
+      SHOP_EMAIL: ${{ secrets.SHOP_EMAIL }}
+      SHOP_PASSWORD: ${{ secrets.SHOP_PASSWORD }}
+      SHOP_ALT_EMAIL: ${{ secrets.SHOP_ALT_EMAIL }}
+      SHOP_ALT_PASSWORD: ${{ secrets.SHOP_ALT_PASSWORD }}
+      PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
-      - name: Install dependencies
-        run: npm ci
+          cache: npm
+          cache-dependency-path: ui-automation/playwright/Javascript Projects/clientShopping/package-lock.json
+      - run: npm ci
       - name: Login to Azure with OIDC
         uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           allow-no-subscriptions: true
-      - name: Create test environment
-        env:
-          LOGIN_PRACTICE_USERNAME: ${{ secrets.LOGIN_PRACTICE_USERNAME }}
-          LOGIN_PRACTICE_PASSWORD: ${{ secrets.LOGIN_PRACTICE_PASSWORD }}
-          SHOP_EMAIL: ${{ secrets.SHOP_EMAIL }}
-          SHOP_PASSWORD: ${{ secrets.SHOP_PASSWORD }}
-          SHOP_ALT_EMAIL: ${{ secrets.SHOP_ALT_EMAIL }}
-          SHOP_ALT_PASSWORD: ${{ secrets.SHOP_ALT_PASSWORD }}
-          SHOP_REGISTRATION_EMAIL: ${{ secrets.SHOP_REGISTRATION_EMAIL }}
-          SHOP_REGISTRATION_PASSWORD: ${{ secrets.SHOP_REGISTRATION_PASSWORD }}
-          EVENTS_EMAIL: ${{ secrets.EVENTS_EMAIL }}
-          EVENTS_PASSWORD: ${{ secrets.EVENTS_PASSWORD }}
-          GMAIL_EMAIL: ${{ secrets.GMAIL_EMAIL }}
-          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
-          YAHOO_EMAIL: ${{ secrets.YAHOO_EMAIL }}
-          YAHOO_PASSWORD: ${{ secrets.YAHOO_PASSWORD }}
-          PRACTICE_USERNAME: ${{ secrets.PRACTICE_USERNAME }}
-          PRACTICE_PASSWORD: ${{ secrets.PRACTICE_PASSWORD }}
-          PRACTICE_FORM_NAME: ${{ secrets.PRACTICE_FORM_NAME }}
-          PRACTICE_FORM_EMAIL: ${{ secrets.PRACTICE_FORM_EMAIL }}
-          PRACTICE_FORM_PASSWORD: ${{ secrets.PRACTICE_FORM_PASSWORD }}
-        run: |
-          printf '%s\n' \
-            "SHOP_EMAIL=$SHOP_EMAIL" \
-            "SHOP_PASSWORD=$SHOP_PASSWORD" \
-            "SHOP_ALT_EMAIL=$SHOP_ALT_EMAIL" \
-            "SHOP_ALT_PASSWORD=$SHOP_ALT_PASSWORD" \
-            "SHOP_REGISTRATION_EMAIL=$SHOP_REGISTRATION_EMAIL" \
-            "SHOP_REGISTRATION_PASSWORD=$SHOP_REGISTRATION_PASSWORD" \
-            "EVENTS_EMAIL=$EVENTS_EMAIL" \
-            "EVENTS_PASSWORD=$EVENTS_PASSWORD" \
-            "GMAIL_EMAIL=$GMAIL_EMAIL" \
-            "GMAIL_PASSWORD=$GMAIL_PASSWORD" \
-            "YAHOO_EMAIL=$YAHOO_EMAIL" \
-            "YAHOO_PASSWORD=$YAHOO_PASSWORD" \
-            "LOGIN_PRACTICE_USERNAME=$LOGIN_PRACTICE_USERNAME" \
-            "LOGIN_PRACTICE_PASSWORD=$LOGIN_PRACTICE_PASSWORD" \
-            "PRACTICE_FORM_NAME=$PRACTICE_FORM_NAME" \
-            "PRACTICE_FORM_EMAIL=$PRACTICE_FORM_EMAIL" \
-            "PRACTICE_FORM_PASSWORD=$PRACTICE_FORM_PASSWORD" > .env
       - name: Run tests on Azure Playwright Workspaces
-        env:
-          LOGIN_PRACTICE_USERNAME: ${{ secrets.LOGIN_PRACTICE_USERNAME }}
-          LOGIN_PRACTICE_PASSWORD: ${{ secrets.LOGIN_PRACTICE_PASSWORD }}
-          PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL }}
         run: |
-          test -n "$PLAYWRIGHT_SERVICE_URL"
-          test -n "$LOGIN_PRACTICE_PASSWORD" || (echo "LOGIN_PRACTICE_PASSWORD is empty!" && exit 1)
-          npx playwright test --config=playwright.service.config.ts
+          test -n "$PLAYWRIGHT_SERVICE_URL" || (echo "PLAYWRIGHT_SERVICE_URL is empty" && exit 1)
+          npm run test:azure
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: azure-playwright-report
-          path: ui-automation/playwright/playwright-report/
+          path: ui-automation/playwright/Javascript Projects/clientShopping/playwright-report/
           retention-days: 30

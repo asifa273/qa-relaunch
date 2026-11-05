@@ -1,0 +1,19 @@
+{
+  "name": "python-automation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Python QA automation: pytest suites, AI defect resolver, and Flask chatbot. npm scripts are shortcuts for the Python commands.",
+  "scripts": {
+    "setup": "python3 -m pip install -r requirements.txt -r ai-defect-resolver/requirements.txt selenium webdriver-manager",
+    "test": "npm run test:basic && npm run test:defect",
+    "test:basic": "cd pytest && python3 -m pytest basicTests -v",
+    "test:defect": "cd ai-defect-resolver && python3 -m pytest tests -v",
+    "defect:analyze": "cd ai-defect-resolver && python3 src/analyzer.py",
+    "defect:fix": "cd ai-defect-resolver && python3 src/fix_generator.py",
+    "defect:validate": "cd ai-defect-resolver && python3 src/validator.py",
+    "chatbot": "python3 chatbot_app.py",
+    "app": "python3 app.py",
+    "clean": "find . -type d \\( -name __pycache__ -o -name .pytest_cache \\) -prune -exec rm -rf {} +"
+  },
+  "license": "ISC"
+}

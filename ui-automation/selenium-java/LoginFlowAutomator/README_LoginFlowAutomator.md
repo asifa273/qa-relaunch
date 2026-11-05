@@ -13,9 +13,9 @@ End-to-End Checkout: Full automation of the checkout information form and order 
 Driver Management: Uses WebDriverManager to eliminate the need for manual driver downloads.
 
 🛠 Tech Stack
-Language: Java 21
+Language: Java 17
 
-Framework: Selenium WebDriver (4.25.0)
+Framework: Selenium WebDriver (4.21.0)
 
 Test Runner: TestNG
 
@@ -24,7 +24,7 @@ Build Tool: Maven
 📋 Prerequisites
 Ensure you have the following installed:
 
-JDK 21
+JDK 17+
 
 Apache Maven
 

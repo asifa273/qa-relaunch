@@ -3,6 +3,9 @@ package rahulshettyacademy.pageobjects;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import java.time.Duration;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -43,9 +46,13 @@ public class ProductCatalogue extends AbstractComponent {
 	}
 
 	public void addProductToCart(String productName) throws InterruptedException {
+		// Clicks made while the login toast is still animating are ignored by the page.
+		waitForToastsToClose();
 		WebElement prod = getProductByName(productName);
 		prod.findElement(addToCart).click();
-		waitForElementToAppear(toastMessage);
-		waitForElementToDisappear(spinner);
+		// Wait for this action's toast, not the "Login Successfully" one that may still be showing.
+		new WebDriverWait(driver, Duration.ofSeconds(10))
+				.until(ExpectedConditions.textToBePresentInElementLocated(toastMessage, "Product Added To Cart"));
+		waitForToastsToClose();
 	}
 }

@@ -41,14 +41,24 @@ public class AbstractComponent {
 		// wait.until(ExpectedConditions.invisibilityOf(element));
 	}
 
+	public void waitForToastsToClose() {
+		new WebDriverWait(driver, Duration.ofSeconds(10))
+				.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("#toast-container .ngx-toastr")));
+	}
+
 	public CartPage goToCartPage() {
-		cartHeader.click();
+		// Toasts sit over the header links; wait until they are gone before clicking.
+		waitForToastsToClose();
+		new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(cartHeader)).click();
+		new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.urlContains("/cart"));
 		CartPage cartPage = new CartPage(driver);
 		return cartPage;
 	}
 
 	public OrderPage goToOrdersPage() {
-		orderHeader.click();
+		waitForToastsToClose();
+		new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(orderHeader)).click();
+		new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.urlContains("/myorders"));
 		OrderPage orderPage = new OrderPage(driver);
 		return orderPage;
 	}

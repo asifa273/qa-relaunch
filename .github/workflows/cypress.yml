@@ -20,13 +20,13 @@ jobs:
         with:
           node-version: 20
           cache: 'npm' # or 'yarn' / 'pnpm'
-          cache-dependency-path: ui-automation/cypress/greenkart/package-lock.json
+          cache-dependency-path: ui-automation/cypress/greenkart-project/package-lock.json
 
       # Option A: If your tests run against an external/live URL (e.g. GreenKart)
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
-          working-directory: ui-automation/cypress/greenkart
+          working-directory: ui-automation/cypress/greenkart-project
           browser: chrome
 
       # Upload screenshots/videos if tests fail
@@ -36,5 +36,6 @@ jobs:
         with:
           name: cypress-artifacts
           path: |
-            ui-automation/cypress/greenkart/cypress/screenshots
-            ui-automation/cypress/greenkart/cypress/videos
+            ui-automation/cypress/greenkart-project/screenshots
+            ui-automation/cypress/greenkart-project/cypress/screenshots
+            ui-automation/cypress/greenkart-project/videos
