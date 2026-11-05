@@ -17,7 +17,6 @@ cp .env.example .env   # then add your shop credentials
 | `npm test` | all tests, headless |
 | `npm run test:headed` | all tests with a visible browser |
 | `npm run test:web` / `npm run test:api` | tests tagged `@Web` / `@API` |
-| `npm run test:azure` | run on Azure Playwright Workspaces (needs `PLAYWRIGHT_SERVICE_URL`) |
 | `npm run report` | open the last HTML report |
 
 Tests skip themselves when the credentials they need are missing.
@@ -31,8 +30,8 @@ src/
   utils/      APIUtils (login / product / order API helpers), requireEnv
   data/       static test data (no real credentials)
 tests/        *.spec.js
-playwright.config.js           local runner config (baseURL, reporters)
-playwright.service.config.js   Azure service wrapper around the local config
+playwright.config.js           runner config (baseURL, reporters)
+Jenkinsfile                    Jenkins pipeline
 ```
 
 Tests run with one worker because they share a single shop account and cart.

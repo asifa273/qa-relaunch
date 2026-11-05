@@ -7,7 +7,7 @@ pipeline {
 
   environment {
     CI = 'true'
-    PROJECT_DIR = 'UI-Automation/playwright/Javascript Projects/clientShopping'
+    PROJECT_DIR = 'ui-automation/playwright/Javascript Projects/clientShopping'
   }
 
   stages {
@@ -25,11 +25,10 @@ pipeline {
         dir("${PROJECT_DIR}") {
           withCredentials([
             string(credentialsId: 'SHOP_EMAIL', variable: 'SHOP_EMAIL'),
-            string(credentialsId: 'SHOP_PASSWORD', variable: 'SHOP_PASSWORD'),
-            string(credentialsId: 'PLAYWRIGHT_SERVICE_URL', variable: 'PLAYWRIGHT_SERVICE_URL')
+            string(credentialsId: 'SHOP_PASSWORD', variable: 'SHOP_PASSWORD')
           ]) {
             // Workers stay at 1 (set in playwright.config.js): tests share one shop account.
-            sh 'npx playwright test --config=playwright.service.config.js'
+            sh 'npx playwright test'
           }
         }
       }

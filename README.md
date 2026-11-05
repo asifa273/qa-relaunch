@@ -42,7 +42,7 @@ Status key: ✅ automated tests in place · 🚧 framework built, tests partly w
 
 | Project | Application under test | What's automated | Status |
 |---|---|---|---|
-| [Javascript Projects/clientShopping](ui-automation/playwright/Javascript%20Projects/clientShopping/) | Rahul Shetty Academy client shop | POM + custom fixtures: data-driven order placement, alternate login, bad-credential checks, order created via API then verified in UI. Allure, Jenkinsfile, Azure Playwright config | ✅ |
+| [Javascript Projects/clientShopping](ui-automation/playwright/Javascript%20Projects/clientShopping/) | Rahul Shetty Academy client shop | POM + custom fixtures: data-driven order placement, alternate login, bad-credential checks, order created via API then verified in UI. Allure reports and a Jenkinsfile | ✅ |
 | [Typescript Projects/client-Shopping](ui-automation/playwright/Typescript%20Projects/client-Shopping/) | Client shop, Angular practice, SauceDemo, EventHub | 15 spec files, 24 tests: login flows, cart, new-tab handling, Excel upload/download, API + UI order flow, request interception, API mocking, cross-user access-denied check | ✅ |
 | [Typescript Projects/greenKart-shopping](ui-automation/playwright/Typescript%20Projects/greenKart-shopping/) | GreenKart grocery store | Catalog search, checkout totals and country validation, plus a written storefront test plan | ✅ |
 | [Typescript Projects/automationExercice](ui-automation/playwright/Typescript%20Projects/automationExercice/) | automationexercise.com | User lifecycle (register, login, logout, delete). Add-to-cart spec is still empty | ✅ |
@@ -144,7 +144,7 @@ Projects that log in read credentials from a local `.env` file (git-ignored) or 
 **BDD:** Cucumber (Java and JS), Gherkin
 **Languages:** Java, TypeScript, JavaScript, Python
 **Frameworks/Tools:** TestNG, pytest, Maven, npm, WebDriverManager, Lombok, ExtentReports, Allure
-**CI/CD:** GitHub Actions, Jenkins, GitLab CI, Azure Playwright Workspaces
+**CI/CD:** GitHub Actions, Jenkins, GitLab CI
 **Performance:** JMeter
 **AI in QA:** Claude API for automated defect analysis
 

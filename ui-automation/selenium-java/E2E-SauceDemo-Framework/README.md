@@ -64,7 +64,7 @@ Jenkins and GitHub Actions with Extent reports and auto-screenshots on failure."
 | Functional / regression / smoke / sanity / integration | TestNG `groups`, `testng-smoke.xml` |
 | API testing (Postman/Swagger) | `api/BookingApiTest.java` (+ Postman collection story) |
 | SQL database validation | `db/DatabaseValidationTest.java`, `utils/DBUtils.java` |
-| CI/CD (Jenkins, GitLab CI, Azure DevOps) | `Jenkinsfile`, `.gitlab-ci.yml`, `.github/workflows/` |
+| CI/CD (Jenkins, GitLab CI, GitHub Actions) | `Jenkinsfile`, `.gitlab-ci.yml`, `.github/workflows/` |
 | Git version control | branch/PR workflow |
 | Manual test plan and test cases | `docs/TEST-PLAN.md` |
 | Reporting to stakeholders | `listeners/TestListener.java` → Extent report |
