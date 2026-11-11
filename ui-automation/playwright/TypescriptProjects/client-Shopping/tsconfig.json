@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "types": [
+            "node",
+            "@playwright/test"
+        ],
+        "strict": true,
+        "allowJs": true,
+        "checkJs": false,
+        "noEmit": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "use": {
+        "headless": true
+    },
+    "include": [
+        "tests/**/*.ts",
+        "e2e/**/*.ts",
+        "e2e/**/*.js",
+        "client-Shopping-project/tests/**/*.ts",
+        "client-Shopping-project/tests/**/*.js"
+    ]
+}
