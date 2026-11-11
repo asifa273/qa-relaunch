@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ui-automation/playwright/Javascript Projects/clientShopping
+        working-directory: ui-automation/playwright/JavascriptProjects/clientShopping
     env:
       SHOP_EMAIL: ${{ secrets.SHOP_EMAIL }}
       SHOP_PASSWORD: ${{ secrets.SHOP_PASSWORD }}
@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: lts/*
           cache: npm
-          cache-dependency-path: ui-automation/playwright/Javascript Projects/clientShopping/package-lock.json
+          cache-dependency-path: ui-automation/playwright/JavascriptProjects/clientShopping/package-lock.json
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm test
@@ -32,7 +32,7 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: client-shopping-js-report
-          path: ui-automation/playwright/Javascript Projects/clientShopping/playwright-report/
+          path: ui-automation/playwright/JavascriptProjects/clientShopping/playwright-report/
           retention-days: 30
 
   client-shopping-ts:
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ui-automation/playwright/Typescript Projects/client-Shopping
+        working-directory: ui-automation/playwright/TypescriptProjects/client-Shopping
     env:
       SHOP_EMAIL: ${{ secrets.SHOP_EMAIL }}
       SHOP_PASSWORD: ${{ secrets.SHOP_PASSWORD }}
@@ -65,7 +65,7 @@ jobs:
         with:
           node-version: lts/*
           cache: npm
-          cache-dependency-path: ui-automation/playwright/Typescript Projects/client-Shopping/package-lock.json
+          cache-dependency-path: ui-automation/playwright/TypescriptProjects/client-Shopping/package-lock.json
       - run: npm ci
       - run: npx playwright install --with-deps
       - run: npm test
@@ -73,7 +73,7 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: client-shopping-ts-report
-          path: ui-automation/playwright/Typescript Projects/client-Shopping/playwright-report/
+          path: ui-automation/playwright/TypescriptProjects/client-Shopping/playwright-report/
           retention-days: 30
 
   greenkart:
@@ -81,14 +81,14 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ui-automation/playwright/Typescript Projects/greenKart-shopping
+        working-directory: ui-automation/playwright/TypescriptProjects/greenKart-shopping
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
           cache: npm
-          cache-dependency-path: ui-automation/playwright/Typescript Projects/greenKart-shopping/package-lock.json
+          cache-dependency-path: ui-automation/playwright/TypescriptProjects/greenKart-shopping/package-lock.json
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run typecheck
@@ -97,7 +97,7 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: greenkart-report
-          path: ui-automation/playwright/Typescript Projects/greenKart-shopping/playwright-report/
+          path: ui-automation/playwright/TypescriptProjects/greenKart-shopping/playwright-report/
           retention-days: 30
 
   automation-exercise:
@@ -105,14 +105,14 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ui-automation/playwright/Typescript Projects/automationExercice
+        working-directory: ui-automation/playwright/TypescriptProjects/automationExercice
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
           cache: npm
-          cache-dependency-path: ui-automation/playwright/Typescript Projects/automationExercice/package-lock.json
+          cache-dependency-path: ui-automation/playwright/TypescriptProjects/automationExercice/package-lock.json
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run typecheck
@@ -130,5 +130,5 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: automation-exercise-report
-          path: ui-automation/playwright/Typescript Projects/automationExercice/playwright-report/
+          path: ui-automation/playwright/TypescriptProjects/automationExercice/playwright-report/
           retention-days: 30

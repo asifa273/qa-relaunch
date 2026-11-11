@@ -42,12 +42,12 @@ Status key: ✅ automated tests in place · 🚧 framework built, tests partly w
 
 | Project | Application under test | What's automated | Status |
 |---|---|---|---|
-| [Javascript Projects/clientShopping](ui-automation/playwright/Javascript%20Projects/clientShopping/) | Rahul Shetty Academy client shop | POM + custom fixtures: data-driven order placement, alternate login, bad-credential checks, order created via API then verified in UI. Allure reports and a Jenkinsfile | ✅ |
-| [Typescript Projects/client-Shopping](ui-automation/playwright/Typescript%20Projects/client-Shopping/) | Client shop, Angular practice, SauceDemo, EventHub | 15 spec files, 24 tests: login flows, cart, new-tab handling, Excel upload/download, API + UI order flow, request interception, API mocking, cross-user access-denied check | ✅ |
-| [Typescript Projects/greenKart-shopping](ui-automation/playwright/Typescript%20Projects/greenKart-shopping/) | GreenKart grocery store | Catalog search, checkout totals and country validation, plus a written storefront test plan | ✅ |
-| [Typescript Projects/automationExercice](ui-automation/playwright/Typescript%20Projects/automationExercice/) | automationexercise.com | User lifecycle (register, login, logout, delete). Add-to-cart spec is still empty | ✅ |
-| [Typescript Projects/EventsBooking](ui-automation/playwright/Typescript%20Projects/EventsBooking/) | EventHub | Page objects, API utilities, and fixtures (logged-in page, create-event). No spec files yet | 🚧 |
-| [Typescript Projects/paraBank-project](ui-automation/playwright/Typescript%20Projects/paraBank-project/) | ParaBank | Config, test-data factory, and folder layout only | 🚧 |
+| [JavascriptProjects/clientShopping](ui-automation/playwright/JavascriptProjects/clientShopping/) | Rahul Shetty Academy client shop | POM + custom fixtures: data-driven order placement, alternate login, bad-credential checks, order created via API then verified in UI. Allure reports and a Jenkinsfile | ✅ |
+| [TypescriptProjects/client-Shopping](ui-automation/playwright/TypescriptProjects/client-Shopping/) | Client shop, Angular practice, SauceDemo, EventHub | 15 spec files, 24 tests: login flows, cart, new-tab handling, Excel upload/download, API + UI order flow, request interception, API mocking, cross-user access-denied check | ✅ |
+| [TypescriptProjects/greenKart-shopping](ui-automation/playwright/TypescriptProjects/greenKart-shopping/) | GreenKart grocery store | Catalog search, checkout totals and country validation, plus a written storefront test plan | ✅ |
+| [TypescriptProjects/automationExercice](ui-automation/playwright/TypescriptProjects/automationExercice/) | automationexercise.com | User lifecycle (register, login, logout, delete). Add-to-cart spec is still empty | ✅ |
+| [TypescriptProjects/EventsBooking](ui-automation/playwright/TypescriptProjects/EventsBooking/) | EventHub | Page objects, API utilities, and fixtures (logged-in page, create-event). No spec files yet | 🚧 |
+| [TypescriptProjects/paraBank-project](ui-automation/playwright/TypescriptProjects/paraBank-project/) | ParaBank | Config, test-data factory, and folder layout only | 🚧 |
 | [cucumber-Playwright Features_Project](ui-automation/playwright/cucumber-Playwright%20Features_Project/) | Client shop | 4 Gherkin features (end-to-end order, add all to cart, error login, parametrized login) with JS step definitions | ✅ |
 
 ### UI automation — Cypress
@@ -102,7 +102,7 @@ mvn test -DsuiteXmlFile=testng-smoke.xml  # smoke only
 The widest Playwright suite: UI flows, API-driven setup, request interception, response mocking, file upload/download, multi-tab handling, and a cross-user authorization check.
 
 ```bash
-cd "ui-automation/playwright/Typescript Projects/client-Shopping"
+cd "ui-automation/playwright/TypescriptProjects/client-Shopping"
 npm install
 npx playwright install
 npx playwright test
@@ -172,8 +172,8 @@ qa-relaunch/
 └── ui-automation/
     ├── cypress/greenkart-project/     # Cypress + TypeScript
     ├── playwright/
-    │   ├── Javascript Projects/clientShopping/
-    │   ├── Typescript Projects/
+    │   ├── JavascriptProjects/clientShopping/
+    │   ├── TypescriptProjects/
     │   │   ├── client-Shopping/
     │   │   ├── greenKart-shopping/
     │   │   ├── automationExercice/

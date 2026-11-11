@@ -1,1 +1,0 @@
-export { ThanksOrderPage } from '../src/pages/ThanksOrderPage';
